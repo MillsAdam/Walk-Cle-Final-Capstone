@@ -13,17 +13,23 @@ export default {};
 </script>
 
 <style>
+
+@import url("https://fonts.googleapis.com/css2?family=Urbanist:wght@300;400&display=swap");
+
 #app {
-  font-family: "Avenir", Helvetica, Arial, sans-serif;
+  font-family: "Urbanist", sans-serif;
   -webkit-font-smoothing: antialiased;
   -moz-osx-font-smoothing: grayscale;
   text-align: center;
   color: #2c3e50;
   max-width: 800px;
   margin: 60px auto 0 auto;
+  width: 100%;
+  height: 100%;
 }
 
 .btn {
+  font-family: "Urbanist", sans-serif;
   display: inline-block;
   background: #2284c5;
   color: #fff;
@@ -34,6 +40,7 @@ export default {};
   cursor: pointer;
   text-decoration: none;
   font-size: 15px;
+  width: 80%;
 }
 
 </style>

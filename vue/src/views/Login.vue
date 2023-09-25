@@ -1,21 +1,21 @@
 <template>
   <div id="login">
      <!-- put logo here -->
-    <h1>Please Sign In</h1>
     <form @submit.prevent="login">
-      <div role="alert" v-if="invalidCredentials">
-        Invalid username and password!
-      </div>
-      <div role="alert" v-if="this.$route.query.registration">
+      <h1>Login</h1>
+      <div id="registered" role="alert" v-if="this.$route.query.registration">
         Thank you for registering, please sign in.
       </div>
       <div class="form-input-group">
-        <label for="username">Username</label>
+        <label for="username">Username:</label>
         <input type="text" id="username" v-model="user.username" required autofocus />
       </div>
       <div class="form-input-group">
-        <label for="password">Password</label>
+        <label for="password">Password:</label>
         <input type="password" id="password" v-model="user.password" required />
+      </div>
+      <div id="invalid" role="alert" v-if="invalidCredentials">
+        Invalid username and password!
       </div>
       <button type="submit" class="btn">Sign in</button>
       <p>
@@ -68,5 +68,24 @@ export default {
 }
 label {
   margin-right: 0.5rem;
+}
+
+#login {
+  width: 100%;
+  height: 80vh;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+}
+
+#invalid {
+  color: red;
+  margin: 5px;
+}
+
+#registered {
+  color: green;
+  margin-bottom: 15px;
 }
 </style>
