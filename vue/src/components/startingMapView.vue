@@ -1,56 +1,60 @@
 <template>
-<div>
-  <head>
-    <meta charset='utf-8' />
-    <title>Getting started with the Mapbox Directions API</title>
-    <meta name='viewport' content='width=device-width, initial-scale=1' />
-    <script src='https://api.tiles.mapbox.com/mapbox-gl-js/v2.14.1/mapbox-gl.js'></script>
-    <link href='https://api.tiles.mapbox.com/mapbox-gl-js/v2.14.1/mapbox-gl.css' rel='stylesheet' />
-  </head>
-    <div id='map'></div>
+  <div class="map-container">
+    <div id="map"></div>
   </div>
 </template>
 
 <script>
-// eslint-disable-next-line no-undef
-mapboxgl.accessToken = 'pk.eyJ1Ijoid2Fsa2NsZTIxNiIsImEiOiJjbG16MGVvdWkxM2QzMm9wNjNobm9hZGQyIn0.5r382ZeMc0zOhHpiAd9D2A';
+import mapboxgl from 'mapbox-gl';
+
 export default {
   data() {
-    const bounds = [
-      [-123.069003, 45.395273],
-      [-122.303707, 45.612333]
-    ];
+    return {
+      map: null,
+    };
+  },
+  mounted() {
+    mapboxgl.accessToken = 'pk.eyJ1Ijoid2Fsa2NsZTIxNiIsImEiOiJjbG16MGVvdWkxM2QzMm9wNjNobm9hZGQyIn0.5r382ZeMc0zOhHpiAd9D2A';
 
-    // eslint-disable-next-line no-undef
-    const map = new mapboxgl.Map({
+    this.map = new mapboxgl.Map({
       container: 'map',
-      style: 'mapbox://styles/mapbox/streets-v12',
-      center: [-122.662323, 45.523751], // starting position
-      zoom: 12
+      style: 'mapbox://styles/mapbox/streets-v11',
+      center: [-81.6934, 41.4993], // Cleveland, Ohio coordinates
+      zoom: 12,
     });
 
-    map.setMaxBounds(bounds);
+    // Add map controls, markers, and other customizations here
 
-    const start = [-122.662323, 45.523751];
+    // Enable map dragging/panning
+    this.map.dragPan.enable();
 
-    return { bounds, map, start };
+     // Add custom tile source and layer
+  this.map.addSource('custom-tiles', {
+    type: 'vector', // or 'vector' if you're using vector tiles
+    tiles: ['URL_TO_YOUR_http://a.tiles.mapbox.com/v4/mapbox.mapbox-streets-v8/14/4823/6160.mvt?access_token=pk.eyJ1Ijoid2Fsa2NsZTIxNiIsImEiOiJjbG16MGVvdWkxM2QzMm9wNjNobm9hZGQyIn0.5r382ZeMc0zOhHpiAd9D2A'], // Replace with the URL to your custom tiles
+    tileSize: 256, // The tile size of your custom tiles
+  });
+
+  this.map.addLayer({
+    id: 'custom-tiles-layer',
+    type: 'vector',
+    source: 'custom-tiles',
+    minzoom: 0,
+    maxzoom: 22, // Adjust the maxzoom according to your custom tiles
+  });
   },
-  created() {
-    // Add any code you want to run when the component is created
-  }
-}
+};
 </script>
 
 <style>
-body {
-        margin: 0;
-        padding: 0;
-      }
+.map-container {
+  width: 100%;
+  height: 400px;
+  overflow: auto; /* Add a scrollbar when the map exceeds the container's height */
+}
 
-      #map {
-        position: absolute;
-        top: 0;
-        bottom: 0;
-        width: 100%;
-      }
+#map {
+  width: 100%;
+  height: 100%;
+}
 </style>
