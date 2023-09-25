@@ -5,11 +5,19 @@
       <router-link class="btn" v-bind:to="{ name: 'logout' }" v-if="$store.state.token != ''">Logout</router-link>
     </div>
     <router-view />
+    <Footer />
   </div>
 </template>
 
 <script>
-export default {};
+import Footer from './components/Footer.vue';
+
+export default {
+  name: 'App',
+  components: {
+    Footer
+  }
+};
 </script>
 
 <style>
