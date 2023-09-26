@@ -52,4 +52,8 @@ export default {
   width: 80%;
 }
 
+#body {
+  width: 100vw;
+  height: 100vh;
+}
 </style>

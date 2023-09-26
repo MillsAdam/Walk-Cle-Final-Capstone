@@ -2,12 +2,11 @@
   <div class="map-container">
     <button @click="getUserLocation">Get My Location</button>
     <div id="map"></div>
-    
   </div>
 </template>
 
 <script>
-import mapboxgl from 'mapbox-gl';
+import mapboxgl from "mapbox-gl";
 
 export default {
   data() {
@@ -16,67 +15,100 @@ export default {
     };
   },
   mounted() {
-    mapboxgl.accessToken = 'pk.eyJ1Ijoid2Fsa2NsZTIxNiIsImEiOiJjbG16MGVvdWkxM2QzMm9wNjNobm9hZGQyIn0.5r382ZeMc0zOhHpiAd9D2A';
+    mapboxgl.accessToken =
+      "pk.eyJ1Ijoid2Fsa2NsZTIxNiIsImEiOiJjbG16MGVvdWkxM2QzMm9wNjNobm9hZGQyIn0.5r382ZeMc0zOhHpiAd9D2A";
 
-    this.map = new mapboxgl.Map({
-      container: 'map',
-      style: 'mapbox://styles/mapbox/streets-v12',
-      center: [-81.6934, 41.4993], // Default center (Cleveland, Ohio)
-      zoom: 12,
-    });
+    // Declare latitude and longitude variables
+    let latitude, longitude;
 
-    // Add map controls, markers, and other customizations here
+    // Initialize the map at the user's location
+    if ("geolocation" in navigator) {
+      navigator.geolocation.getCurrentPosition(
+        (position) => {
+          latitude = position.coords.latitude;
+          longitude = position.coords.longitude;
 
-    // Enable map dragging/panning
-    this.map.dragPan.enable();
+          this.map = new mapboxgl.Map({
+            container: "map",
+            style: "mapbox://styles/mapbox/streets-v12",
+            center: [longitude, latitude], // Center the map at the user's location
+            zoom: 15, // Set an initial zoom level
+          });
 
-    // Add GeolocateControl
-    const geolocate = new mapboxgl.GeolocateControl({
-      positionOptions: {
-        enableHighAccuracy: true,
-      },
-      trackUserLocation: true,
-      showUserLocation: true,
-    });
+          // Add map controls, markers, and other customizations here
+          this.map.dragPan.enable();
 
-    // Event listener for geolocation update
-    this.map.on('load', () => {
-      geolocate.on('geolocate', (event) => {
-        const { coords } = event;
-        const { longitude, latitude } = coords;
+          // Add GeolocateControl
+          const geolocate = new mapboxgl.GeolocateControl({
+            positionOptions: {
+              enableHighAccuracy: true,
+            },
+            trackUserLocation: true,
+            showUserLocation: true,
+          });
 
-        // Update the map's center to the user's location
-        this.map.setCenter([longitude, latitude]);
-      });
-    });
+          // Add the GeolocateControl to the map
+          this.map.addControl(geolocate);
+
+          // Event listener for geolocation update
+          this.map.on("load", () => {
+            geolocate.on("geolocate", (event) => {
+              const { coords } = event;
+              latitude = coords.latitude;
+              longitude = coords.longitude;
+
+              // Update the map's center to the user's location
+              this.map.setCenter([longitude, latitude]);
+            });
+          });
+
+          // Add a marker for the user's location
+          new mapboxgl.Marker()
+            .setLngLat([longitude, latitude])
+            .addTo(this.map);
+        },
+        (error) => {
+          if (error.code === error.PERMISSION_DENIED) {
+            alert(
+              "You denied the request for geolocation. Please enable location services in your browser settings."
+            );
+          } else {
+            alert(`Geolocation error: ${error.message}`);
+          }
+        }
+      );
+    } else {
+      alert("Geolocation is not available in your browser.");
+    }
   },
   methods: {
     getUserLocation() {
-      if ('geolocation' in navigator) {
+      if ("geolocation" in navigator) {
         // Ask for user's permission
         navigator.geolocation.getCurrentPosition(
           (position) => {
             const { latitude, longitude } = position.coords;
-            
+
             // Update the map's center to the user's location
             this.map.setCenter([longitude, latitude]);
-            this.map.setZoom(15); 
+            this.map.setZoom(15);
             this.map.setMarker([longitude, latitude]);
           },
           (error) => {
             if (error.code === error.PERMISSION_DENIED) {
-              alert('You denied the request for geolocation. Please enable location services in your browser settings.');
+              alert(
+                "You denied the request for geolocation. Please enable location services in your browser settings."
+              );
             } else {
               alert(`Geolocation error: ${error.message}`);
             }
           }
         );
       } else {
-        alert('Geolocation is not available in your browser.');
+        alert("Geolocation is not available in your browser.");
       }
     },
   },
-  
 };
 </script>
 
@@ -84,7 +116,6 @@ export default {
 .map-container {
   width: 100%;
   height: 100vh;
- 
 }
 
 #map {
