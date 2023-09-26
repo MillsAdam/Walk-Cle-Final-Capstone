@@ -1,6 +1,8 @@
 <template>
   <div class="map-container">
+    <button @click="getUserLocation">Get My Location</button>
     <div id="map"></div>
+    
   </div>
 </template>
 
@@ -18,8 +20,8 @@ export default {
 
     this.map = new mapboxgl.Map({
       container: 'map',
-      style: 'mapbox://styles/mapbox/streets-v11',
-      center: [-81.6934, 41.4993], // Cleveland, Ohio coordinates
+      style: 'mapbox://styles/mapbox/streets-v12',
+      center: [-81.6934, 41.4993], // Default center (Cleveland, Ohio)
       zoom: 12,
     });
 
@@ -28,29 +30,61 @@ export default {
     // Enable map dragging/panning
     this.map.dragPan.enable();
 
-     // Add custom tile source and layer
-  this.map.addSource('custom-tiles', {
-    type: 'vector', // or 'vector' if you're using vector tiles
-    tiles: ['URL_TO_YOUR_http://a.tiles.mapbox.com/v4/mapbox.mapbox-streets-v8/14/4823/6160.mvt?access_token=pk.eyJ1Ijoid2Fsa2NsZTIxNiIsImEiOiJjbG16MGVvdWkxM2QzMm9wNjNobm9hZGQyIn0.5r382ZeMc0zOhHpiAd9D2A'], // Replace with the URL to your custom tiles
-    tileSize: 256, // The tile size of your custom tiles
-  });
+    // Add GeolocateControl
+    const geolocate = new mapboxgl.GeolocateControl({
+      positionOptions: {
+        enableHighAccuracy: true,
+      },
+      trackUserLocation: true,
+      showUserLocation: true,
+    });
 
-  this.map.addLayer({
-    id: 'custom-tiles-layer',
-    type: 'vector',
-    source: 'custom-tiles',
-    minzoom: 0,
-    maxzoom: 22, // Adjust the maxzoom according to your custom tiles
-  });
+    // Event listener for geolocation update
+    this.map.on('load', () => {
+      geolocate.on('geolocate', (event) => {
+        const { coords } = event;
+        const { longitude, latitude } = coords;
+
+        // Update the map's center to the user's location
+        this.map.setCenter([longitude, latitude]);
+      });
+    });
   },
+  methods: {
+    getUserLocation() {
+      if ('geolocation' in navigator) {
+        // Ask for user's permission
+        navigator.geolocation.getCurrentPosition(
+          (position) => {
+            const { latitude, longitude } = position.coords;
+            
+            // Update the map's center to the user's location
+            this.map.setCenter([longitude, latitude]);
+            this.map.setZoom(15); 
+            this.map.setMarker([longitude, latitude]);
+          },
+          (error) => {
+            if (error.code === error.PERMISSION_DENIED) {
+              alert('You denied the request for geolocation. Please enable location services in your browser settings.');
+            } else {
+              alert(`Geolocation error: ${error.message}`);
+            }
+          }
+        );
+      } else {
+        alert('Geolocation is not available in your browser.');
+      }
+    },
+  },
+  
 };
 </script>
 
 <style>
 .map-container {
   width: 100%;
-  height: 400px;
-  overflow: auto; /* Add a scrollbar when the map exceeds the container's height */
+  height: 100vh;
+ 
 }
 
 #map {
