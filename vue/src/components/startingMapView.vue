@@ -1,6 +1,8 @@
 <template>
   <div class="map-container">
     <button @click="getUserLocation">Get My Location</button>
+    <input v-mmodel="searchTerm" @input="handleInput" placeholder="Discover CLE"/>
+    <button @click="Search">Search</button>
     <div id="map"></div>
   </div>
 </template>
@@ -12,6 +14,7 @@ export default {
   data() {
     return {
       map: null,
+      searchTerm: ""
     };
   },
   mounted() {
@@ -108,6 +111,26 @@ export default {
         alert("Geolocation is not available in your browser.");
       }
     },
+    search() {
+    const url = `https://api.mapbox.com/geocoding/v5/mapbox.places/${this.searchTerm}.json?access_token='pk.eyJ1Ijoid2Fsa2NsZTIxNiIsImEiOiJjbG16MGVvdWkxM2QzMm9wNjNobm9hZGQyIn0.5r382ZeMc0zOhHpiAd9D2A'`;
+
+    fetch(url)
+      .then(response => response.json())
+      .then(data => {
+        const [longitude, latitude] = data.features[0].center;
+
+        // Center the map on the location
+        this.map.setCenter([longitude, latitude]);
+
+        // Add a marker to the location (optional)
+        new mapboxgl.Marker()
+          .setLngLat([longitude, latitude])
+          .addTo(this.map);
+      })
+      .catch(error => {
+        console.error(error);
+      });
+  }
   },
 };
 </script>
