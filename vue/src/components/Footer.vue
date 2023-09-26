@@ -23,9 +23,7 @@
             <ul v-if="isDropdownOpen" class="dropdown-menu">
               <div class="dropdown-option"><a href="#">Profile</a></div>
               <div class="dropdown-option"><a href="#">Settings</a></div>
-              <div class="dropdown-option"><a href="#">
-                <router-link :to="{ name: 'logout' }">Logout</router-link></a>
-              </div>
+              <div class="dropdown-option" @click.prevent="logoutAndRedirect">Logout</div>
             </ul>
           </div>
         </li>
@@ -45,6 +43,10 @@ export default {
   methods: {
     toggleDropdown() {
       this.isDropdownOpen = !this.isDropdownOpen;
+    },
+    logoutAndRedirect() {
+      this.$store.commit("LOGOUT");
+      this.$router.push("/login");
     },
   },
 };
