@@ -1,7 +1,7 @@
 <template>
   <div class="map-container">
     <button @click="getUserLocation">Get My Location</button>
-    <input v-mmodel="searchTerm" @input="handleInput" placeholder="Discover CLE"/>
+    <input v-model="searchTerm" @input="handleInput" placeholder="Discover CLE"/>
     <button @click="Search">Search</button>
     <div id="map"></div>
   </div>
@@ -40,6 +40,8 @@ export default {
 
           // Add map controls, markers, and other customizations here
           this.map.dragPan.enable();
+          
+         
 
           // Add GeolocateControl
           const geolocate = new mapboxgl.GeolocateControl({
@@ -83,34 +85,10 @@ export default {
     } else {
       alert("Geolocation is not available in your browser.");
     }
+    
   },
   methods: {
-    getUserLocation() {
-      if ("geolocation" in navigator) {
-        // Ask for user's permission
-        navigator.geolocation.getCurrentPosition(
-          (position) => {
-            const { latitude, longitude } = position.coords;
-
-            // Update the map's center to the user's location
-            this.map.setCenter([longitude, latitude]);
-            this.map.setZoom(15);
-            this.map.setMarker([longitude, latitude]);
-          },
-          (error) => {
-            if (error.code === error.PERMISSION_DENIED) {
-              alert(
-                "You denied the request for geolocation. Please enable location services in your browser settings."
-              );
-            } else {
-              alert(`Geolocation error: ${error.message}`);
-            }
-          }
-        );
-      } else {
-        alert("Geolocation is not available in your browser.");
-      }
-    },
+  
     search() {
     const url = `https://api.mapbox.com/geocoding/v5/mapbox.places/${this.searchTerm}.json?access_token='pk.eyJ1Ijoid2Fsa2NsZTIxNiIsImEiOiJjbG16MGVvdWkxM2QzMm9wNjNobm9hZGQyIn0.5r382ZeMc0zOhHpiAd9D2A'`;
 
@@ -132,6 +110,11 @@ export default {
       });
   }
   },
+
+
+
+
+  
 };
 </script>
 
@@ -143,6 +126,6 @@ export default {
 
 #map {
   width: 100%;
-  height: 100%;
+  height: 90%;
 }
 </style>
