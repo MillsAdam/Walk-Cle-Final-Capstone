@@ -3,8 +3,8 @@
     <nav id="footer">
       <ul>
         <li>
-          <router-link v-bind:to="{ name: 'home' }" >
-            <img src="../assets/Footer-Images/home.png" id="home"/>
+          <router-link v-bind:to="{ name: 'home' }">
+            <img src="../assets/Footer-Images/home.png" id="home" />
           </router-link>
         </li>
         <li>
@@ -23,7 +23,9 @@
             <ul v-if="isDropdownOpen" class="dropdown-menu">
               <div class="dropdown-option"><a href="#">Profile</a></div>
               <div class="dropdown-option"><a href="#">Settings</a></div>
-              <div class="dropdown-option" @click.prevent="logoutAndRedirect">Logout</div>
+              <router-link :to="{ name: 'logout' }">
+                <div class="dropdown-option">Logout</div>
+              </router-link>
             </ul>
           </div>
         </li>
@@ -44,44 +46,39 @@ export default {
     toggleDropdown() {
       this.isDropdownOpen = !this.isDropdownOpen;
     },
-    logoutAndRedirect() {
-      this.$store.commit("LOGOUT");
-      this.$router.push("/login");
-    },
   },
 };
 </script>
 
 <style scoped>
 nav ul {
-    margin: 0;
-    padding: 20px 0 0 0;
-    display: flex;
-    justify-content: space-between;
+  margin: 0;
+  padding: 20px 0 0 0;
+  display: flex;
+  justify-content: space-between;
 }
 
 nav ul li {
-    list-style: none;
-    width: 20%;
-    margin: 0 5px;
-    border-radius: 5px;
-    text-align: center;
-    line-height: 50px;
-    text-decoration: none;
+  list-style: none;
+  width: 20%;
+  margin: 0 5px;
+  border-radius: 5px;
+  text-align: center;
+  line-height: 50px;
+  text-decoration: none;
 }
 
 .container {
-    display: grid;
-    grid-template-columns: 1fr;
-    gap: 1%;
-    grid-template-areas:
-        "footer";
-    flex-grow: 1;
-    position: relative;
+  display: grid;
+  grid-template-columns: 1fr;
+  gap: 1%;
+  grid-template-areas: "footer";
+  flex-grow: 1;
+  position: relative;
 }
 
 #footer {
-    grid-area: footer;
+  grid-area: footer;
 }
 
 img {
@@ -105,7 +102,6 @@ img {
   left: 0;
   right: 0;
   margin-top: -259px;
-
 }
 
 .dropdown-option {
@@ -126,6 +122,4 @@ img {
 .dropdown-option a:hover {
   color: #555;
 }
-
-
 </style>
