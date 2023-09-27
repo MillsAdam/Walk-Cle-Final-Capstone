@@ -21,6 +21,7 @@ export default {
       "pk.eyJ1Ijoid2Fsa2NsZTIxNiIsImEiOiJjbG16MGVvdWkxM2QzMm9wNjNobm9hZGQyIn0.5r382ZeMc0zOhHpiAd9D2A";
 
     let latitude, longitude;
+    const stadium = [-81.700058, 41.506035];
 
     // Initialize the map at the user's location
     navigator.geolocation.getCurrentPosition((position) => {
@@ -33,6 +34,17 @@ export default {
         center: [longitude, latitude], // Center the map at the user's location
         zoom: 15, // Set an initial zoom level
       });
+
+        const popup = new mapboxgl.Popup({ offset: 25 }).setText(
+        'Factory of sadness'
+        );
+
+        // create the marker
+         new mapboxgl.Marker()
+        .setLngLat(stadium)
+        .setPopup(popup) // sets a popup on this marker
+        .addTo(this.map);
+
 
       const searchBox = new MapboxSearchBox();
       searchBox.accessToken = this.ACCESS_TOKEN;
