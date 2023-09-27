@@ -185,22 +185,31 @@ export default {
      "inputs"
      "map"
     "directions";
+    justify-items: center;
+    align-items: center;
 }
 
 #map {
   grid-area: map;
   width: 100%;
-  height: 65vh;
-  margin-top: 10px;
+  height: 600px;
+  margin-top: 25px;
+  padding-top: 25px;
+  margin-bottom: 25px;
   padding-top: 25px;
 }
 
 #input-area {
   grid-area: inputs;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
 }
 
 #panel {
   grid-area: directions;
+  width: 100%;
+  text-align: center;
 }
 
 .current-inputs {

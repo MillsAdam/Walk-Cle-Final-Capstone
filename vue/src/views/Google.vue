@@ -37,6 +37,9 @@ export default {
   grid-template-areas:
     "map"
     "footer";
+  justify-items: center;
+  align-items: center;
+  height: 100vh;
 }
 
 
