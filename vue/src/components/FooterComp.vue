@@ -8,9 +8,9 @@
           </router-link>
         </li>
         <li>
-          <a href="#" id="marker-link">
+          <router-link v-bind:to="{name: 'google'}">
             <img src="../assets/Footer-Images/marker.png" id="marker" />
-          </a>
+          </router-link>
         </li>
         <li>
           <img src="../assets/logo/small.png" id="logo" />
