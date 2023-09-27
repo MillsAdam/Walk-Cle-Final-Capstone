@@ -7,6 +7,7 @@
 <script>
 import mapboxgl from "mapbox-gl";
 import { MapboxSearchBox } from "@mapbox/search-js-web";
+import * as turf from '@turf/turf';
 
 export default {
   data() {
@@ -34,12 +35,19 @@ export default {
         zoom: 15, // Set an initial zoom level
       });
 
-      const searchBox = new MapboxSearchBox();
-      searchBox.accessToken = this.ACCESS_TOKEN;
-      searchBox.options = {
-        language: "en",
-        country: "us",
-      };
+      const point = turf.point([longitude, latitude]);
+    const options = { units: 'miles' };
+    const radius = 5; // 1 mile
+    const bbox = turf.bbox(turf.buffer(point, radius, options));
+
+    const searchBox = new MapboxSearchBox();
+    searchBox.accessToken = this.ACCESS_TOKEN;
+    searchBox.options = {
+      language: 'en',
+      country: 'us',
+      bbox: bbox, // Set the bounding box in the search options
+    };
+
       this.map.addControl(searchBox);
 
       // Add Geolocate Control
