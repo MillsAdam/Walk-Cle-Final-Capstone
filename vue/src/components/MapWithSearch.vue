@@ -7,11 +7,8 @@
 <script>
 import mapboxgl from "mapbox-gl";
 import { MapboxSearchBox } from "@mapbox/search-js-web";
-<<<<<<< HEAD
-=======
 import * as turf from '@turf/turf';
 
->>>>>>> 44d6d8afeee12ad7f12af5b20aeb3f57265b95c5
 export default {
   data() {
     return {
@@ -52,19 +49,6 @@ export default {
         .setPopup(popup)
         .addTo(this.map);
 
-<<<<<<< HEAD
-      // Add a click event listener to the map
-      this.map.on("click", (e) => {
-        const coordinates = e.lngLat;
-        const popup = new mapboxgl.Popup().setLngLat(coordinates).setText("You clicked here.");
-        
-        // Create a marker at the clicked location
-        new mapboxgl.Marker()
-          .setLngLat(coordinates)
-          .setPopup(popup)
-          .addTo(this.map);
-      });
-=======
       const point = turf.point([longitude, latitude]);
     const options = { units: 'miles' };
     const radius = 5; // 1 mile
@@ -77,7 +61,6 @@ export default {
       country: 'us',
       bbox: bbox, // Set the bounding box in the search options
     };
->>>>>>> 44d6d8afeee12ad7f12af5b20aeb3f57265b95c5
 
       this.map.addControl(searchBox);
 
