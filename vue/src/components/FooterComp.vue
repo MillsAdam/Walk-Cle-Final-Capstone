@@ -36,7 +36,7 @@
 
 <script>
 export default {
-  name: "footer",
+  name: "footer-comp",
   data() {
     return {
       isDropdownOpen: false,
@@ -56,6 +56,8 @@ nav ul {
   padding: 20px 0 0 0;
   display: flex;
   justify-content: space-between;
+  align-items: center;
+  width: 100vw;
 }
 
 nav ul li {
@@ -74,7 +76,6 @@ nav ul li {
   gap: 1%;
   grid-template-areas: "footer";
   flex-grow: 1;
-  position: relative;
 }
 
 #footer {
@@ -101,7 +102,7 @@ img {
   bottom: auto;
   left: 0;
   right: 0;
-  margin-top: -259px;
+  margin-top: -280px;
 }
 
 .dropdown-option {
