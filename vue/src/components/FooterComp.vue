@@ -13,6 +13,9 @@
           </a>
         </li>
         <li>
+          <img src="../assets/logo/small.png" id="logo" />
+        </li>
+        <li>
           <a href="#" id="trophy-link">
             <img src="../assets/Footer-Images/trophy.png" id="trophy" />
           </a>
@@ -80,6 +83,12 @@ nav ul li {
 
 #footer {
   grid-area: footer;
+}
+
+#logo {
+  margin-top: 6px;
+  width: 30px;
+  height: auto;
 }
 
 img {

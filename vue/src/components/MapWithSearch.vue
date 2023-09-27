@@ -11,14 +11,13 @@ import { MapboxSearchBox } from "@mapbox/search-js-web";
 export default {
   data() {
     return {
+      // make environment variable
       ACCESS_TOKEN:
         "pk.eyJ1Ijoid2Fsa2NsZTIxNiIsImEiOiJjbG16MGVvdWkxM2QzMm9wNjNobm9hZGQyIn0.5r382ZeMc0zOhHpiAd9D2A",
     };
   },
   mounted() {
-    // make environment variable
-    mapboxgl.accessToken =
-      "pk.eyJ1Ijoid2Fsa2NsZTIxNiIsImEiOiJjbG16MGVvdWkxM2QzMm9wNjNobm9hZGQyIn0.5r382ZeMc0zOhHpiAd9D2A";
+    mapboxgl.accessToken = this.ACCESS_TOKEN;
 
     let latitude, longitude;
     const stadium = [-81.700058, 41.506035];
@@ -51,6 +50,7 @@ export default {
       searchBox.options = {
         language: "en",
         country: "us",
+        limit: 10,
       };
       this.map.addControl(searchBox);
 
@@ -63,6 +63,9 @@ export default {
         showUserLocation: true,
       });
       this.map.addControl(geolocate);
+
+      const nav = new mapboxgl.NavigationControl();
+      this.map.addControl(nav);
 
       // Event listener for geolocation update
       // this.map.on("load", () => {
@@ -104,10 +107,10 @@ export default {
 
 <style scoped>
 #map {
-    top: 0;
-    bottom: 0;
-    left: 0;
-    right: 0;
+  top: 0;
+  bottom: 0;
+  left: 0;
+  right: 0;
   width: 100%;
   height: 90%;
   position: absolute;
@@ -116,13 +119,13 @@ export default {
   flex-grow: 1;
 }
 
-#map canvas{
-    width: 80vw;
-    height: 80vh;
+#map canvas {
+  width: 80vw;
+  height: 80vh;
 }
 
 .mapboxgl-canvas {
-    width: 100%;
-    height: 100%;
+  width: 100%;
+  height: 100%;
 }
 </style>
