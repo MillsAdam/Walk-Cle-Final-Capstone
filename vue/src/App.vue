@@ -34,7 +34,7 @@ export default {
 .btn {
   font-family: "Urbanist", sans-serif;
   display: inline-block;
-  background: #2284c5;
+  background: #407F7F;
   color: #fff;
   border: none;
   padding: 10px 20px;
