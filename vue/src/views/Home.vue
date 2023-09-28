@@ -20,28 +20,24 @@ export default {
   },
 };
 </script>
-<style>
+
+<style scoped>
+.container {
+  display: flex;
+  flex-direction: column;
+  height: 100%; /* Ensure the container takes at least the full viewport height */
+}
+
 .map-container {
-  grid-area: map;
+  display: flex;
+  height: 100%;
   width: 100%;
-  height: 90vh;
 }
 
 .footer-container {
-  grid-area: footer;
+  background-color: #92b9c5;
+  padding: 10px 0; /* Add padding as needed */
+  text-align: center; /* Center the content horizontally */
+  width: 100vw;
 }
-
-
-.container {
-  display: grid;
-  grid-template-columns: 1fr;
-  grid-template-areas:
-    "map"
-    "footer";
-  justify-items: center;
-  align-items: center;
-  height: 100vh;
-}
-
-
 </style>

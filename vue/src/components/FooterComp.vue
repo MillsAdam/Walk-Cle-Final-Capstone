@@ -62,16 +62,12 @@ img {
 .container {
   width: 100%;
   background-color: #92b9c5;
-  height: auto;
-  padding: 10px 0;
-  display: flex;
-  justify-content: center;
-  align-items: center;
+  padding: 5px 10px; /* Adjust the padding as needed */
 }
 
 nav ul {
   list-style: none;
-  margin: 0;
+  margin: 5;
   padding: 0;
   display: flex;
   justify-content: space-between;
@@ -82,7 +78,8 @@ nav ul {
 nav ul li {
   font-size: 16px;
   text-align: center;
-  margin: 0 50px;
+  flex: 1;
+  margin: 0, 10px;
 }
 
 .dropdown-menu {

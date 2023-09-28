@@ -22,7 +22,6 @@ export default {
   mounted() {
     mapboxgl.accessToken = this.ACCESS_TOKEN;
 
-   
     const stadium = [-81.700058, 41.506035];
 
     // Initialize the map at the user's location
@@ -43,8 +42,7 @@ export default {
         steps: 1,
       });
       this.map.addControl(directions, "bottom-left");
-      directions.setOrigin([longitude, latitude])
-
+      directions.setOrigin([longitude, latitude]);
 
       const popup = new mapboxgl.Popup({ offset: 25 }).setText(
         "Factory of sadness"
@@ -135,5 +133,4 @@ export default {
 .mapbox-directions-step-text {
   color: #000000;
 }
-
 </style>
