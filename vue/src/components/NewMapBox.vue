@@ -2,14 +2,6 @@
     <div>
         <button @click="requestLocation">Get Current Location</button>
         <button @click="removeMapMarkers">Remove Markers</button>
-        <form @submit.prevent="search">
-            <input
-                type="text"
-                name="search-location"
-                v-model="query"
-                placeholder="Search"
-            />
-        </form>
         <input 
             type="text" 
             name="location" 
@@ -24,10 +16,12 @@
 import mapboxgl from "mapbox-gl";
 import { MapboxSearchBox } from "@mapbox/search-js-web";
 import * as turf from '@turf/turf';
+import MapboxDirections from "@mapbox/mapbox-gl-directions/dist/mapbox-gl-directions";
 
 // const mapboxgl = require("mapbox-gl/dist/mapbox-gl.js");
 // Retrieve API key from environment variables
 mapboxgl.accessToken = process.env.VUE_APP_MAPBOX_KEY
+
   
 export default {
     data() {
@@ -39,25 +33,23 @@ export default {
                 coordinates: []
             },
             markers: [],
+            searchBox: null,
+            userLocation: {
+                lat: 0,
+                lng: 0,
+            },
         };
     },
     methods: {
         initMap() {
+            
             // Create map object
             this.map = new mapboxgl.Map({
                 container: "map",
                 style: "mapbox://styles/mapbox/streets-v12",
-                center: [-81.700058, 41.506035],
+                center: [this.userLocation.lng, this.userLocation.lat],
                 zoom: 15,
             });
-
-            // Adds basic zoom and rotation control
-            this.map.addControl(new mapboxgl.NavigationControl());
-            this.map.addControl(new mapboxgl.GeolocateControl({
-                positionOptions: { enableHighAccuracy: true },
-                trackUserLocation: true,
-                showUserLocation: true,
-            }));
 
             this.addMapClickListener();
         },
@@ -79,20 +71,17 @@ export default {
             this.markers.push(marker)
         },
         removeMapMarkers() {
-            const oldMarker = document.querySelector("mapboxgl-marker");
-            if (oldMarker) {
-                oldMarker.parentElement.removeChild(oldMarker);
-            }
             this.markers.forEach( (marker) => marker.remove());
             this.markers = [];
         },
         setLocation(lngLat) {
+            // this.removeMapMarkers();
             this.addMapMarker(lngLat);
             this.setLocationCoordinates(lngLat);
         },
         requestLocation() {
             // Request to get the user's current location
-            window.navigator.geolocation.getCurrentPosition( (position) => {
+            navigator.geolocation.getCurrentPosition( (position) => {
 
                 // get the latitude and longitude returned
                 const lat = position.coords.latitude;
@@ -103,62 +92,90 @@ export default {
 
                 // move the ap to show the location
                 this.map.flyTo({ center: [lng, lat], zoom: 15 });
+
+                // Store user location
+                this.userLocation.lat = lat;
+                this.userLocation.lng = lng;
+
+                // Add a marker for the current location
+                this.addMapMarker({ lng, lat });
             })
         },
-        async search() {
-            const response = await fetch(
-                `
-                    https://api.mapbox.com/geocoding/v5/mapbox.places/
-                    ${this.query}.json?access_token=${process.env.VUE_APP_MAPBOX_KEY}
-                `
-            );
-            this.query = "";
-            const responseBody = await response.json();
-
-            // Check we have at least 1 result
-            if (responseBody.features.length == 0) {
-                alert('no results found')
-                return null;
-            }
-
-            const [lng, lat] = responseBody.features[0].center;
-            this.setLocation({ lng, lat });
-            this.map.flyTo({ center: [lng, lat], zoom: 15 });
+        getDirections() {
+            // Set up Mapbox Directions control
+            const directions = new MapboxDirections({
+                accessToken: mapboxgl.accessToken,
+                unit: "imperial",
+                profile: "mapbox/walking",
+            });
+            directions.setOrigin([this.userLocation.lng, this.userLocation.lat]);
+            this.map.addControl(directions, "top-left");
+            
         },
-    },
-    mounted() {
-        this.initMap();
-  
-        let latitude, longitude;
-  
-        // Initialize the map at the user's location
-        navigator.geolocation.getCurrentPosition((position) => {
-            latitude = position.coords.latitude;
-            longitude = position.coords.longitude;
-
-  
-            const point = turf.point([longitude, latitude]);
+        search() {
+            // Set up Mapbox Search Box
+            const point = turf.point([this.userLocation.lng, this.userLocation.lat]);
             const options = { units: 'miles' };
             const radius = 5; // 1 mile
             const bbox = turf.bbox(turf.buffer(point, radius, options));
-  
+
             const searchBox = new MapboxSearchBox();
-            searchBox.accessToken = this.ACCESS_TOKEN;
+            searchBox.accessToken = mapboxgl.accessToken;
             searchBox.options = {
                 language: 'en',
                 country: 'us',
-                bbox: bbox, // Set the bounding box in the search options
+                bbox: bbox,
             };
-  
+
+            // searchBox.on('result', (result) => {
+            //     const { lng, lat } = result.result.geometry.coordinates;
+            //     this.addMapMarker({ lng, lat });
+            //     this.getDirections({ lng, lat });
+            // });
+            
             this.map.addControl(searchBox);
-        });
+        },
+        navigation() {
+            // Adds basic zoom and rotation control
+            this.map.addControl(new mapboxgl.NavigationControl());
+        },
+        geoLocate() {
+            // Adds Location control
+            const geolocateControl = new mapboxgl.GeolocateControl({
+                positionOptions: { 
+                    enableHighAccuracy: true },
+                    trackUserLocation: true,
+                    showUserLocation: true,
+            });
+            geolocateControl.on('geolocate', (e) => {
+                const lat = e.coords.latitude;
+                const lng = e.coords.longitude;
+                this.addMapMarker({ lng, lat });
+            });
+            this.map.addControl(geolocateControl);
+        },
+    },
+    mounted() {
+        navigator.geolocation.getCurrentPosition( (position) => {
+            const lat = position.coords.latitude;
+            const lng = position.coords.longitude;
+            this.userLocation = { lat, lng };
+            this.initMap();
+            this.map.flyTo({ center: [lng, lat], zoom: 15 });
+            this.addMapMarker({ lng, lat });
+
+            this.getDirections();
+            this.search();
+            this.navigation();
+            this.geoLocate();
+        }); 
     },
   };
 </script>
   
 <style scoped>
 #map {
-    width: 100%;
-    height: 500px;
+    width: 100vw;
+    height: 80vh;
 }
 </style>
