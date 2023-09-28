@@ -17,6 +17,7 @@ import mapboxgl from "mapbox-gl";
 import { MapboxSearchBox } from "@mapbox/search-js-web";
 import * as turf from '@turf/turf';
 import MapboxDirections from "@mapbox/mapbox-gl-directions/dist/mapbox-gl-directions";
+import "@mapbox/mapbox-gl-directions/dist/mapbox-gl-directions.css";
 
 // const mapboxgl = require("mapbox-gl/dist/mapbox-gl.js");
 // Retrieve API key from environment variables

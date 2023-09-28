@@ -1,7 +1,7 @@
 <template>
   <div class="container">
     <div class="map-container">
-      <map-with-search />
+      <NewMapBox />
     </div>
     <div class="footer-container">
       <FooterComp />
@@ -10,12 +10,12 @@
 </template>
 
 <script>
-import MapWithSearch from '../components/MapWithSearch.vue';
+import NewMapBox from '../components/NewMapBox.vue';
 import FooterComp from '../components/FooterComp.vue';
 
 export default {
   components: {
-    MapWithSearch,
+    NewMapBox,
     FooterComp
   },
 };
