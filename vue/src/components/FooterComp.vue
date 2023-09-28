@@ -16,6 +16,9 @@
           <img src="../assets/logo/small.png" id="logo" />
         </li>
         <li>
+          <img src="../assets/logo/small.png" id="logo" />
+        </li>
+        <li>
           <a href="#" id="trophy-link">
             <img src="../assets/Footer-Images/trophy.png" id="trophy" />
           </a>
@@ -83,7 +86,21 @@ nav ul {
 
 #footer {
   grid-area: footer;
+<<<<<<< HEAD
   margin: 10px 10%;
+=======
+}
+
+#logo {
+  margin-top: 8px;
+  width: 30px;
+  height: auto;
+}
+
+img {
+  width: 24px;
+  height: 24px;
+>>>>>>> f522bb6f5f84681d37ffeadcae4f411ac7576770
 }
 
 .dropdown-menu {
