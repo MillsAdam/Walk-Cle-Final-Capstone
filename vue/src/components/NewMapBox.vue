@@ -1,13 +1,7 @@
 <template>
     <div>
-        <button @click="requestLocation">Get Current Location</button>
-        <button @click="removeMapMarkers">Remove Markers</button>
-        <input 
-            type="text" 
-            name="location" 
-            :value="location.coordinates" 
-            disabled 
-        />
+        <!-- <button @click="requestLocation">Get Current Location</button>
+        <button @click="removeMapMarkers">Remove Markers</button> -->
         <div id="map"></div>
     </div>
 </template>
@@ -76,7 +70,7 @@ export default {
             this.markers = [];
         },
         setLocation(lngLat) {
-            // this.removeMapMarkers();
+            this.removeMapMarkers();
             this.addMapMarker(lngLat);
             this.setLocationCoordinates(lngLat);
         },
@@ -177,6 +171,6 @@ export default {
 <style scoped>
 #map {
     width: 100vw;
-    height: 80vh;
+    height: 90vh;
 }
 </style>

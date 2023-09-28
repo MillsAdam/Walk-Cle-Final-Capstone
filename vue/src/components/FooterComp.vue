@@ -55,18 +55,19 @@ export default {
 
 <style scoped>
 img {
-  width: 24px;
+  width: 40px;
   height: auto;
 }
 
 .container {
-  width: 100%;
+  width: 100vw;
   background-color: #92b9c5;
   height: auto;
   padding: 10px 0;
   display: flex;
   justify-content: center;
   align-items: center;
+  height: 10vh;
 }
 
 nav ul {
@@ -76,13 +77,13 @@ nav ul {
   display: flex;
   justify-content: space-between;
   align-items: center;
-  width: calc(100vw - 17px);
+  width: 100vw;
 }
 
 nav ul li {
   font-size: 16px;
   text-align: center;
-  margin: 0 50px;
+  margin: 0 70px;
 }
 
 .dropdown-menu {
@@ -100,7 +101,7 @@ nav ul li {
   bottom: auto;
   left: 0;
   right: 0;
-  margin-top: -160px;
+  margin-top: -190px;
 }
 
 .dropdown-option {
