@@ -83,7 +83,7 @@ export default {
 };
 </script>
 
-<style>
+<style scoped>
 #map {
   top: 0;
   bottom: 0;
