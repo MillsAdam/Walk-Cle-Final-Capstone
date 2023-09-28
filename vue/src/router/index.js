@@ -6,6 +6,7 @@ import Logout from '../views/Logout.vue'
 import Register from '../views/Register.vue'
 import store from '../store/index'
 import Google from '../views/Google.vue'
+import NewMapBoxView from '../views/NewMapBoxView.vue'
 
 Vue.use(Router)
 
@@ -58,6 +59,14 @@ const router = new Router({
       path: "/google",
       name:"google",
       component: Google,
+      meta: {
+        requiresAuth: false
+      }
+    },
+    {
+      path: "/newmapbox",
+      name: "new-mapbox",
+      component: NewMapBoxView,
       meta: {
         requiresAuth: false
       }

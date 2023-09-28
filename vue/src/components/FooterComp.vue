@@ -21,16 +21,16 @@
           </a>
         </li>
         <li>
-          <div id="menu-link" @click.prevent="toggleDropdown">
+          <a id="menu-link" @click.prevent="toggleDropdown">
             <img src="../assets/Footer-Images/menu-burger.png" id="menu" />
             <ul v-if="isDropdownOpen" class="dropdown-menu">
-              <div class="dropdown-option"><a href="#">Profile</a></div>
-              <div class="dropdown-option"><a href="#">Settings</a></div>
-              <router-link :to="{ name: 'logout' }">
-                <div class="dropdown-option">Logout</div>
+              <a href="#" class="dropdown-option">Profile</a>
+              <a href="#" class="dropdown-option">Settings</a>
+              <router-link :to="{ name: 'logout' }" class="dropdown-option">
+                <a href="#" class="dropdown-option">Logout</a>
               </router-link>
             </ul>
-          </div>
+          </a>
         </li>
       </ul>
     </nav>
@@ -54,46 +54,35 @@ export default {
 </script>
 
 <style scoped>
-nav ul {
-  margin: 0;
-  padding: 20px 0 0 0;
-  display: flex;
-  justify-content: space-between;
-  align-items: center;
-  width: 100vw;
-}
-
-nav ul li {
-  list-style: none;
-  width: 20%;
-  margin: 0 5px;
-  border-radius: 5px;
-  text-align: center;
-  line-height: 50px;
-  text-decoration: none;
-}
-
-.container {
-  display: grid;
-  grid-template-columns: 1fr;
-  gap: 1%;
-  grid-template-areas: "footer";
-  flex-grow: 1;
-}
-
-#footer {
-  grid-area: footer;
-}
-
-#logo {
-  margin-top: 6px;
-  width: 30px;
+img {
+  width: 24px;
   height: auto;
 }
 
-img {
-  width: 24px;
-  height: 24px;
+.container {
+  width: 100%;
+  background-color: #92b9c5;
+  height: auto;
+  padding: 10px 0;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+
+nav ul {
+  list-style: none;
+  margin: 0;
+  padding: 0;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  width: calc(100vw - 17px);
+}
+
+nav ul li {
+  font-size: 16px;
+  text-align: center;
+  margin: 0 50px;
 }
 
 .dropdown-menu {
@@ -103,7 +92,7 @@ img {
   padding: 0;
   margin: 0;
   position: absolute;
-  background-color: rgba(255, 255, 255, 0.9);
+  background-color: rgba(146, 185, 197, 0.75);
   border-radius: 5px;
   box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
   z-index: 1;
@@ -111,7 +100,7 @@ img {
   bottom: auto;
   left: 0;
   right: 0;
-  margin-top: -280px;
+  margin-top: -160px;
 }
 
 .dropdown-option {
@@ -122,14 +111,17 @@ img {
 
 .dropdown-option:hover {
   background-color: #f0f0f0;
+  width: 100%;
 }
 
 .dropdown-option a {
   text-decoration: none;
   color: #333;
+  font-weight: normal;
 }
 
 .dropdown-option a:hover {
   color: #555;
+  background-color: #f0f0f0;
 }
 </style>
