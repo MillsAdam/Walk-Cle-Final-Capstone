@@ -27,13 +27,19 @@
 
       <!--Google Maps will render directions here-->
       <div id="panel"></div>
+      <FooterComp io="footer"/>
     </div>
   </div>
 </template>
 
 <script>
+import FooterComp from '../components/FooterComp.vue';
+
 export default {
   name: "Map",
+  components: {
+    FooterComp,
+  },
   data() {
     return {
       map: null,
@@ -182,16 +188,22 @@ export default {
   display: grid;
   grid-template-columns: 1fr;
   grid-template-areas:
-     "inputs"
-     "map"
-    "directions";
-    justify-items: center;
-    align-items: center;
+    "inputs"
+    "map"
+    "directions"
+    "footer";
+  justify-items: center;
+  align-items: center;
+  max-width: 90vw;
+}
+
+#footer {
+  grid-area: footer;
 }
 
 #map {
   grid-area: map;
-  width: 100%;
+  width: 90vw;
   height: 600px;
   margin-top: 25px;
   padding-top: 25px;

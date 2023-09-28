@@ -31,10 +31,6 @@ export default {
   grid-area: footer;
 }
 
-#map {
-  width: 100%;
-  height: 90%;
-}
 
 .container {
   display: grid;
@@ -42,6 +38,9 @@ export default {
   grid-template-areas:
     "map"
     "footer";
+  justify-items: center;
+  align-items: center;
+  height: 100vh;
 }
 
 
