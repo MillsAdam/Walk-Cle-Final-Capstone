@@ -75,7 +75,6 @@ export default {
             ];
         },
         addMapMarker(lngLat) {
-            // you can set a colour here to match your website's palette.
             new mapboxgl.Marker({ color: "blue" })
                 .setLngLat(lngLat)
                 .addTo(this.map);
