@@ -16,9 +16,9 @@
           <img src="../assets/logo/small.png" id="logo" />
         </li>
         <li>
-          <a href="#" id="trophy-link">
+          <router-link v-bind:to="{ name: 'rewards' }">
             <img src="../assets/Footer-Images/trophy.png" id="trophy" />
-          </a>
+          </router-link>
         </li>
         <li>
           <a id="menu-link" @click.prevent="toggleDropdown">
