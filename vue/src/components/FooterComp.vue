@@ -16,9 +16,9 @@
           <img src="../assets/logo/small.png" id="logo" />
         </li>
         <li>
-          <router-link v-bind:to="{ name: 'rewards' }">
+          <a href="#" id="trophy-link">
             <img src="../assets/Footer-Images/trophy.png" id="trophy" />
-          </router-link>
+          </a>
         </li>
         <li>
           <a id="menu-link" @click.prevent="toggleDropdown">
@@ -55,14 +55,18 @@ export default {
 
 <style scoped>
 img {
-  width: 40px;
+  width: 24px;
   height: auto;
 }
 
 .container {
   width: 100vw;
   background-color: #92b9c5;
-  padding: 5px 10px; /* Adjust the padding as needed */
+  height: auto;
+  padding: 10px;
+  display: flex;
+  justify-content: center;
+  align-items: center;
 }
 
 nav ul {
@@ -72,7 +76,7 @@ nav ul {
   display: flex;
   justify-content: space-between;
   align-items: center;
-  width: 100vw;
+  width: calc(100vw - 17px);
 }
 
 nav ul li {
@@ -97,7 +101,7 @@ nav ul li {
   bottom: auto;
   left: 0;
   right: 0;
-  margin-top: -190px;
+  margin-top: -160px;
 }
 
 .dropdown-option {

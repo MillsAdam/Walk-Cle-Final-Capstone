@@ -26,6 +26,7 @@ export default {
   display: flex;
   flex-direction: column;
   height: 100%; /* Ensure the container takes at least the full viewport height */
+  width: 100%;
 }
 
 .map-container {
