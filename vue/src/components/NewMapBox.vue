@@ -27,20 +27,18 @@ import * as turf from '@turf/turf';
 
 // const mapboxgl = require("mapbox-gl/dist/mapbox-gl.js");
 // Retrieve API key from environment variables
-// mapboxgl.accessToken = process.env.VUE_APP_MAPBOX_KEY;
+mapboxgl.accessToken = process.env.VUE_APP_MAPBOX_KEY
   
 export default {
     data() {
         return {
-            // make environment variable
-            ACCESS_TOKEN:
-                "pk.eyJ1Ijoid2Fsa2NsZTIxNiIsImEiOiJjbG16MGVvdWkxM2QzMm9wNjNobm9hZGQyIn0.5r382ZeMc0zOhHpiAd9D2A",
             map: null,
             query: "",
             location: {
                 type: "Point",
                 coordinates: []
-            }
+            },
+            markers: [],
         };
     },
     methods: {
@@ -75,18 +73,20 @@ export default {
             ];
         },
         addMapMarker(lngLat) {
-            new mapboxgl.Marker({ color: "blue" })
+            const marker = new mapboxgl.Marker({ color: "blue" })
                 .setLngLat(lngLat)
                 .addTo(this.map);
+            this.markers.push(marker)
         },
         removeMapMarkers() {
             const oldMarker = document.querySelector("mapboxgl-marker");
             if (oldMarker) {
                 oldMarker.parentElement.removeChild(oldMarker);
             }
+            this.markers.forEach( (marker) => marker.remove());
+            this.markers = [];
         },
         setLocation(lngLat) {
-            this.removeMapMarkers();
             this.addMapMarker(lngLat);
             this.setLocationCoordinates(lngLat);
         },
@@ -109,7 +109,7 @@ export default {
             const response = await fetch(
                 `
                     https://api.mapbox.com/geocoding/v5/mapbox.places/
-                    ${this.query}.json?access_token=${this.ACCESS_TOKEN}
+                    ${this.query}.json?access_token=${process.env.VUE_APP_MAPBOX_KEY}
                 `
             );
             this.query = "";
@@ -128,8 +128,6 @@ export default {
     },
     mounted() {
         this.initMap();
-
-        mapboxgl.accessToken = this.ACCESS_TOKEN;
   
         let latitude, longitude;
   
