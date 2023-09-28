@@ -1,6 +1,9 @@
 <template>
-  <div>
+  <div id="grid-container">
     <div id="map"></div>
+    <div id="footer">
+      <FooterComp />
+    </div>
   </div>
 </template>
 
@@ -8,8 +11,12 @@
 import mapboxgl from "mapbox-gl";
 import { MapboxSearchBox } from "@mapbox/search-js-web";
 import * as turf from '@turf/turf';
+import FooterComp from '../components/FooterComp.vue';
 
 export default {
+  components: {
+    FooterComp,
+  },
   data() {
     return {
       // make environment variable
@@ -18,10 +25,6 @@ export default {
     };
   },
   mounted() {
-
-  
-
-
     mapboxgl.accessToken = this.ACCESS_TOKEN;
 
     let latitude, longitude;
@@ -44,23 +47,20 @@ export default {
       );
 
       // Create a marker and add it to the map
-       new mapboxgl.Marker()
-        .setLngLat(stadium)
-        .setPopup(popup)
-        .addTo(this.map);
+      new mapboxgl.Marker().setLngLat(stadium).setPopup(popup).addTo(this.map);
 
       const point = turf.point([longitude, latitude]);
-    const options = { units: 'miles' };
-    const radius = 5; // 1 mile
-    const bbox = turf.bbox(turf.buffer(point, radius, options));
+      const options = { units: 'miles' };
+      const radius = 5; // 1 mile
+      const bbox = turf.bbox(turf.buffer(point, radius, options));
 
-    const searchBox = new MapboxSearchBox();
-    searchBox.accessToken = this.ACCESS_TOKEN;
-    searchBox.options = {
-      language: 'en',
-      country: 'us',
-      bbox: bbox, // Set the bounding box in the search options
-    };
+      const searchBox = new MapboxSearchBox();
+      searchBox.accessToken = this.ACCESS_TOKEN;
+      searchBox.options = {
+        language: 'en',
+        country: 'us',
+        bbox: bbox, // Set the bounding box in the search options
+      };
 
       this.map.addControl(searchBox);
 
@@ -81,26 +81,37 @@ export default {
 </script>
 
 <style scoped>
+#grid-container {
+  display: grid;
+  grid-template-columns: 1fr;
+  grid-template-areas:
+    "map"
+    "footer";
+  justify-items: center;
+  align-items: center;
+}
+
+#footer {
+  grid-area: footer;
+}
+
 #map {
+  grid-area: map;
   top: 0;
   bottom: 0;
   left: 0;
   right: 0;
   width: 100%;
-  height: 90%;
+  height: 85%;
   position: absolute;
   display: flex;
   align-items: center;
+  justify-content: center;
   flex-grow: 1;
-}
-
-#map canvas {
-  width: 80vw;
-  height: 80vh;
 }
 
 .mapboxgl-canvas {
   width: 100%;
-  height: 100%;
+  height: 85%;
 }
 </style>

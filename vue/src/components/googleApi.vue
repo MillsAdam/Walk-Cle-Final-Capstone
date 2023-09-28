@@ -27,7 +27,7 @@
 
       <!--Google Maps will render directions here-->
       <div id="panel"></div>
-      <FooterComp io="footer"/>
+      <FooterComp id="footer"/>
     </div>
   </div>
 </template>
@@ -183,7 +183,7 @@ export default {
 };
 </script>
 
-<style>
+<style scoped>
 #grid-container {
   display: grid;
   grid-template-columns: 1fr;
@@ -194,7 +194,6 @@ export default {
     "footer";
   justify-items: center;
   align-items: center;
-  max-width: 90vw;
 }
 
 #footer {
@@ -203,19 +202,17 @@ export default {
 
 #map {
   grid-area: map;
-  width: 90vw;
+  width: calc(100vw - 17px);
   height: 600px;
-  margin-top: 25px;
-  padding-top: 25px;
-  margin-bottom: 25px;
-  padding-top: 25px;
+  margin: 25px 0;
+  padding: 25px 0;
 }
 
 #input-area {
   grid-area: inputs;
   display: flex;
   flex-direction: column;
-  align-items: center;
+  /* align-items: center; */
 }
 
 #panel {
@@ -225,6 +222,8 @@ export default {
 }
 
 .current-inputs {
-  width: 350px;
+  width: 35vw;
+  /* width: 350px */
 }
+
 </style>

@@ -3,8 +3,7 @@
     <div class="map-container">
       <google-api/>
     </div>
-    <div class="footer-container">
-    </div>
+    <div class="footer-container"></div>
   </div>
 </template>
 
@@ -19,9 +18,5 @@ export default {
 </script>
 
 <style>
-.map-container {
-  grid-area: map;
-}
-
 
 </style>

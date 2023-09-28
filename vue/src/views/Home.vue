@@ -3,45 +3,37 @@
     <div class="map-container">
       <map-with-search />
     </div>
-    <div class="footer-container">
-      <FooterComp />
-    </div>
+    <div class="footer-container"></div>
   </div>
 </template>
 
 <script>
 import MapWithSearch from '../components/MapWithSearch.vue';
-import FooterComp from '../components/FooterComp.vue';
 
 export default {
   components: {
     MapWithSearch,
-    FooterComp
   },
 };
 </script>
+
 <style>
-.map-container {
-  grid-area: map;
-  width: 100%;
-  height: 90vh;
-}
-
-.footer-container {
-  grid-area: footer;
-}
-
-
-.container {
+/* .container {
   display: grid;
   grid-template-columns: 1fr;
+  gap: 10px;
   grid-template-areas:
     "map"
     "footer";
-  justify-items: center;
   align-items: center;
   height: 100vh;
 }
 
+.map-container {
+  grid-area: map;
+}
 
+.footer-container {
+  grid-area: footer;
+} */
 </style>
