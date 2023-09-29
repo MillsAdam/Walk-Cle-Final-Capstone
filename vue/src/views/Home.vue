@@ -31,14 +31,15 @@ export default {
 
 .map-container {
   display: flex;
-  height: 100%;
+  height: 90%;
   width: 100%;
 }
 
 .footer-container {
   background-color: #92b9c5;
-  padding: 10px 0; /* Add padding as needed */
+  /* padding: 0 200px; Add padding as needed */
   text-align: center; /* Center the content horizontally */
-  width: 100vw;
+  width: 100%;
+  height: 10%;
 }
 </style>

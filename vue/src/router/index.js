@@ -8,6 +8,7 @@ import store from '../store/index'
 import Google from '../views/Google.vue'
 import NewMapBoxView from '../views/NewMapBoxView.vue'
 import Rewards from '../views/Rewards.vue'
+import PlacesList from '../components/PlacesList.vue'
 
 Vue.use(Router)
 
@@ -79,7 +80,16 @@ const router = new Router({
       meta: {
         requiresAuth: false
       }
+    },
+    {
+      path: "/places",
+      name: "places",
+      component: PlacesList,
+      meta: {
+        requiresAuth: false
+      }
     }
+    
   ]
 })
 

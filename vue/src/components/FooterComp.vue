@@ -8,7 +8,7 @@
           </router-link>
         </li>
         <li>
-          <router-link v-bind:to="{name: 'google'}">
+          <router-link v-bind:to="{name: 'places'}">
             <img src="../assets/Footer-Images/marker.png" id="marker" />
           </router-link>
         </li>
@@ -26,6 +26,9 @@
             <ul v-if="isDropdownOpen" class="dropdown-menu">
               <a href="#" class="dropdown-option">Profile</a>
               <a href="#" class="dropdown-option">Settings</a>
+              <router-link :to="{ name: 'google' }" class="dropdown-option">
+                <a href="#" class="dropdown-option">Google</a>
+              </router-link>
               <router-link :to="{ name: 'logout' }" class="dropdown-option">
                 <a href="#" class="dropdown-option">Logout</a>
               </router-link>
@@ -55,15 +58,15 @@ export default {
 
 <style scoped>
 img {
-  width: 24px;
+  width: 30px;
   height: auto;
 }
 
 .container {
-  width: 100vw;
+  width: 100%;
   background-color: #92b9c5;
   height: auto;
-  padding: 10px;
+  padding: 0 10px;
   display: flex;
   justify-content: center;
   align-items: center;
@@ -76,7 +79,7 @@ nav ul {
   display: flex;
   justify-content: space-between;
   align-items: center;
-  width: calc(100vw - 17px);
+  width: 100vw;
 }
 
 nav ul li {
@@ -101,7 +104,7 @@ nav ul li {
   bottom: auto;
   left: 0;
   right: 0;
-  margin-top: -160px;
+  margin-top: -23%;
 }
 
 .dropdown-option {
