@@ -1,6 +1,7 @@
 <template>
     <div class="places-list">
         <PlaceCard v-for="candidate in candidates" :key="candidate.place_id" :candidate="candidate" />
+        {{ candidates }}
     </div>
 </template>
 
@@ -18,7 +19,7 @@ export default {
         }
     },
     created() {
-        PlacesService.getPlace().then( (response) => {
+        PlacesService.getGiantEagle().then( (response) => {
             this.candidates = response.data.candidates;
         })
     }

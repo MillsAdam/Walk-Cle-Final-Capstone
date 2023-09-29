@@ -104,7 +104,7 @@ nav ul li {
   bottom: auto;
   left: 0;
   right: 0;
-  margin-top: -23%;
+  margin-top: -230px;
 }
 
 .dropdown-option {
