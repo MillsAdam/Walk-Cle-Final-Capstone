@@ -41,7 +41,7 @@ export default {
       // Create map object
       this.map = new mapboxgl.Map({
         container: "map",
-        style: "mapbox://styles/mapbox/streets-v12",
+        style: "mapbox://styles/walkcle216/cln4qqvn306wt01qi05mi9h14",
         center: [this.userLocation.lng, this.userLocation.lat],
         zoom: 15,
       });
