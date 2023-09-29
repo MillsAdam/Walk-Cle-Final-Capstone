@@ -21,4 +21,16 @@ public class GoogleMapsService {
         ResponseEntity<String> response = template.exchange(url, HttpMethod.GET, new HttpEntity<String>(httpheaders), String.class);
         System.out.println(response.getBody());
     }
+
+    public ResponseEntity<String> getNearbyPlaces() {
+
+        String urlNearbyPlaces = "https://maps.googleapis.com/maps/api/place/nearbysearch/json?location=41.45480,-81.76927&radius=1500&type=restaurant&key=AIzaSyDdqqFWrwPg33CoEoUq8AacD5qyp8gb4ms";
+        RestTemplate template = new RestTemplate();
+        HttpHeaders httpheaders = new HttpHeaders();
+
+        ResponseEntity<String> response = template.exchange(urlNearbyPlaces, HttpMethod.GET, new HttpEntity<String>(httpheaders), String.class);
+        return response;
+
+
+    }
 }

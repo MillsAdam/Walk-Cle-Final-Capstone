@@ -1,6 +1,7 @@
 package com.techelevator.controller;
 
 import com.techelevator.dao.GoogleMapsService;
+import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.CrossOrigin;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
@@ -15,5 +16,10 @@ public class GoogleServicesProxy {
     @RequestMapping(path="/test", method = RequestMethod.GET)
     public void test() {
         googleMapsService.getCandidates();
+    }
+
+    @RequestMapping(path="/nearbyplaces", method = RequestMethod.GET)
+    public ResponseEntity<String> getNearbyPlaces() {
+        return googleMapsService.getNearbyPlaces();
     }
 }

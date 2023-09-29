@@ -14,7 +14,7 @@
 
 <script>
 export default {
-    props: ['candidate']
+    props: ['results']
 }
 </script>
 

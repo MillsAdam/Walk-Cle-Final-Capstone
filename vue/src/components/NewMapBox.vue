@@ -70,21 +70,28 @@ export default {
       this.markers = [];
     },
     setLocation(lngLat) {
-      this.removeMapMarkers();
+      // this.removeMapMarkers();
       this.addMapMarker(lngLat);
       this.setLocationCoordinates(lngLat);
     },
     requestLocation() {
+      // Request to get the user's current location
       navigator.geolocation.getCurrentPosition((position) => {
+        // get the latitude and longitude returned
         const lat = position.coords.latitude;
         const lng = position.coords.longitude;
 
+        // set location data
         this.setLocation({ lng, lat });
+
+        // move the ap to show the location
         this.map.flyTo({ center: [lng, lat], zoom: 15 });
 
+        // Store user location
         this.userLocation.lat = lat;
         this.userLocation.lng = lng;
-        
+
+        // Add a marker for the current location
         this.addMapMarker({ lng, lat });
       });
     },
@@ -112,6 +119,12 @@ export default {
         country: "us",
         bbox: bbox,
       };
+
+      // searchBox.on('result', (result) => {
+      //     const { lng, lat } = result.result.geometry.coordinates;
+      //     this.addMapMarker({ lng, lat });
+      //     this.getDirections({ lng, lat });
+      // });
 
       this.map.addControl(searchBox);
     },
@@ -154,7 +167,7 @@ export default {
 };
 </script>
   
-<style scoped>
+<style>
 #map {
   width: 100vw;
   height: 100%;
