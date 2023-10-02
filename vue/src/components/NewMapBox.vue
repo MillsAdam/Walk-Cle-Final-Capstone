@@ -2,7 +2,23 @@
   <div>
     
     <!-- <input type="text" name="location" :value="location.coordinates" disabled /> -->
-    <button @click="addMarkersAndPopups">dkkdksakdlakd;kasdksakdlkaslkdkas;da</button><button @click="addCoffee">POI</button><button @click="addParks">parks</button><button  @click="removeMarkersAndPopups">Remove Markers</button> <button @click="addBars">BAR</button>
+    <form @submit.prevent="filterNameSearch">
+      <label for="location">Location:</label>
+      <input type="text" id="location" v-model="searchQuery" />
+      <button type="submit">Search</button>
+    </form>
+      <!-- Dropdown Menu -->
+    <form @submit.prevent="filterTypeSearch">
+      <label for="locationType">Location Type:</label>
+      <select id="locationType" v-model="selectedLocationType">
+
+        <option value="all">All</option>
+        <option value="stadiums">Stadiums</option>
+        <option value="parks">Parks</option>
+        <option value="bars">Bars</option>
+      </select>
+      <button type="submit">Search</button>
+    </form>
     <div id="map"></div>
     <!-- <button class="btn" @click="requestLocation">Get Current Location</button>-->
     
@@ -16,11 +32,13 @@ import * as turf from "@turf/turf";
 import MapboxDirections from "@mapbox/mapbox-gl-directions/dist/mapbox-gl-directions";
 import "@mapbox/mapbox-gl-directions/dist/mapbox-gl-directions.css";
 import service from '../services/locationService.js'
+import axios from 'axios';
 // const mapboxgl = require("mapbox-gl/dist/mapbox-gl.js");
 // Retrieve API key from environment variables
 mapboxgl.accessToken = process.env.VUE_APP_MAPBOX_KEY;
 
 export default {
+  
   data() {
     return {
       map: null,
@@ -32,6 +50,7 @@ export default {
       markers: [],
       stadiums: [],
       Bars: [],
+      all: [],
       parks: [],
       poi: [],
       coffee: [],
@@ -45,13 +64,13 @@ export default {
         lat: 0,
         lng: 0,
       },
-      created(){
-        this.stadiums = service.getAllLocations().then(
-          (rep) =>{ 
-            this.stadiums = rep.data;
-          }
-        )
-      }
+      // created(){
+      //   this.stadiums = service.getAllStadiums().then(
+      //     (rep) =>{ 
+      //       this.stadiums = rep.data;
+      //     }
+      //   )
+      // }
     };
   },
   methods: {
@@ -78,7 +97,7 @@ export default {
       ];
     },
     addMapMarker(lngLat) {
-      const marker = new mapboxgl.Marker({ color: "blue" })
+      const marker = new mapboxgl.Marker({ color: "red" })
         .setLngLat(lngLat)
         .addTo(this.map);
       this.markers.push(marker);
@@ -167,90 +186,6 @@ export default {
       this.map.addControl(geolocateControl);
     },
      
-     addSports() {
-      const coordinates = this.stadiums.longitude
-
-      console.log("Coordinates:", coordinates);
-
-      // Remove existing markers and popups
-      this.removeMarkersAndPopups();
-      this.map.flyTo({ center: [-81.6852949, 41.490645], zoom: 15 });
-
-      // Add markers for each coordinate
-      coordinates.forEach((coord, index) => {
-        const marker = new mapboxgl.Marker({ color: "blue" })
-          .setLngLat(coord)
-          .addTo(this.map);
-
-        // Create a popup with custom content
-                const popupContent = `
-              <div>
-                <p>${this.popupTexts[index]}</p>
-                <a href="https://www.google.com" target="_blank">Visit Google</a>
-                <img src="@/assets/logo/small.png" alt="Image" width="200"/>
-                <button id="checkInBtn${index}" class="check-in-button">Check-In</button>
-              </div>
-            `;
-
-        const popup = new mapboxgl.Popup({ offset: 25 })
-          .setHTML(popupContent);
-
-        // Attach the popup to the marker
-        marker.setPopup(popup);
-
-        // Attach a click event handler to the check-in button
-        // const checkInBtn = document.getElementById(`checkInBtn${index}`);
-        // checkInBtn.addEventListener("click", () => {
-        //   // Handle the check-in action here (e.g., show a confirmation dialog)
-        //   alert("Checked in!");
-        // });
-
-        this.stadiums.push(marker);
-      });
-    },
-    
-    addBars() {
-  const coordinates = [
-    [-81.7037735,41.4986853],
-    [-81.6900132,41.4991465],
-    [-81.6991611,41.5005667],
-    [-81.698024,41.492705],
-    [-81.7045326,41.4844029]
-     // Replace with your desired coordinates
-    // Add more coordinates here
-  ];
-
-  // Debugging: Log the coordinates array
-   // Debugging: Log the coordinates array
-      console.log("Coordinates:", coordinates);
-
-      // Remove existing markers and popups
-      this.removeMarkersAndPopups();
-      this.map.flyTo({ center: [-81.6852949, 41.490645], zoom: 15 });
-      // Add markers for each coordinate
-      coordinates.forEach((coord, index) => {
-        const marker = new mapboxgl.Marker({ color: "blue" })
-          .setLngLat(coord)
-          .addTo(this.map);
-
-        // Create a popup with custom content
-        const popupContent = `
-          <div>
-            <p>${this.popupTexts[index]}</p>
-            <img src="https://example.com/your-image-url.jpg" alt="Image" width="200"/>
-            <button id="checkInBtn${index}" class="check-in-button">Check-In</button>
-          </div>
-        `;
-
-        const popup = new mapboxgl.Popup({ offset: 25 })
-          .setHTML(popupContent);
-
-        // Attach the popup to the marker
-        marker.setPopup(popup);
-
-        this.markers.push(marker);
-      });
-    },
     fetchDataFromAPI() {
       // Assuming 'service.getAllLocations()' is an asynchronous function that returns a promise
       service.getAllLocations()
@@ -262,183 +197,155 @@ export default {
           console.error('Error fetching locations:', error);
         });
     },
-   fetchDataFroStadiums() {
-      // Assuming 'service.getAllLocations()' is an asynchronous function that returns a promise
-      service.getAllStadiums()
-        .then((response) => {
-          // Assuming the response contains an array of locations
-          this.stadium = response.data;
-        })
-        .catch((error) => {
-          console.error('Error fetching locations:', error);
-        });
-    },
-   
 
+ filterNameSearch(){
+   // Define the API endpoint based on the selected location type
+  let apiEndpoint = "http://localhost:9000/locations/";
 
+  switch (true) {
+  case this.searchQuery === "stadiums":
+    apiEndpoint += "Stadiums";
+    break;
+  case  this.searchQuery === "parks":
+    apiEndpoint += "Parks";
+    break;
+  case this.searchQuery === "bars":
+    apiEndpoint += "Bars";
+    break;
+  default:
+    // Handle the default case if needed
+    break;
+}
 
+  // Make an API request with the searchQuery and selected location type
+  axios
+    .get(apiEndpoint, {
+      params: { query: this.searchQuery },
+    })
+    .then((response) => {
+      const locations = response.data;
 
-
-
-    addMarkersAndPopups() {
-    this.locations.forEach((location) => {
-      const { locationName, locationLatitude, locationLongitude } = location;
-
-      // Create a marker at the specified location
-      const stadiums = new mapboxgl.Marker({ color: "blue" })
-        .setLngLat([locationLongitude, locationLatitude])
-        .addTo(this.map);
-
-      // Create a popup with custom content
-      const popupContent = `
-        <div>
-          <p>${locationName}</p>
-          <p>${locationLatitude}</p>
-          <button id="checkInBtn${this.locationId}" class="check-in-button">Check-In</button>
-        </div>
-      `;
-
-      const popup = new mapboxgl.Popup({ offset: 25 })
-        .setHTML(popupContent);
-
-      // Attach the popup to the marker
-      stadiums.setPopup(popup);
-    });
-  },
-    addParks() {
-      const coordinates = [
-        [-81.7138946, 41.4991564],
-        [-81.7013211, 41.4966056],
-        // Add more coordinates here
-      ];
-
-      // Debugging: Log the coordinates array
-      console.log("Coordinates:", coordinates);
-
-      // Remove existing markers and popups
+      // Clear existing markers and popups
       this.removeMarkersAndPopups();
-      this.map.flyTo({ center: [-81.6852949, 41.490645], zoom: 15 });
-      // Add markers for each coordinate
-      coordinates.forEach((coord, index) => {
+
+      // Add markers for each location
+      locations.forEach((location) => {
+        const { locationId, locationLatitude, locationLongitude, locationName } = location;
         const marker = new mapboxgl.Marker({ color: "blue" })
-          .setLngLat(coord)
+          .setLngLat([locationLongitude, locationLatitude])
           .addTo(this.map);
 
-        // Get the custom text for this marker
-       const popupContent = `
+        // Create a popup with custom content
+        const popupContent = `
           <div>
-            <p>${this.popupTexts[index]}</p>
-            <img src="https://example.com/your-image-url.jpg" alt="Image" width="200"/>
-            <button id="checkInBtn${index}" class="check-in-button">Check-In</button>
+            <p>${locationName}</p>
+            <p>${locationLongitude} " " ${locationLatitude}</p>
+            <button id="checkInBtn${locationId}" class="check-in-button">Check-In</button>
           </div>
         `;
-
+        //41.497257, -81.698738
+        this.map.flyTo({ center: [-81.698738, 41.497257], zoom: 14 });
         const popup = new mapboxgl.Popup({ offset: 25 })
           .setHTML(popupContent);
 
         // Attach the popup to the marker
         marker.setPopup(popup);
 
-        this.parks.push(marker);
+        // Add the marker to the corresponding category array
+        if (this.selectedLocationType === "stadiums") {
+          this.stadiums.push(marker);
+        } else if (this.selectedLocationType === "parks") {
+          this.parks.push(marker);
+        } else if (this.selectedLocationType === "bars") {
+          this.Bars.push(marker);
+        }else if (this.selectedLocationType === "all"){
+          this.all.push(marker)}
         
       });
-    },
-    addPOI() {
-  const coordinates = [
-    [-81.6852949,41.4958921],
-    [-81.6995481,41.5060535],
-    [-81.6880574,41.4965474],
-     [-81.7037735,41.4986853],
-    [-81.6900132,41.4991465],
-    [-81.6991611,41.5005667],
-    [-81.698024,41.492705],
-    [-81.7045326,41.4844029],
-    [-81.7138946,41.4991564],
-    [-81.7013211,41.4966056],
+    })
+    .catch((error) => {
+      console.error("Error fetching locations:", error);
+    });
+  },
+filterTypeSearch(){
+   // Define the API endpoint based on the selected location type
+  let apiEndpoint = "http://localhost:9000/locations/";
 
-     // Replace with your desired coordinates
-    // Add more coordinates here
-  ];
+  switch (true) {
+  case this.selectedLocationType === "stadiums" :
+    apiEndpoint += "Stadiums";
+    break;
+  case this.selectedLocationType === "parks" :
+    apiEndpoint += "Parks";
+    break;
+  case this.selectedLocationType === "bars" :
+    apiEndpoint += "Bars";
+    break;
+  default:
+    // Handle the default case if needed
+    break;
+}
 
- console.log("Coordinates:", coordinates);
+  // Make an API request with the searchQuery and selected location type
+  axios
+    .get(apiEndpoint, {
+      params: { query: this.searchQuery },
+    })
+    .then((response) => {
+      const locations = response.data;
 
-      // Remove existing markers and popups
+      // Clear existing markers and popups
       this.removeMarkersAndPopups();
-      this.map.flyTo({ center: [-81.6852949, 41.490645], zoom: 15 });
-      // Add markers for each coordinate
-      coordinates.forEach((coord, index) => {
+
+      // Add markers for each location
+      locations.forEach((location) => {
+        const { locationId, locationLatitude, locationLongitude, locationName } = location;
         const marker = new mapboxgl.Marker({ color: "blue" })
-          .setLngLat(coord)
+          .setLngLat([locationLongitude, locationLatitude])
           .addTo(this.map);
 
-        // Get the custom text for this marker
+        // Create a popup with custom content
         const popupContent = `
           <div>
-            <p>${this.popupTexts[index]}</p>
-            <img src="https://example.com/your-image-url.jpg" alt="Image" width="200"/>
-            <button id="checkInBtn${index}" class="check-in-button">Check-In</button>
+            <p>${locationName}</p>
+            <p>${locationLongitude} " " ${locationLatitude}</p>
+            <button id="checkInBtn${locationId}" class="check-in-button">Check-In</button>
           </div>
         `;
-
+        //41.497257, -81.698738
+        this.map.flyTo({ center: [-81.698738, 41.497257], zoom: 14 });
         const popup = new mapboxgl.Popup({ offset: 25 })
           .setHTML(popupContent);
 
         // Attach the popup to the marker
         marker.setPopup(popup);
 
-        this.markers.push(marker);
+        // Add the marker to the corresponding category array
+        if (this.selectedLocationType === "stadiums") {
+          this.stadiums.push(marker);
+        } else if (this.selectedLocationType === "parks") {
+          this.parks.push(marker);
+        } else if (this.selectedLocationType === "bars") {
+          this.Bars.push(marker);
+        }else if (this.selectedLocationType === "all"){
+          this.all.push(marker)}
+        
       });
-    },
-    addCoffee() {
-  const coordinates = [
-    [-81.7147703,41.4801392],
-    [-81.7089057,41.4841798],
-    [-81.6895095,41.4798316],
-    [-81.6909685,41.5007669],
-    [-81.7041667,41.4841667],
-    [-81.6746106,41.5040237],
-    [-81.6882329,41.5015518],
-    [-81.7104054,41.489191],
-    [-81.6994828,41.4993248],
+    })
+    .catch((error) => {
+      console.error("Error fetching locations:", error);
+    });
+  },
 
-     // Replace with your desired coordinates
-    // Add more coordinates here
-  ];
-
- console.log("Coordinates:", coordinates);
-
-      // Remove existing markers and popups
-      this.removeMarkersAndPopups();
-      this.map.flyTo({ center: [-81.6852949, 41.490645], zoom: 15 });
-      // Add markers for each coordinate
-      coordinates.forEach((coord, index) => {
-        const marker = new mapboxgl.Marker({ color: "blue" })
-          .setLngLat(coord)
-          .addTo(this.map);
-
-        // Get the custom text for this marker
-        const popupContent = `
-          <div>
-            <p>${this.popupTexts[index]}</p>
-            <img src="https://example.com/your-image-url.jpg" alt="Image" width="200"/>
-            <button id="checkInBtn${index}" class="check-in-button">Check-In</button>
-          </div>
-        `;
-
-        const popup = new mapboxgl.Popup({ offset: 25 })
-          .setHTML(popupContent);
-
-        // Attach the popup to the marker
-        marker.setPopup(popup);
-
-        this.coffee.push(marker);
-      });
-    },
+ 
+ 
     removeMarkersAndPopups() {
   this.markers.forEach((marker) => {
     marker.remove();
     
   });
+  this.all.forEach((poi) =>
+  poi.remove())
   this.stadiums.forEach((poi) =>{
     poi.remove();
   })
@@ -459,6 +366,7 @@ export default {
   this.poi = [];
   this.markers = [];
   this.coffee = [];
+  this.all =[];
   
     },
   },
@@ -476,6 +384,7 @@ export default {
       this.navigation();
       this.geoLocate();
       this.fetchDataFromAPI(); 
+      this.fetchDataFroStadiums()
     });
   },
 };
