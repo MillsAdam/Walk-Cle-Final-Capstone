@@ -2,7 +2,7 @@
   <div>
     
     <!-- <input type="text" name="location" :value="location.coordinates" disabled /> -->
-    <button @click="addSports">dkkdksakdlakd;kasdksakdlkaslkdkas;da</button><button @click="addCoffee">POI</button><button @click="addParks">parks</button><button  @click="removeMarkersAndPopups">Remove Markers</button> <button @click="addBars">BAR</button>
+    <button @click="addMarkersAndPopups">dkkdksakdlakd;kasdksakdlkaslkdkas;da</button><button @click="addCoffee">POI</button><button @click="addParks">parks</button><button  @click="removeMarkersAndPopups">Remove Markers</button> <button @click="addBars">BAR</button>
     <div id="map"></div>
     <!-- <button class="btn" @click="requestLocation">Get Current Location</button>-->
     
@@ -15,7 +15,7 @@ import { MapboxSearchBox } from "@mapbox/search-js-web";
 import * as turf from "@turf/turf";
 import MapboxDirections from "@mapbox/mapbox-gl-directions/dist/mapbox-gl-directions";
 import "@mapbox/mapbox-gl-directions/dist/mapbox-gl-directions.css";
-
+import service from '../services/locationService.js'
 // const mapboxgl = require("mapbox-gl/dist/mapbox-gl.js");
 // Retrieve API key from environment variables
 mapboxgl.accessToken = process.env.VUE_APP_MAPBOX_KEY;
@@ -45,6 +45,13 @@ export default {
         lat: 0,
         lng: 0,
       },
+      created(){
+        this.stadiums = service.getAllLocations().then(
+          (rep) =>{ 
+            this.stadiums = rep.data;
+          }
+        )
+      }
     };
   },
   methods: {
@@ -161,12 +168,7 @@ export default {
     },
      
      addSports() {
-      const coordinates = [
-        [-81.6852949, 41.4958921],
-        [-81.6995481, 41.5060535],
-        [-81.6880574, 41.4965474],
-        // Add more coordinates here
-      ];
+      const coordinates = this.stadiums.longitude
 
       console.log("Coordinates:", coordinates);
 
@@ -206,6 +208,7 @@ export default {
         this.stadiums.push(marker);
       });
     },
+    
     addBars() {
   const coordinates = [
     [-81.7037735,41.4986853],
@@ -248,6 +251,60 @@ export default {
         this.markers.push(marker);
       });
     },
+    fetchDataFromAPI() {
+      // Assuming 'service.getAllLocations()' is an asynchronous function that returns a promise
+      service.getAllLocations()
+        .then((response) => {
+          // Assuming the response contains an array of locations
+          this.locations = response.data;
+        })
+        .catch((error) => {
+          console.error('Error fetching locations:', error);
+        });
+    },
+   fetchDataFroStadiums() {
+      // Assuming 'service.getAllLocations()' is an asynchronous function that returns a promise
+      service.getAllStadiums()
+        .then((response) => {
+          // Assuming the response contains an array of locations
+          this.stadium = response.data;
+        })
+        .catch((error) => {
+          console.error('Error fetching locations:', error);
+        });
+    },
+   
+
+
+
+
+
+
+    addMarkersAndPopups() {
+    this.locations.forEach((location) => {
+      const { locationName, locationLatitude, locationLongitude } = location;
+
+      // Create a marker at the specified location
+      const stadiums = new mapboxgl.Marker({ color: "blue" })
+        .setLngLat([locationLongitude, locationLatitude])
+        .addTo(this.map);
+
+      // Create a popup with custom content
+      const popupContent = `
+        <div>
+          <p>${locationName}</p>
+          <p>${locationLatitude}</p>
+          <button id="checkInBtn${this.locationId}" class="check-in-button">Check-In</button>
+        </div>
+      `;
+
+      const popup = new mapboxgl.Popup({ offset: 25 })
+        .setHTML(popupContent);
+
+      // Attach the popup to the marker
+      stadiums.setPopup(popup);
+    });
+  },
     addParks() {
       const coordinates = [
         [-81.7138946, 41.4991564],
@@ -283,6 +340,7 @@ export default {
         marker.setPopup(popup);
 
         this.parks.push(marker);
+        
       });
     },
     addPOI() {
@@ -417,6 +475,7 @@ export default {
       this.search();
       this.navigation();
       this.geoLocate();
+      this.fetchDataFromAPI(); 
     });
   },
 };
