@@ -10,7 +10,11 @@ import com.techelevator.exception.DaoException;
 public class JdbcRewardsDao implements RewardsDao {
 
     private final JdbcTemplate jdbcTemplate;
-    public JdbcRewardsDao(JdbcTemplate jdbcTemplate) {this. jdbcTemplate = jdbcTemplate;}
+
+    public JdbcRewardsDao(JdbcTemplate jdbcTemplate) {
+        this.jdbcTemplate = jdbcTemplate;
+
+    }
 
     //see amount of bars visited
     @Override
@@ -35,16 +39,16 @@ public class JdbcRewardsDao implements RewardsDao {
         int amountOfParksVisited = 0;
         String sql = "SELECT amount_parks_visited FROM rewards";
 
-            try {
-                SqlRowSet results = jdbcTemplate.queryForRowSet(sql);
-                if (results.next()) {
-                    amountOfParksVisited = results.getInt("amount_parks_visited");
-                }
-            } catch (CannotGetJdbcConnectionException e) {
-                throw new DaoException("Unable to connect to server or database", e);
+        try {
+            SqlRowSet results = jdbcTemplate.queryForRowSet(sql);
+            if (results.next()) {
+                amountOfParksVisited = results.getInt("amount_parks_visited");
             }
-            return amountOfParksVisited;
+        } catch (CannotGetJdbcConnectionException e) {
+            throw new DaoException("Unable to connect to server or database", e);
         }
+        return amountOfParksVisited;
+    }
 
     //see amount of stadiums visited
     @Override
@@ -90,7 +94,7 @@ public class JdbcRewardsDao implements RewardsDao {
                 allBarsVisited = results.getBoolean("all_bars_visited");
             }
         } catch (CannotGetJdbcConnectionException e) {
-        throw new DaoException("Unable to connect to server or database", e);
+            throw new DaoException("Unable to connect to server or database", e);
         }
         return allBarsVisited;
     }
@@ -126,6 +130,7 @@ public class JdbcRewardsDao implements RewardsDao {
         }
         return allStadiumsVisited;
     }
+
     //check if all locations visited
     @Override
     public boolean allPlacesVisited() {
@@ -149,6 +154,7 @@ public class JdbcRewardsDao implements RewardsDao {
         return allPlacesVisited;
     }
 
+    @Override
     public void updateBarCheckIn() {
         String sql = "UPDATE rewards SET amount_bars_visited = amount_bars_visited + 1";
 
@@ -159,6 +165,7 @@ public class JdbcRewardsDao implements RewardsDao {
         }
     }
 
+    @Override
     public void updateParkCheckIn() {
         String sql = "UPDATE rewards SET amount_park_visited = amount_parks_visited + 1";
 
@@ -169,6 +176,7 @@ public class JdbcRewardsDao implements RewardsDao {
         }
     }
 
+    @Override
     public void updateStadiumCheckIn() {
         String sql = "UPDATE rewards SET amount_stadium_visited = amount_stadium_visited + 1";
 
@@ -179,8 +187,31 @@ public class JdbcRewardsDao implements RewardsDao {
         }
     }
 
+    @Override
     public void updateAllBarsVisited() {
         String sql = "UPDATE rewards SET all_bars_visited = true WHERE amount_bars_visited >= 5";
+
+        try {
+            jdbcTemplate.update(sql);
+        } catch (CannotGetJdbcConnectionException e) {
+            throw new DaoException("Unable to connect to server or database", e);
+        }
+    }
+
+    @Override
+    public void updateAllParksVisited() {
+        String sql = "UPDATE rewards SET all_parks_visited = true WHERE amount_parks_visited >= 2";
+
+        try {
+            jdbcTemplate.update(sql);
+        } catch (CannotGetJdbcConnectionException e) {
+            throw new DaoException("Unable to connect to server or database", e);
+        }
+    }
+
+    @Override
+    public void updateAllStadiumsVisited() {
+        String sql = "UPDATE rewards SET all_stadiums_visited = true WHERE amount_stadiums_visited >= 3";
 
         try {
             jdbcTemplate.update(sql);
