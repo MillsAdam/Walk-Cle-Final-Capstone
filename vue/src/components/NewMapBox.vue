@@ -2,7 +2,7 @@
   <div>
     
     <!-- <input type="text" name="location" :value="location.coordinates" disabled /> -->
-    <button @click="addSports">dkkdksakdlakd;kasdksakdlkaslkdkas;da</button><button @click="addPOI">POI</button><button @click="addParks">parks</button><button  @click="removeMarkersAndPopups">Remove Markers</button> <button @click="addBars">BAR</button>
+    <button @click="addSports">dkkdksakdlakd;kasdksakdlkaslkdkas;da</button><button @click="addCoffee">POI</button><button @click="addParks">parks</button><button  @click="removeMarkersAndPopups">Remove Markers</button> <button @click="addBars">BAR</button>
     <div id="map"></div>
     <!-- <button class="btn" @click="requestLocation">Get Current Location</button>-->
     
@@ -34,8 +34,9 @@ export default {
       Bars: [],
       parks: [],
       poi: [],
+      coffee: [],
        popupTexts: [
-        "This is the first marker's custom text.",
+        "This is the first marker's www.google.com",
         "This is the second marker's custom text.",
         // Add more custom texts here, one for each marker
       ],
@@ -180,13 +181,14 @@ export default {
           .addTo(this.map);
 
         // Create a popup with custom content
-        const popupContent = `
-          <div>
-            <p>${this.popupTexts[index]}</p>
-            <img src="https://example.com/your-image-url.jpg" alt="Image" width="200"/>
-            <button id="checkInBtn${index}" class="check-in-button">Check-In</button>
-          </div>
-        `;
+                const popupContent = `
+              <div>
+                <p>${this.popupTexts[index]}</p>
+                <a href="https://www.google.com" target="_blank">Visit Google</a>
+                <img src="@/assets/logo/small.png" alt="Image" width="200"/>
+                <button id="checkInBtn${index}" class="check-in-button">Check-In</button>
+              </div>
+            `;
 
         const popup = new mapboxgl.Popup({ offset: 25 })
           .setHTML(popupContent);
@@ -195,11 +197,11 @@ export default {
         marker.setPopup(popup);
 
         // Attach a click event handler to the check-in button
-        const checkInBtn = document.getElementById(`checkInBtn${index}`);
-        checkInBtn.addEventListener("click", () => {
-          // Handle the check-in action here (e.g., show a confirmation dialog)
-          alert("Checked in!");
-        });
+        // const checkInBtn = document.getElementById(`checkInBtn${index}`);
+        // checkInBtn.addEventListener("click", () => {
+        //   // Handle the check-in action here (e.g., show a confirmation dialog)
+        //   alert("Checked in!");
+        // });
 
         this.stadiums.push(marker);
       });
@@ -329,6 +331,51 @@ export default {
         this.markers.push(marker);
       });
     },
+    addCoffee() {
+  const coordinates = [
+    [-81.7147703,41.4801392],
+    [-81.7089057,41.4841798],
+    [-81.6895095,41.4798316],
+    [-81.6909685,41.5007669],
+    [-81.7041667,41.4841667],
+    [-81.6746106,41.5040237],
+    [-81.6882329,41.5015518],
+    [-81.7104054,41.489191],
+    [-81.6994828,41.4993248],
+
+     // Replace with your desired coordinates
+    // Add more coordinates here
+  ];
+
+ console.log("Coordinates:", coordinates);
+
+      // Remove existing markers and popups
+      this.removeMarkersAndPopups();
+      this.map.flyTo({ center: [-81.6852949, 41.490645], zoom: 15 });
+      // Add markers for each coordinate
+      coordinates.forEach((coord, index) => {
+        const marker = new mapboxgl.Marker({ color: "blue" })
+          .setLngLat(coord)
+          .addTo(this.map);
+
+        // Get the custom text for this marker
+        const popupContent = `
+          <div>
+            <p>${this.popupTexts[index]}</p>
+            <img src="https://example.com/your-image-url.jpg" alt="Image" width="200"/>
+            <button id="checkInBtn${index}" class="check-in-button">Check-In</button>
+          </div>
+        `;
+
+        const popup = new mapboxgl.Popup({ offset: 25 })
+          .setHTML(popupContent);
+
+        // Attach the popup to the marker
+        marker.setPopup(popup);
+
+        this.coffee.push(marker);
+      });
+    },
     removeMarkersAndPopups() {
   this.markers.forEach((marker) => {
     marker.remove();
@@ -346,10 +393,14 @@ export default {
   this.poi.forEach((poi) =>{
     poi.remove();
   })
+  this.coffee.forEach((poi) =>{
+    poi.remove();
+  })
   this.parks = [];
   this.Bars = [];
   this.poi = [];
   this.markers = [];
+  this.coffee = [];
   
     },
   },

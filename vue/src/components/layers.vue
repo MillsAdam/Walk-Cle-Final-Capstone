@@ -1,33 +1,29 @@
 <template>
   <div>
-    <button id="btn" @click="addParks">Add Markers</button><button id="btn" @click="addBars">Add Markers</button><button id="btn" @click="addSports">Add Markers</button><button id="btn" @click="addPOI">Add Markers</button>
+    <button id="btn" @click="addSports">Add Markers</button>
     <div id="map"></div>
   </div>
 </template>
 
 <script>
 import mapboxgl from "mapbox-gl";
+import MapboxDirections from "@mapbox/mapbox-gl-directions/dist/mapbox-gl-directions";
+import "@mapbox/mapbox-gl-directions/dist/mapbox-gl-directions.css";
 
-mapboxgl.accessToke = process.env.VUE_APP_MAPBOX_KEY;
+mapboxgl.accessToken = process.env.VUE_APP_MAPBOX_KEY;
 export default {
-  components: {
-    
-  },
-
   data() {
     return {
       map: null,
-      markers: [],
+      stadiums: [],
       popupTexts: [
-        "This is the first marker's custom text.",
-        "This is the second marker's custom text.",
-        // Add more custom texts here, one for each marker
+        "Stadium 1",
+        "Stadium 2",
+        "Stadium 3",
+        // Add more popup texts here
       ],
-      parkText: [
-        "1",
-        '2',
-      ],
-
+      currentPopupIndex: null,
+      popups: [],
     };
   },
   methods: {
@@ -40,173 +36,67 @@ export default {
         zoom: 15,
       });
     },
-    addParks() {
+     getDirections() {
+      // Set up Mapbox Directions control
+      const directions = new MapboxDirections({
+        accessToken: mapboxgl.accessToken,
+        unit: "imperial",
+        profile: "mapbox/walking",
+      });
+      directions.setOrigin();
+      this.map.addControl(directions, "bottom-left");
+    },
+    navigation() {
+      // Adds basic zoom and rotation control
+      this.map.addControl(new mapboxgl.NavigationControl());
+    },
+    requestLocation() {
+      // Request to get the user's current location
+      navigator.geolocation.getCurrentPosition((position) => {
+        // get the latitude and longitude returned
+        const lat = position.coords.latitude;
+        const lng = position.coords.longitude;
+
+        // set location data
+        this.setLocation({ lng, lat });
+
+        // move the ap to show the location
+        this.map.flyTo({ center: [lng, lat], zoom: 15 });
+
+        // Store user location
+        this.userLocation.lat = lat;
+        this.userLocation.lng = lng;
+
+        // Add a marker for the current location
+        this.addMapMarker({ lng, lat });
+      });
+    },
+
+    addSports() {
       const coordinates = [
-        [-81.7138946, 41.4991564],
-        [-81.7013211, 41.4966056],
+        [-81.6852949, 41.4958921],
+        [-81.6995481, 41.5060535],
+        [-81.6880574, 41.4965474],
         // Add more coordinates here
       ];
 
-      // Debugging: Log the coordinates array
       console.log("Coordinates:", coordinates);
 
       // Remove existing markers and popups
       this.removeMarkersAndPopups();
+      this.map.flyTo({ center: [-81.6852949, 41.490645], zoom: 15 });
 
-      // Add markers for each coordinate
+      // Add markers and popups for each coordinate
       coordinates.forEach((coord, index) => {
         const marker = new mapboxgl.Marker({ color: "blue" })
           .setLngLat(coord)
           .addTo(this.map);
-
-        // Get the custom text for this marker
-        const popupText = this.parkText[index];
 
         // Create a popup with custom content
         const popupContent = `
           <div>
-            <p>${popupText}</p>
-            <img src="https://example.com/your-image-url.jpg" alt="Image" width="200">
-          </div>
-        `;
-
-        const popup = new mapboxgl.Popup({ offset: 25 })
-          .setHTML(popupContent);
-
-        // Attach the popup to the marker
-        marker.setPopup(popup);
-
-        this.markers.push(marker);
-      });
-    },
-
-  removeMarkersAndPopups() {
-  this.markers.forEach((marker) => {
-    marker.remove();
-  });
-  this.markers = [];
-    },
-
-addBars() {
-  const coordinates = [
-    [-81.7037735,41.4986853],
-    [-81.6900132,41.4991465],
-    [-81.6991611,41.5005667],
-    [-81.698024,41.492705],
-    [-81.7045326,41.4844029]
-     // Replace with your desired coordinates
-    // Add more coordinates here
-  ];
-
-  // Debugging: Log the coordinates array
-   // Debugging: Log the coordinates array
-      console.log("Coordinates:", coordinates);
-
-      // Remove existing markers and popups
-      this.removeMarkersAndPopups();
-
-      // Add markers for each coordinate
-      coordinates.forEach((coord, index) => {
-        const marker = new mapboxgl.Marker({ color: "blue" })
-          .setLngLat(coord)
-          .addTo(this.map);
-
-        // Get the custom text for this marker
-        const popupText = this.popupTexts[index];
-
-        // Create a popup with custom content
-        const popupContent = `
-          <div>
-            <p>${popupText}</p>
-            <img src="https://example.com/your-image-url.jpg" alt="Image" width="200">
-          </div>
-        `;
-
-        const popup = new mapboxgl.Popup({ offset: 25 })
-          .setHTML(popupContent);
-
-        // Attach the popup to the marker
-        marker.setPopup(popup);
-
-        this.markers.push(marker);
-      });
-    },
-    addSports() {
-  const coordinates = [
-    [-81.6852949,41.4958921],
-    [-81.6995481,41.5060535],
-    [-81.6880574,41.4965474],
-     // Replace with your desired coordinates
-    // Add more coordinates here
-  ];
-
-  console.log("Coordinates:", coordinates);
-
-      // Remove existing markers and popups
-      this.removeMarkersAndPopups();
-
-      // Add markers for each coordinate
-      coordinates.forEach((coord, index) => {
-        const marker = new mapboxgl.Marker({ color: "blue" })
-          .setLngLat(coord)
-          .addTo(this.map);
-
-        // Get the custom text for this marker
-        const popupText = this.popupTexts[index];
-
-        // Create a popup with custom content
-          const popupContent = `
-          <div>
-            <p>${popupText}</p>
+            <p>${this.popupTexts[index]}</p>
             <img src="https://example.com/your-image-url.jpg" alt="Image" width="200"/>
-    </div>
-        `;
-
-        const popup = new mapboxgl.Popup({ offset: 25 })
-          .setHTML(popupContent);
-
-        // Attach the popup to the marker
-        marker.setPopup(popup);
-
-        this.markers.push(marker);
-      });
-    },
-    addPOI() {
-  const coordinates = [
-    [-81.6852949,41.4958921],
-    [-81.6995481,41.5060535],
-    [-81.6880574,41.4965474],
-     [-81.7037735,41.4986853],
-    [-81.6900132,41.4991465],
-    [-81.6991611,41.5005667],
-    [-81.698024,41.492705],
-    [-81.7045326,41.4844029],
-    [-81.7138946,41.4991564],
-    [-81.7013211,41.4966056],
-
-     // Replace with your desired coordinates
-    // Add more coordinates here
-  ];
-
- console.log("Coordinates:", coordinates);
-
-      // Remove existing markers and popups
-      this.removeMarkersAndPopups();
-
-      // Add markers for each coordinate
-      coordinates.forEach((coord, index) => {
-        const marker = new mapboxgl.Marker({ color: "blue" })
-          .setLngLat(coord)
-          .addTo(this.map);
-
-        // Get the custom text for this marker
-        const popupText = this.popupTexts[index];
-
-        // Create a popup with custom content
-        const popupContent = `
-          <div>
-            <p>${popupText}</p>
-            <img src="https://example.com/your-image-url.jpg" alt="Image" width="200">
           </div>
         `;
 
@@ -215,26 +105,49 @@ addBars() {
 
         // Attach the popup to the marker
         marker.setPopup(popup);
+        this.popups.push(popup);
 
-        this.markers.push(marker);
+        // Attach a click event handler to the marker
+        marker.getElement().addEventListener("click", () => {
+          // Close the currently open popup if there is one
+          if (this.currentPopupIndex !== null) {
+            this.popups[this.currentPopupIndex].remove();
+          }
+          // Open the clicked popup
+          popup.addTo(this.map);
+          this.currentPopupIndex = index;
+        });
+
+        this.stadiums.push(marker);
       });
     },
-    removeMarkers() {
-      // Remove existing markers from the map and clear the markers array
-      this.markers.forEach((marker) => marker.remove());
-      this.markers = [];
+    removeMarkersAndPopups() {
+      this.stadiums.forEach((marker) => {
+        marker.remove();
+      });
+      this.stadiums = [];
+      this.popups.forEach((popup) => {
+        popup.remove();
+      });
+      this.popups = [];
+      this.currentPopupIndex = null;
     },
+   
+    
   },
   mounted() {
     this.initMap();
+    this.getDirections();
+    this.navigation();
+    this.requestLocation();
   },
 };
 </script>
 
 <style scoped>
 #map {
-    height: 90vh;
-    width: 100vw;
+  height: 80vh;
+  width: 100vw;
 }
 .btn {
   float: inline-end;
