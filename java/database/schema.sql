@@ -41,8 +41,8 @@ CREATE TABLE rewards (
     all_parks_visited boolean DEFAULT false,
     all_stadiums_visited boolean DEFAULT false,
     all_places_visited boolean DEFAULT false,
-    CONSTRAINT PK_rewards_id PRIMARY KEY (rewards_id)
-    CONSTRAINT FK_location_type_id FOREIGN KEY (location_type_id) REFERENCES locationType (location_type_id)
+    CONSTRAINT PK_rewards_id PRIMARY KEY (rewards_id),
+    CONSTRAINT FK_location_type_id FOREIGN KEY (location_type_id) REFERENCES locationType (location_type_id),
     CONSTRAINT FK_user_id FOREIGN KEY (user_id) REFERENCES users (user_id)
 );
 
