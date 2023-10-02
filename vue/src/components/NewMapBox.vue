@@ -1,14 +1,14 @@
 <template>
-  <div>
-    
-    <!-- <input type="text" name="location" :value="location.coordinates" disabled /> -->
-    <form @submit.prevent="filterNameSearch">
+  <div class="container">
+    <div class="form-search">
+          <!-- <input type="text" name="location" :value="location.coordinates" disabled /> -->
+    <form @submit.prevent="filterNameSearch" class="name-search">
       <label for="location">Location:</label>
       <input type="text" id="location" v-model="searchQuery" />
       <button type="submit">Search</button>
     </form>
       <!-- Dropdown Menu -->
-    <form @submit.prevent="filterTypeSearch">
+    <form @submit.prevent="filterTypeSearch" class="type-search">
       <label for="locationType">Location Type:</label>
       <select id="locationType" v-model="selectedLocationType">
 
@@ -19,6 +19,8 @@
       </select>
       <button type="submit">Search</button>
     </form>
+    </div>
+
     <div id="map"></div>
     <!-- <button class="btn" @click="requestLocation">Get Current Location</button>-->
     
@@ -392,8 +394,25 @@ filterTypeSearch(){
   
 <style scoped>
 #map {
+  grid-area: map;
   width: 100vw;
   height: 100%;
+}
+
+.name-search {
+  grid-area: name
+}
+
+.type-search {
+  grid-area: type
+}
+
+.container {
+  display: flex;
+  grid-template-columns: 1fr 1fr;
+  grid-template-areas:
+    "name search"
+    "map map";
 }
 
 .mapbox-directions-instructions {
