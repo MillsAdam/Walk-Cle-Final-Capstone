@@ -216,7 +216,6 @@ export default {
     // Handle the default case if needed
     break;
 }
-
   // Make an API request with the searchQuery and selected location type
   axios
     .get(apiEndpoint, {
@@ -282,14 +281,14 @@ filterTypeSearch(){
     apiEndpoint += "Bars";
     break;
   default:
-    // Handle the default case if needed
+
     break;
 }
 
   // Make an API request with the searchQuery and selected location type
   axios
     .get(apiEndpoint, {
-      params: { query: this.searchQuery },
+      params: { query: this.selectedLocationType },
     })
     .then((response) => {
       const locations = response.data;
