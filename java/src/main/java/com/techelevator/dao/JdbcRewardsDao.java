@@ -13,9 +13,7 @@ public class JdbcRewardsDao implements RewardsDao {
 
     public JdbcRewardsDao(JdbcTemplate jdbcTemplate) {
         this.jdbcTemplate = jdbcTemplate;
-
     }
-
     //see amount of bars visited
     @Override
     public int getAmountOfBarsVisited() {
