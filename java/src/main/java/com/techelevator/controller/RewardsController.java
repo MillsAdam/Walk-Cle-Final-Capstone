@@ -18,20 +18,46 @@ public class RewardsController {
         this.rewardsDao = rewardsDao;
     }
 
-    @RequestMapping(path="/bars", method = RequestMethod.GET)
+    @RequestMapping(path="/barsvisited", method = RequestMethod.GET)
     public Integer getBarCount() {
         return rewardsDao.getAmountOfBarsVisited();
     }
 
-    @RequestMapping(path="/parks", method = RequestMethod.GET)
+    @RequestMapping(path="/parksvisited", method = RequestMethod.GET)
     public Integer getParkCount() {
         return rewardsDao.getAmountOfParksVisited();
     }
 
-    @RequestMapping(path="/stadiums", method = RequestMethod.GET)
+    @RequestMapping(path="/stadiumsvisited", method = RequestMethod.GET)
     public Integer getStadiumCount() {
         return rewardsDao.getAmountOfStadiumsVisited();
     }
+
+    @RequestMapping(path="/placesvisited", method = RequestMethod.GET)
+    public Integer getPlacesCount() {
+        return rewardsDao.getAmountOfTotalPlacesVisited();
+    }
+
+    @RequestMapping(path="/bars", method = RequestMethod.GET)
+    public boolean getAllBarsReward() {
+        return rewardsDao.allBarsVisited();
+    }
+
+    @RequestMapping(path="/parks", method = RequestMethod.GET)
+    public boolean getAllParksReward() {
+        return rewardsDao.allParksVisited();
+    }
+
+    @RequestMapping(path="/bars", method = RequestMethod.GET)
+    public boolean getAllStadiumsReward() {
+        return rewardsDao.allBarsVisited();
+    }
+
+    @RequestMapping(path="/places", method = RequestMethod.GET)
+    public boolean getAllPlacesReward() {
+        return rewardsDao.allPlacesVisited();
+    }
+
 
 
 

@@ -18,5 +18,7 @@ INSERT INTO location (location_type_id, location_name, location_latitude, locati
 INSERT INTO location (location_type_id, location_name, location_latitude, location_longitude) VALUES (3, 'Cleveland Browns Stadium', 41.5060535, -81.6995481);
 INSERT INTO location (location_type_id, location_name, location_latitude, location_longitude) VALUES (3, 'Rocket Mortgage FieldHouse', 41.4965474, -81.6880574);
 
+INSERT INTO rewards (amount_bars_visited, amount_parks_visited, amount_stadiums, all_bars_visited, all_parks_visited, all_stadiums_visited, all_places_visited) VALUES (0, 0, 0, false, false, false, false);
+
 
 COMMIT TRANSACTION;

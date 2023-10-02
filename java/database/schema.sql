@@ -33,7 +33,7 @@ CREATE TABLE location (
 CREATE TABLE rewards (
     rewards_id SERIAL,
     user_id SERIAL,
-    location_type_id int NOT NULL,
+    location_type_name varchar(50) NOT NULL UNIQUE,
     amount_bars_visited int NOT NULL,
     amount_parks_visited int NOT NULL,
     amount_stadiums_visited int NOT NULL,
@@ -42,7 +42,7 @@ CREATE TABLE rewards (
     all_stadiums_visited boolean DEFAULT false,
     all_places_visited boolean DEFAULT false,
     CONSTRAINT PK_rewards_id PRIMARY KEY (rewards_id),
-    CONSTRAINT FK_location_type_id FOREIGN KEY (location_type_id) REFERENCES locationType (location_type_id),
+    CONSTRAINT FK_location_type_name FOREIGN KEY (location_type_name) REFERENCES locationType (location_type_name),
     CONSTRAINT FK_user_id FOREIGN KEY (user_id) REFERENCES users (user_id)
 );
 
