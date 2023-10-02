@@ -1,6 +1,6 @@
-package com.techelevator.controller;
+package com.techelevator.proxy;
 
-import com.techelevator.dao.GoogleMapsService;
+import com.techelevator.service.GoogleMapsService;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.CrossOrigin;
 import org.springframework.web.bind.annotation.RequestMapping;
