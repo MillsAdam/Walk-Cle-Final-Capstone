@@ -48,9 +48,9 @@ public class RewardsController {
         return rewardsDao.allParksVisited();
     }
 
-    @RequestMapping(path="/bars", method = RequestMethod.GET)
+    @RequestMapping(path="/stadiums", method = RequestMethod.GET)
     public boolean getAllStadiumsReward() {
-        return rewardsDao.allBarsVisited();
+        return rewardsDao.allStadiumsVisited();
     }
 
     @RequestMapping(path="/places", method = RequestMethod.GET)

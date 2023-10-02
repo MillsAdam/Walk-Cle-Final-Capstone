@@ -33,7 +33,7 @@ CREATE TABLE location (
 CREATE TABLE rewards (
     rewards_id SERIAL,
     user_id SERIAL,
-    location_type_name varchar(50) NOT NULL UNIQUE,
+    location_type_name varchar(50),
     amount_bars_visited int NOT NULL,
     amount_parks_visited int NOT NULL,
     amount_stadiums_visited int NOT NULL,

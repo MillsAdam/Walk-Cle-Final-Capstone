@@ -105,7 +105,7 @@ public class JdbcRewardsDao implements RewardsDao {
         try {
             SqlRowSet results = jdbcTemplate.queryForRowSet(sql);
             while (results.next()) {
-                allParksVisited = results.getBoolean("all_bars_visited");
+                allParksVisited = results.getBoolean("all_parks_visited");
             }
         } catch (CannotGetJdbcConnectionException e) {
             throw new DaoException("Unable to connect to server or database", e);
@@ -121,7 +121,7 @@ public class JdbcRewardsDao implements RewardsDao {
         try {
             SqlRowSet results = jdbcTemplate.queryForRowSet(sql);
             while (results.next()) {
-                allStadiumsVisited = results.getBoolean("all_bars_visited");
+                allStadiumsVisited = results.getBoolean("all_stadiums_visited");
             }
         } catch (CannotGetJdbcConnectionException e) {
             throw new DaoException("Unable to connect to server or database", e);
