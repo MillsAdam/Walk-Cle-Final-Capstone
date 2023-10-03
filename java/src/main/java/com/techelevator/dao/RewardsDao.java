@@ -9,17 +9,7 @@ public interface RewardsDao {
     boolean allParksVisited();
     boolean allStadiumsVisited();
     boolean allPlacesVisited();
-
-
-    void updateBarCheckIn();
-
-    void updateParkCheckIn();
-
-    void updateStadiumCheckIn();
-
-    void updateAllBarsVisited();
-
-    void updateAllParksVisited();
-
-    void updateAllStadiumsVisited();
+    Integer updateBarCheckIn();
+    Integer updateParkCheckIn();
+    Integer updateStadiumCheckIn();
 }
