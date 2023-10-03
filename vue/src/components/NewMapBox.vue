@@ -29,8 +29,8 @@
   
 <script>
 import mapboxgl from "mapbox-gl";
-import { MapboxSearchBox } from "@mapbox/search-js-web";
-import * as turf from "@turf/turf";
+// import { MapboxSearchBox } from "@mapbox/search-js-web";
+// import * as turf from "@turf/turf";
 import MapboxDirections from "@mapbox/mapbox-gl-directions/dist/mapbox-gl-directions";
 import "@mapbox/mapbox-gl-directions/dist/mapbox-gl-directions.css";
 import service from '../services/locationService.js'
@@ -80,7 +80,7 @@ export default {
       // Create map object
       this.map = new mapboxgl.Map({
         container: "map",
-        style: "mapbox://styles/walkcle216/cln4qqvn306wt01qi05mi9h14",
+        style: 'mapbox://styles/mapbox/streets-v12',
         center: [this.userLocation.lng, this.userLocation.lat],
         zoom: 15,
       });
@@ -144,33 +144,30 @@ export default {
       directions.setOrigin([this.userLocation.lng, this.userLocation.lat]);
       this.map.addControl(directions, "bottom-left");
     },
-    search() {
-      // Set up Mapbox Search Box
-      const point = turf.point([this.userLocation.lng, this.userLocation.lat]);
-      const options = { units: "miles" };
-      const radius = 5; // 1 mile
-      const bbox = turf.bbox(turf.buffer(point, radius, options));
+    // search() {
+    //   // Set up Mapbox Search Box
+    //   const point = turf.point([this.userLocation.lng, this.userLocation.lat]);
+    //   const options = { units: "miles" };
+    //   const radius = 5; // 1 mile
+    //   const bbox = turf.bbox(turf.buffer(point, radius, options));
 
-      const searchBox = new MapboxSearchBox();
-      searchBox.accessToken = mapboxgl.accessToken;
-      searchBox.options = {
-        language: "en",
-        country: "us",
-        bbox: bbox,
-      };
+    //   const searchBox = new MapboxSearchBox();
+    //   searchBox.accessToken = mapboxgl.accessToken;
+    //   searchBox.options = {
+    //     language: "en",
+    //     country: "us",
+    //     bbox: bbox,
+    //   };
 
-      // searchBox.on('result', (result) => {
-      //     const { lng, lat } = result.result.geometry.coordinates;
-      //     this.addMapMarker({ lng, lat });
-      //     this.getDirections({ lng, lat });
-      // });
+    //   // searchBox.on('result', (result) => {
+    //   //     const { lng, lat } = result.result.geometry.coordinates;
+    //   //     this.addMapMarker({ lng, lat });
+    //   //     this.getDirections({ lng, lat });
+    //   // });
 
-      this.map.addControl(searchBox);
-    },
-    navigation() {
-      // Adds basic zoom and rotation control
-      this.map.addControl(new mapboxgl.NavigationControl());
-    },
+    //   this.map.addControl(searchBox);
+    // },
+    
     geoLocate() {
       // Adds Location control
       const geolocateControl = new mapboxgl.GeolocateControl({
@@ -320,6 +317,7 @@ filterTypeSearch(){
 
         // Attach the popup to the marker
         marker.setPopup(popup);
+        
 
         // Add the marker to the corresponding category array
         if (this.selectedLocationType === "stadiums") {
@@ -337,9 +335,6 @@ filterTypeSearch(){
       console.error("Error fetching locations:", error);
     });
   },
-
- 
- 
     removeMarkersAndPopups() {
   this.markers.forEach((marker) => {
     marker.remove();
@@ -415,28 +410,34 @@ filterTypeSearch(){
 }
 
 .mapbox-directions-instructions {
-  border: 1px solid #ccc;
-  border-radius: 5px;
-  padding: 10px;
+  
   font-family: "Urbanist", sans-serif;
   font-size: 14px;
   color: #333;
 }
 
 .mapbox-directions-route-summary {
+  height: 1vh;
+  width: 1vw;
   font-family: "Urbanist", sans-serif;
 }
 
 .mapbox-directions-step {
+  height: 1vh;
+  width: 1vw;
   margin-bottom: 5px;
 }
 
 .mapbox-directions-step-number {
+  height: 1vh;
+  width: 1vw;
   font-weight: bold;
   color: #0078d4;
 }
 
 .mapbox-directions-step-text {
+  height: 1vh;
+  width: 1vw;
   color: #000000;
 }
 </style>
