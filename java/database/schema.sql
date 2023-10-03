@@ -1,10 +1,9 @@
 BEGIN TRANSACTION;
 
 DROP TABLE IF EXISTS users;
-DROP TABLE IF EXISTS locationType;
+DROP TABLE IF EXISTS location_type;
 DROP TABLE IF EXISTS location;
 DROP TABLE IF EXISTS rewards;
-DROP TABLE IF EXISTS locationData;
 
 CREATE TABLE users (
 	user_id SERIAL,
@@ -14,7 +13,7 @@ CREATE TABLE users (
 	CONSTRAINT PK_user PRIMARY KEY (user_id)
 );
 
-CREATE TABLE locationType (
+CREATE TABLE location_type (
     location_type_id SERIAL,
     location_type_name varchar(50) NOT NULL UNIQUE,
     CONSTRAINT PK_location_type PRIMARY KEY (location_type_id)
@@ -22,12 +21,18 @@ CREATE TABLE locationType (
 
 CREATE TABLE location (
     location_id SERIAL,
-    location_type_id int NOT NULL,
+    location_type_name varchar (50) NOT NULL,
     location_name varchar (50) NOT NULL UNIQUE,
     location_latitude double precision NOT NULL,
     location_longitude double precision NOT NULL,
+    location_description varchar (200),
+    location_days varchar (200),
+    location_opening_times varchar (200),
+    location_closing_times varchar (200),
+    location_img_url varchar (200),
+    location_info_url varchar (200),
     CONSTRAINT PK_location PRIMARY KEY (location_id),
-    CONSTRAINT FK_location_type FOREIGN KEY (location_type_id) REFERENCES locationType (location_type_id)
+    CONSTRAINT FK_location_type_name FOREIGN KEY (location_type_name) REFERENCES location_type (location_type_name)
 );
 
 CREATE TABLE rewards (
@@ -44,6 +49,7 @@ CREATE TABLE rewards (
     CONSTRAINT FK_username FOREIGN KEY (username) REFERENCES users (username)
 );
 
+<<<<<<< HEAD
 CREATE TABLE locationData (
     location_data_id SERIAL,
     location_data_name varchar (50) NOT NULL UNIQUE,
@@ -58,6 +64,8 @@ CREATE TABLE locationData (
     CONSTRAINT FK_location_data_name FOREIGN KEY (location_data_name) REFERENCES location (location_name)
 );
 
+=======
+>>>>>>> f499cb16ccb21390bdceff9c714fcea045f29a0f
 
 
 COMMIT TRANSACTION;
