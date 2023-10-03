@@ -1,11 +1,8 @@
 <template>
   <div class="container">
-      <div class="rewards-container">
-          <RewardsComp />
-      </div>
-      <div class="footer-container">
-          <FooterComp />
-      </div>
+    <h1 id="title">CLE-WARDS</h1>
+    <RewardsComp id="rewards-comp"/>
+    <FooterComp id="footer-comp"/>
   </div>
 </template>
 
@@ -26,20 +23,31 @@ export default {
 .container {
   display: flex;
   flex-direction: column;
-  width: 100%;
   height: 100%;
+  width: 100%;
 }
 
-.rewards-container {
-  flex-grow: 1;
-  width: 100%;
-  height: 90%;
-}
-
-.footer-container {
-  background-color: #92b9c5;
-  text-align: center;
-  width: 100%;
+#title {
+  display: flex;
+  justify-content: center;
+  align-items: center;
   height: 10%;
+  width: 100%;
+}
+
+#rewards-comp {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  height: 80%;
+  width: 100%;
+}
+
+#footer-comp {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  height: 10%;
+  width: 100%;
 }
 </style>
