@@ -44,7 +44,7 @@ export default {
         }
     },
     created() {
-        locationService.getLocations().then( response => {
+        locationService.getAllLocations().then( response => {
             this.locations = response.data;
         });
         locationService.getLocationTypes().then (response => {
