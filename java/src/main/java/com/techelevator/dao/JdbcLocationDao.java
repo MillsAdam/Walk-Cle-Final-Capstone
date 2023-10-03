@@ -91,8 +91,6 @@ public class JdbcLocationDao implements LocationDao {
     public List<Location> getAllLocationsByLocationTypeName (String locationTypeName) {
         String sql = "SELECT * " +
                 "FROM location " +
-                "JOIN location_type " +
-                "ON location.location_type_name = locationType.location_type_name " +
                 "WHERE location_type_name = ?;";
 
         List<Location> resultList = new ArrayList<>();
