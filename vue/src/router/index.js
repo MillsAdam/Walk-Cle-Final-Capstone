@@ -11,6 +11,8 @@ import Rewards from '../views/Rewards.vue'
 import PlacesList from '../components/PlacesList.vue'
 import addlayers from '../views/addlayers.vue'
 import AddPointView from '../views/addPointView.vue'
+import Locations from '../views/Locations.vue'
+
 Vue.use(Router)
 
 /**
@@ -105,7 +107,16 @@ const router = new Router({
       meta: {
         requiresAuth: true
       }
+    },
+    {
+      path: "/locations",
+      name: "locations",
+      component: Locations,
+      meta: {
+        requiresAuth: false
+      }
     }
+    
     
   ]
 })
