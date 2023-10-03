@@ -1,18 +1,80 @@
 <template>
     <div class="container">
         <div class="trophies">
-            <img src="../assets/trophies/defender.jpg" id="defender" />
-            <img src="../assets/trophies/bar.jpg" id="bar" />
-            <img src="../assets/trophies/sport.jpg" id="sport" />
-            <img src="../assets/trophies/tree.jpg" id="tree" />
+            <img v-if="trophyStatus.defender" src="../assets/trophies/defender.jpg" id="defender" />
+            <img v-else src="../assets/trophies/defenderbw.jpg" id="defender" />
+            <img v-if="trophyStatus.bar" src="../assets/trophies/bar.jpg" id="bar" />
+            <img v-else src="../assets/trophies/barbw.jpg" id="bar" />
+            <img v-if="trophyStatus.sport" src="../assets/trophies/sport.jpg" id="sport" />
+            <img v-else src="../assets/trophies/sportbw.jpg" id="sport" />
+            <img v-if="trophyStatus.tree" src="../assets/trophies/tree.jpg" id="tree" />
+            <img v-else src="../assets/trophies/treebw.jpg" id="tree" />
         </div>
     </div>
 </template>
 
 <script>
+import axios from 'axios';
 
 export default {
-name: 'rewards-comp',
+    name: 'rewards-comp',
+    data() {
+        return {
+            trophyStatus: {
+                defender: false,
+                bar: false,
+                sport: false,
+                tree: false,
+            }
+        };
+    },
+    created() {
+        this.checkTrophyStatus();
+    },
+    methods: {
+        checkTrophyStatus() {
+            this.checkDefenderTrophyStatus();
+            this.checkBarTrophyStatus();
+            this.checkParkTrophyStatus();
+            this.checkStadiumTrophyStatus();
+        },
+        checkDefenderTrophyStatus() {
+            axios.get('http://localhost:9000/rewards/allPlacesVisited')
+                .then(response => {
+                    this.$set(this.trophyStatus, 'defender', response.data);
+                })
+                .catch(error => {
+                    console.error(error);
+                });
+        },
+        checkBarTrophyStatus() {
+            axios.get('http://localhost:9000/rewards/allBarsVisited')
+                .then(response => {
+                    this.$set(this.trophyStatus, 'bar', response.data);
+                })
+                .catch(error => {
+                    console.error(error);
+                });
+        },
+        checkParkTrophyStatus() {
+            axios.get('http://localhost:9000/rewards/allParksVisited')
+                .then(response => {
+                    this.$set(this.trophyStatus, 'sport', response.data);
+                })
+                .catch(error => {
+                    console.error(error);
+                });
+        },
+        checkStadiumTrophyStatus() {
+            axios.get('http://localhost:9000/rewards/allStadiumsVisited')
+                .then(response => {
+                    this.$set(this.trophyStatus, 'tree', response.data);
+                })
+                .catch(error => {
+                    console.error(error);
+                });
+        }
+    }
 }
 </script>
 
