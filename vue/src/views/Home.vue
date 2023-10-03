@@ -1,11 +1,7 @@
 <template>
   <div class="container">
-    <div class="map-container">
       <NewMapBox id="new-map-box"/>
-    </div>
-    <div class="footer-container">
       <FooterComp id="footer-comp"/>
-    </div>
   </div>
 </template>
 
@@ -31,18 +27,19 @@ export default {
   width: 100%;
 }
 
-.map-container {
+#new-map-box {
   display: flex;
+  justify-content: center;
+  align-items: center;
   height: 90%;
   width: 100%;
 }
 
-
-.footer-container {
-  background-color: #92b9c5;
-  /* padding: 0 200px; Add padding as needed */
-  text-align: center;
-  width: 100%;
+#footer-comp {
+  display: flex;
+  justify-content: center;
+  align-items: center;
   height: 10%;
+  width: 100%;
 }
 </style>
