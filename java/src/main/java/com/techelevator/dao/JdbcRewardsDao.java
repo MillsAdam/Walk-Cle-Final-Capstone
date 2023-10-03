@@ -15,12 +15,12 @@ public class JdbcRewardsDao implements RewardsDao {
         this.jdbcTemplate = jdbcTemplate;
     }
     @Override
-    public int getAmountOfBarsVisited() {
+    public int getAmountOfBarsVisited(String username) {
         int amountOfBarsVisited = 0;
-        String sql = "SELECT amount_bars_visited FROM rewards";
+        String sql = "SELECT amount_bars_visited FROM rewards WHERE username = ?;";
 
         try {
-            SqlRowSet results = jdbcTemplate.queryForRowSet(sql);
+            SqlRowSet results = jdbcTemplate.queryForRowSet(sql, username);
             if (results.next()) {
                 amountOfBarsVisited = results.getInt("amount_bars_visited");
             }
@@ -31,12 +31,12 @@ public class JdbcRewardsDao implements RewardsDao {
     }
 
     @Override
-    public int getAmountOfParksVisited() {
+    public int getAmountOfParksVisited(String username) {
         int amountOfParksVisited = 0;
-        String sql = "SELECT amount_parks_visited FROM rewards";
+        String sql = "SELECT amount_parks_visited FROM rewards WHERE username = ?;";
 
         try {
-            SqlRowSet results = jdbcTemplate.queryForRowSet(sql);
+            SqlRowSet results = jdbcTemplate.queryForRowSet(sql, username);
             if (results.next()) {
                 amountOfParksVisited = results.getInt("amount_parks_visited");
             }
@@ -47,12 +47,12 @@ public class JdbcRewardsDao implements RewardsDao {
     }
 
     @Override
-    public int getAmountOfStadiumsVisited() {
+    public int getAmountOfStadiumsVisited(String username) {
         int amountOfStadiumsVisited = 0;
-        String sql = "SELECT amount_stadiums_visited FROM rewards";
+        String sql = "SELECT amount_stadiums_visited FROM rewards WHERE username = ?;";
 
         try {
-            SqlRowSet results = jdbcTemplate.queryForRowSet(sql);
+            SqlRowSet results = jdbcTemplate.queryForRowSet(sql, username);
             if (results.next()) {
                 amountOfStadiumsVisited = results.getInt("amount_stadiums_visited");
             }
@@ -63,11 +63,11 @@ public class JdbcRewardsDao implements RewardsDao {
     }
 
     @Override
-    public int getAmountOfTotalPlacesVisited() {
+    public int getAmountOfTotalPlacesVisited(String username) {
         int amountOfTotalPlacesVisited = 0;
-        String sql = "SELECT SUM(amount_bars_visited + amount_parks_visited + amount_stadiums_visited) AS total_places_visited FROM rewards";
+        String sql = "SELECT SUM(amount_bars_visited + amount_parks_visited + amount_stadiums_visited) AS total_places_visited FROM rewards WHERE username = ?;";
         try {
-            SqlRowSet results = jdbcTemplate.queryForRowSet(sql);
+            SqlRowSet results = jdbcTemplate.queryForRowSet(sql, username);
             if (results.next()) {
                 amountOfTotalPlacesVisited = results.getInt("total_places_visited"); // Use "total_places_visited" here
             }
@@ -78,11 +78,11 @@ public class JdbcRewardsDao implements RewardsDao {
     }
 
     @Override
-    public boolean allBarsVisited() {
-        String sql = "SELECT amount_bars_visited FROM rewards";
+    public boolean allBarsVisited(String username) {
+        String sql = "SELECT amount_bars_visited FROM rewards WHERE username = ?;";
 
         try {
-            SqlRowSet results = jdbcTemplate.queryForRowSet(sql);
+            SqlRowSet results = jdbcTemplate.queryForRowSet(sql, username);
             if (results.next()) {
                 int amountBarsVisited = results.getInt("amount_bars_visited");
                 boolean allBarsVisited = (amountBarsVisited >= 5);
@@ -98,11 +98,11 @@ public class JdbcRewardsDao implements RewardsDao {
     }
 
     @Override
-    public boolean allParksVisited() {
-        String sql = "SELECT amount_parks_visited FROM rewards";
+    public boolean allParksVisited(String username) {
+        String sql = "SELECT amount_parks_visited FROM rewards WHERE username = ?;";
 
         try {
-            SqlRowSet results = jdbcTemplate.queryForRowSet(sql);
+            SqlRowSet results = jdbcTemplate.queryForRowSet(sql, username);
             if (results.next()) {
                 int amountParksVisited = results.getInt("amount_parks_visited");
                 boolean allParksVisited = (amountParksVisited >= 2);
@@ -118,11 +118,11 @@ public class JdbcRewardsDao implements RewardsDao {
     }
 
     @Override
-    public boolean allStadiumsVisited() {
-        String sql = "SELECT amount_stadiums_visited FROM rewards";
+    public boolean allStadiumsVisited(String username) {
+        String sql = "SELECT amount_stadiums_visited FROM rewards WHERE username = ?;";
 
         try {
-            SqlRowSet results = jdbcTemplate.queryForRowSet(sql);
+            SqlRowSet results = jdbcTemplate.queryForRowSet(sql, username);
             if (results.next()) {
                 int amountStadiumsVisited = results.getInt("amount_stadiums_visited");
                 boolean allStadiumsVisited = (amountStadiumsVisited >= 3);
@@ -138,11 +138,11 @@ public class JdbcRewardsDao implements RewardsDao {
     }
 
     @Override
-    public boolean allPlacesVisited() {
+    public boolean allPlacesVisited(String username) {
         boolean allPlacesVisited = false;
-        String sql = "SELECT all_bars_visited, all_parks_visited, all_stadiums_visited FROM rewards";
+        String sql = "SELECT all_bars_visited, all_parks_visited, all_stadiums_visited FROM rewards WHERE username = ?;";
         try {
-            SqlRowSet results = jdbcTemplate.queryForRowSet(sql);
+            SqlRowSet results = jdbcTemplate.queryForRowSet(sql, username);
             if (results.next()) {
                 boolean allBarsVisited = results.getBoolean("all_bars_visited");
                 boolean allParksVisited = results.getBoolean("all_parks_visited");
@@ -163,11 +163,11 @@ public class JdbcRewardsDao implements RewardsDao {
     }
 
     @Override
-    public Integer updateBarCheckIn() {
-        String sql = "UPDATE rewards SET amount_bars_visited = amount_bars_visited + 1";
+    public Integer updateBarCheckIn(String username) {
+        String sql = "UPDATE rewards SET amount_bars_visited = amount_bars_visited + 1 WHERE username = ?;";
 
         try {
-            jdbcTemplate.update(sql);
+            jdbcTemplate.update(sql, username);
         } catch (CannotGetJdbcConnectionException e) {
             throw new DaoException("Unable to connect to server or database", e);
         }
@@ -175,11 +175,11 @@ public class JdbcRewardsDao implements RewardsDao {
     }
 
     @Override
-    public Integer updateParkCheckIn() {
-        String sql = "UPDATE rewards SET amount_parks_visited = amount_parks_visited + 1";
+    public Integer updateParkCheckIn(String username) {
+        String sql = "UPDATE rewards SET amount_parks_visited = amount_parks_visited + 1 WHERE username = ?;";
 
         try {
-            jdbcTemplate.update(sql);
+            jdbcTemplate.update(sql, username);
         } catch (CannotGetJdbcConnectionException e) {
             throw new DaoException("Unable to connect to server or database", e);
         }
@@ -187,11 +187,11 @@ public class JdbcRewardsDao implements RewardsDao {
     }
 
     @Override
-    public Integer updateStadiumCheckIn() {
-        String sql = "UPDATE rewards SET amount_stadiums_visited = amount_stadiums_visited + 1";
+    public Integer updateStadiumCheckIn(String username) {
+        String sql = "UPDATE rewards SET amount_stadiums_visited = amount_stadiums_visited + 1 WHERE username = ?;";
 
         try {
-            jdbcTemplate.update(sql);
+            jdbcTemplate.update(sql, username);
         } catch (CannotGetJdbcConnectionException e) {
             throw new DaoException("Unable to connect to server or database", e);
         }
@@ -199,7 +199,7 @@ public class JdbcRewardsDao implements RewardsDao {
     }
 
     private void updateAllBarsVisited(boolean value) {
-        String updateSql = "UPDATE rewards SET all_bars_visited = ?";
+        String updateSql = "UPDATE rewards SET all_bars_visited = ?;";
         try {
             jdbcTemplate.update(updateSql, value);
         } catch (CannotGetJdbcConnectionException e) {
@@ -208,7 +208,7 @@ public class JdbcRewardsDao implements RewardsDao {
     }
 
     private void updateAllParksVisited(boolean value) {
-        String updateSql = "UPDATE rewards SET all_parks_visited = ?";
+        String updateSql = "UPDATE rewards SET all_parks_visited = ?;";
         try {
             jdbcTemplate.update(updateSql, value);
         } catch (CannotGetJdbcConnectionException e) {
@@ -217,7 +217,7 @@ public class JdbcRewardsDao implements RewardsDao {
     }
 
     private void updateAllStadiumsVisited(boolean value) {
-        String updateSql = "UPDATE rewards SET all_stadiums_visited = ?";
+        String updateSql = "UPDATE rewards SET all_stadiums_visited = ?;";
         try {
             jdbcTemplate.update(updateSql, value);
         } catch (CannotGetJdbcConnectionException e) {
