@@ -49,7 +49,7 @@ public class LocationController {
     }
 
     @ResponseStatus(HttpStatus.CREATED)
-    @RequestMapping(method=RequestMethod.POST)
+    @RequestMapping(path="/createlocation", method=RequestMethod.POST)
     public Location createLocation(@Valid @RequestBody Location location) {
         return locationDao.createLocation(location);
     }
