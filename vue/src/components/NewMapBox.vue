@@ -149,16 +149,19 @@ export default {
   const removeDirectionsButton = document.createElement("button");
   removeDirectionsButton.textContent = "X";
   removeDirectionsButton.className = "remove-directions-button";
-
+    const showDirectionsButton = document.createElement("button");
+    showDirectionsButton.textContent = "Show Directions";
+    showDirectionsButton.className = "show-directions-button";
   // Add a click event listener to remove directions when the button is clicked
-  removeDirectionsButton.addEventListener("click", () => {
-    this.map.removeControl(directions); // Remove directions control
-    removeDirectionsButton.style.display = "none"; // Hide the button
-  });
+  showDirectionsButton.addEventListener("click", () => {
+  this.map.addControl(directions, "bottom-left"); // Re-add directions control
+  removeDirectionsButton.style.display = "block"; // Show the "X" button
+  showDirectionsButton.style.display = "none"; // Hide the "Show Directions" button
+});
 
   // Add the "X" button to the Mapbox Directions control
   const directionsContainer = document.querySelector(".mapboxgl-ctrl-directions"); // Find the Directions control container
-  directionsContainer.appendChild(removeDirectionsButton);
+  directionsContainer.appendChild(showDirectionsButton);
 },
     // search() {
     //   // Set up Mapbox Search Box
@@ -288,19 +291,34 @@ export default {
           <p><strong>Days of Operation:</strong> ${daysOfWeek}</p>
           <p><strong>Opening Times:</strong> ${openingTimes}</p>
           <p><strong>Closing Times:</strong> ${closingTimes}</p>
-          <img src="${locationDataImgUrl}" alt="${locationDataName}" width="300" height="200">
+          <img src="${locationDataImgUrl}" alt="${locationDataName}" width="200" height="200">
           <a href="${locationDataInfoUrl}" target="_blank">More Info</a>
           <button id="checkInBtn${locationDataName}" class="check-in-button">Check-In</button>
         </div>
       `;
+const popup = new mapboxgl.Popup({ offset: 25 })
+          .setHTML(popupContent);
 
-      // Populate the popup content with the dynamically fetched data
-      marker.popup.setHTML(popupContent);
+        // Attach the popup to the marker
+        marker.setPopup(popup);
+        if (this.searchQuery === "progressive field" || this.searchQuery ===  "cleveland browns stadium"
+        || this.searchQuery === "rocket mortgage fieldhouse" ) {
+          this.stadiums.push(marker);
+        } else if (this.searchQuery === "wendy park" || this.searchQuery === "steelers park") {
+          this.parks.push(marker);
+        } else if (this.searchQuery === "collision bend brewing company" || this.searchQuery === "butcher and the brewer"
+        || this.searchQuery === "brewDog cleveland outpost" || this.searchQuery === "barley house" || this.searchQuery === "great lakes brewing") {
+          this.Bars.push(marker);
+        }else if (this.searchQuery === "all"){
+          this.all.push(marker)}
+
+          
     })
     .catch((error) => {
       console.error("Error fetching location data:", error);
       // Handle the error and set an appropriate message in the popup
     });
+    this.searchQuery = '';
 },
  filterNameSearch(){
    // Define the API endpoint based on the selected location type

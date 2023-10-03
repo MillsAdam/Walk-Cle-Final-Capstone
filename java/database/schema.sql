@@ -53,6 +53,7 @@ CREATE TABLE locationData (
     location_data_closing_times varchar (200) NOT NULL,
     location_data_img_url varchar (200),
     location_data_info_url varchar (200),
+
     CONSTRAINT PK_location_data PRIMARY KEY (location_data_id),
     CONSTRAINT FK_location_data_name FOREIGN KEY (location_data_name) REFERENCES location (location_name)
 );
