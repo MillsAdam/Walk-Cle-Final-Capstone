@@ -2,7 +2,7 @@
   <div class="container">
     <div class="form-search">
           <!-- <input type="text" name="location" :value="location.coordinates" disabled /> -->
-    <form @submit.prevent="filterNameSearch" class="name-search">
+    <form @submit.prevent="popupContent" class="name-search">
       <label for="location">Location:</label>
       <input type="text" id="location" v-model="searchQuery" />
       <button type="submit">Search</button>
@@ -135,16 +135,34 @@ export default {
       });
     },
     getDirections() {
-      // Set up Mapbox Directions control
-      const directions = new MapboxDirections({
-        accessToken: mapboxgl.accessToken,
-        unit: "imperial",
-        profile: "mapbox/walking",
-        steps: 2,
-      });
-      directions.setOrigin([this.userLocation.lng, this.userLocation.lat]);
-      this.map.addControl(directions, "bottom-left");
-    },
+  // Set up Mapbox Directions control
+  const directions = new MapboxDirections({
+    accessToken: mapboxgl.accessToken,
+    unit: "imperial",
+    profile: "mapbox/walking",
+    steps: 3,
+  });
+  directions.setOrigin([this.userLocation.lng, this.userLocation.lat]);
+  this.map.addControl(directions, "bottom-left");
+
+  // Create a button to remove directions
+  const removeDirectionsButton = document.createElement("button");
+  removeDirectionsButton.textContent = "X";
+  removeDirectionsButton.className = "remove-directions-button";
+    const showDirectionsButton = document.createElement("button");
+    showDirectionsButton.textContent = "Show Directions";
+    showDirectionsButton.className = "show-directions-button";
+  // Add a click event listener to remove directions when the button is clicked
+  showDirectionsButton.addEventListener("click", () => {
+  this.map.addControl(directions, "bottom-left"); // Re-add directions control
+  removeDirectionsButton.style.display = "block"; // Show the "X" button
+  showDirectionsButton.style.display = "none"; // Hide the "Show Directions" button
+});
+
+  // Add the "X" button to the Mapbox Directions control
+  const directionsContainer = document.querySelector(".mapboxgl-ctrl-directions"); // Find the Directions control container
+  directionsContainer.appendChild(showDirectionsButton);
+},
     // search() {
     //   // Set up Mapbox Search Box
     //   const point = turf.point([this.userLocation.lng, this.userLocation.lat]);
@@ -197,7 +215,111 @@ export default {
           console.error('Error fetching locations:', error);
         });
     },
+    
+    popupContent() {
+  // Define the API endpoint based on the selected location type
+  let apiEndpoint = "http://localhost:9000/locationdata/name/";
 
+  switch (true) {
+    case this.searchQuery === "wendy park":
+      apiEndpoint += "Wendy%20Park";
+      break;
+    case this.searchQuery === "steelers park":
+      apiEndpoint += "Settlers%20Park";
+      break;
+    case this.searchQuery === "collision bend brewing company":
+      apiEndpoint += "Collision%20Bend%20Brewing%20Company";
+      break;
+    case this.searchQuery === "butcher and the brewer":
+      apiEndpoint += "Butcher%20and%20the%20Brewer";
+      break;
+    case this.searchQuery === "brewDog cleveland outpost":
+      apiEndpoint += "BrewDog%20Cleveland%20Outpost";
+      break;
+    case this.searchQuery === "barley house":
+      apiEndpoint += "Barley%20House";
+      break;
+    case this.searchQuery === "great lakes brewing":
+      apiEndpoint += "Great%20Lakes%20Brewing%20Company";
+      break;
+    case this.searchQuery === "progressive field":
+      apiEndpoint += "Progressive%20Field";
+      break;
+    case this.searchQuery === "cleveland browns stadium":
+      apiEndpoint += "Cleveland%20Browns%20Stadium";
+      break;
+    case this.searchQuery === "rocket mortgage fieldHouse":
+      apiEndpoint += "Rocket%20Mortgage%20FieldHouse";
+      break;
+    default:
+      break;
+  }
+
+  // Make an API request with the searchQuery and selected location type
+  axios
+    .get(apiEndpoint, {
+      params: { query: this.searchQuery },
+    })
+    .then((response) => {
+      const locationData = response.data;
+      // Clear existing markers and popups
+      this.removeMarkersAndPopups();
+
+      const {
+        locationDataName,
+        locationDataDescription,
+        locationDataDays,
+        locationDataOpeningTimes,
+        locationDataClosingTimes,
+        locationDataImgUrl,
+        locationDataInfoUrl,
+      } = locationData;
+
+      // Format the days and opening/closing times
+      const daysOfWeek = locationDataDays.join(", ");
+      const openingTimes = locationDataOpeningTimes.join(", ");
+      const closingTimes = locationDataClosingTimes.join(", ");
+      const marker = new mapboxgl.Marker({ color: "blue" })
+          .setLngLat([-81.698738, 41.497257 ])
+          .addTo(this.map);
+
+      // Create the HTML content for the popup
+      const popupContent = `
+        <div>
+          <h2>${locationDataName}</h2>
+          <p>${locationDataDescription}</p>
+          <p><strong>Days of Operation:</strong> ${daysOfWeek}</p>
+          <p><strong>Opening Times:</strong> ${openingTimes}</p>
+          <p><strong>Closing Times:</strong> ${closingTimes}</p>
+          <img src="${locationDataImgUrl}" alt="${locationDataName}" width="200" height="200">
+          <a href="${locationDataInfoUrl}" target="_blank">More Info</a>
+          <button id="checkInBtn${locationDataName}" class="check-in-button">Check-In</button>
+        </div>
+      `;
+const popup = new mapboxgl.Popup({ offset: 25 })
+          .setHTML(popupContent);
+
+        // Attach the popup to the marker
+        marker.setPopup(popup);
+        if (this.searchQuery === "progressive field" || this.searchQuery ===  "cleveland browns stadium"
+        || this.searchQuery === "rocket mortgage fieldhouse" ) {
+          this.stadiums.push(marker);
+        } else if (this.searchQuery === "wendy park" || this.searchQuery === "steelers park") {
+          this.parks.push(marker);
+        } else if (this.searchQuery === "collision bend brewing company" || this.searchQuery === "butcher and the brewer"
+        || this.searchQuery === "brewDog cleveland outpost" || this.searchQuery === "barley house" || this.searchQuery === "great lakes brewing") {
+          this.Bars.push(marker);
+        }else if (this.searchQuery === "all"){
+          this.all.push(marker)}
+
+          
+    })
+    .catch((error) => {
+      console.error("Error fetching location data:", error);
+      // Handle the error and set an appropriate message in the popup
+    });
+    this.searchQuery = '';
+},
  filterNameSearch(){
    // Define the API endpoint based on the selected location type
   let apiEndpoint = "http://localhost:9000/locations/name/";
@@ -244,7 +366,7 @@ export default {
     })
     .then((response) => {
       const location = response.data;
-
+console.log(apiEndpoint)
       // Clear existing markers and popups
       this.removeMarkersAndPopups();
 

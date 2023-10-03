@@ -49,6 +49,23 @@ CREATE TABLE rewards (
     CONSTRAINT FK_username FOREIGN KEY (username) REFERENCES users (username)
 );
 
+<<<<<<< HEAD
+CREATE TABLE locationData (
+    location_data_id SERIAL,
+    location_data_name varchar (50) NOT NULL UNIQUE,
+    location_data_description varchar (200) NOT NULL,
+    location_data_days varchar (200) NOT NULL,
+    location_data_opening_times varchar (200) NOT NULL,
+    location_data_closing_times varchar (200) NOT NULL,
+    location_data_img_url varchar (200),
+    location_data_info_url varchar (200),
+
+    CONSTRAINT PK_location_data PRIMARY KEY (location_data_id),
+    CONSTRAINT FK_location_data_name FOREIGN KEY (location_data_name) REFERENCES location (location_name)
+);
+
+=======
+>>>>>>> f499cb16ccb21390bdceff9c714fcea045f29a0f
 
 
 COMMIT TRANSACTION;
