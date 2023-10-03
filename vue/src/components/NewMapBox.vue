@@ -2,7 +2,7 @@
   <div class="container">
     <div class="form-search">
           <!-- <input type="text" name="location" :value="location.coordinates" disabled /> -->
-    <form @submit.prevent="filterNameSearch" class="name-search">
+    <form @submit.prevent="popupContent" class="name-search">
       <label for="location">Location:</label>
       <input type="text" id="location" v-model="searchQuery" />
       <button type="submit">Search</button>
@@ -212,7 +212,8 @@ export default {
           console.error('Error fetching locations:', error);
         });
     },
-popupContent() {
+    
+    popupContent() {
   // Define the API endpoint based on the selected location type
   let apiEndpoint = "http://localhost:9000/locationdata/name/";
 
@@ -275,6 +276,9 @@ popupContent() {
       const daysOfWeek = locationDataDays.join(", ");
       const openingTimes = locationDataOpeningTimes.join(", ");
       const closingTimes = locationDataClosingTimes.join(", ");
+      const marker = new mapboxgl.Marker({ color: "blue" })
+          .setLngLat([-81.698738, 41.497257 ])
+          .addTo(this.map);
 
       // Create the HTML content for the popup
       const popupContent = `
@@ -291,15 +295,13 @@ popupContent() {
       `;
 
       // Populate the popup content with the dynamically fetched data
-      this.popup.setHTML(popupContent);
+      marker.popup.setHTML(popupContent);
     })
     .catch((error) => {
       console.error("Error fetching location data:", error);
       // Handle the error and set an appropriate message in the popup
-      this.popup.setHTML('<p>Error fetching location data</p>');
     });
 },
-
  filterNameSearch(){
    // Define the API endpoint based on the selected location type
   let apiEndpoint = "http://localhost:9000/locations/name/";
@@ -346,19 +348,25 @@ popupContent() {
     })
     .then((response) => {
       const location = response.data;
-
+console.log(apiEndpoint)
       // Clear existing markers and popups
       this.removeMarkersAndPopups();
 
       // Add markers for each location
       
-        const { locationLatitude, locationLongitude, } = location;
+        const { locationId, locationLatitude, locationLongitude, locationName } = location;
         const marker = new mapboxgl.Marker({ color: "blue" })
           .setLngLat([locationLongitude, locationLatitude])
           .addTo(this.map);
 
         // Create a popup with custom content
-        const popupContent = popupContent()
+        const popupContent = `
+          <div>
+            <p>${locationName}</p>
+            <p>${locationLongitude} " " ${locationLatitude}</p>
+            <button id="checkInBtn${locationId}" class="check-in-button">Check-In</button>
+          </div>
+        `;
         //41.497257, -81.698738
         this.map.flyTo({ center: [-81.698738, 41.497257], zoom: 14 });
         const popup = new mapboxgl.Popup({ offset: 25 })

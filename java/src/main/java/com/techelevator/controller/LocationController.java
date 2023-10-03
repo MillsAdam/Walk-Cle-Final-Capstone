@@ -33,7 +33,7 @@ public class LocationController {
         }
     }
 
-    @RequestMapping(path="/name/", method=RequestMethod.GET)
+    @RequestMapping(path="/name/{locationName}", method=RequestMethod.GET)
     public Location getLocationByName(@PathVariable String locationName) {
         Location location = locationDao.getLocationByName(locationName);
         if (location == null) {
