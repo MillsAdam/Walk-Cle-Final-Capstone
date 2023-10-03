@@ -140,7 +140,7 @@ public class JdbcRewardsDao implements RewardsDao {
     @Override
     public boolean allPlacesVisited() {
         boolean allPlacesVisited = false;
-        String sql = "SELECT all_places_visited FROM rewards";
+        String sql = "SELECT all_bars_visited, all_parks_visited, all_stadiums_visited FROM rewards";
         try {
             SqlRowSet results = jdbcTemplate.queryForRowSet(sql);
             if (results.next()) {
@@ -151,6 +151,9 @@ public class JdbcRewardsDao implements RewardsDao {
                 // Check if all three conditions are true
                 if (allBarsVisited && allParksVisited && allStadiumsVisited) {
                     allPlacesVisited = true;
+
+                    String updateSql = "UPDATE rewards SET all_places_visited = true";
+                    jdbcTemplate.update(updateSql);
                 }
             }
         } catch (CannotGetJdbcConnectionException e) {
