@@ -33,7 +33,7 @@ export default {
     },
     methods: {
         viewLocation(locationId) {
-            this.$router.push(`location/id/${locationId}`);
+            this.$router.push(`locations/id/${locationId}`);
         },
         viewLocations(locationTypeId) {
             this.$router.push(`locationtypes/id/${locationTypeId}`);
