@@ -1,6 +1,6 @@
 <template>
     <div class="container">
-
+        
     </div>
 </template>
 
@@ -9,6 +9,7 @@ import locationService from '../services/locationService.js';
 
 export default {
     name: 'location-popup-box',
+    props: ['location'],
     data() {
         return {
             locations: [],
