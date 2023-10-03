@@ -1,50 +1,45 @@
 <template>
   <div class="container">
-      <h1 id="title">CLE-WARDS</h1>
-      <div class="images">
-      <img src="../assets/trophies/bar.jpg" id="bar" />
-      <img src="../assets/trophies/defender.jpg" id="defender" />
-      <img src="../assets/trophies/sport.jpg" id="sport" />
-      <img src="../assets/trophies/tree.jpg" id="tree" />
+      <div class="rewards-container">
+          <RewardsComp />
       </div>
       <div class="footer-container">
           <FooterComp />
       </div>
   </div>
 </template>
+
 <script>
 import FooterComp from '../components/FooterComp.vue'
+import RewardsComp from '../components/RewardsComp.vue'
+
 export default {
     components: {
-        FooterComp
+        FooterComp,
+        RewardsComp
     }
 }
 </script>
-<style>
-.footer-container {
-  grid-area: footer;
-}
-#title {
-    grid-area: title;
-    align-self: start;
-}
-.images img {
-    width:200px;
-    padding: 250px;
-}
-.images {
-    display: flex;
-    grid-area: images;
-}
+
+
+<style scoped>
 .container {
-  display: grid;
-  grid-template-columns: 1fr 1fr 1fr 1fr;
-  grid-template-areas:
-    "title"
-    "images"
-    "footer";
-  justify-items: center;
-  align-items: center;
-  height: 100vh;
+  display: flex;
+  flex-direction: column;
+  width: 100%;
+  height: 100%;
+}
+
+.rewards-container {
+  flex-grow: 1;
+  width: 100%;
+  height: 90%;
+}
+
+.footer-container {
+  background-color: #92b9c5;
+  text-align: center;
+  width: 100%;
+  height: 10%;
 }
 </style>
