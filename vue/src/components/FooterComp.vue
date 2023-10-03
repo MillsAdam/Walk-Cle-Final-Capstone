@@ -29,6 +29,9 @@
               <router-link :to="{ name: 'google' }" class="dropdown-option">
                 <a href="#" class="dropdown-option">Google</a>
               </router-link>
+              <router-link :to="{ name: 'AddPoint' }" class="dropdown-option">
+                <a href="#" class="dropdown-option">Add a Point</a>
+              </router-link>
               <router-link :to="{ name: 'logout' }" class="dropdown-option">
                 <a href="#" class="dropdown-option">Logout</a>
               </router-link>
