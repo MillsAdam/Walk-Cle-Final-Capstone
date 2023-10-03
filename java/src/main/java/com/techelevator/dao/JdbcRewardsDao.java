@@ -69,7 +69,7 @@ public class JdbcRewardsDao implements RewardsDao {
         try {
             SqlRowSet results = jdbcTemplate.queryForRowSet(sql);
             if (results.next()) {
-                amountOfTotalPlacesVisited = results.getInt("amount_bars_visited");
+                amountOfTotalPlacesVisited = results.getInt("total_places_visited"); // Use "total_places_visited" here
             }
         } catch (CannotGetJdbcConnectionException e) {
             throw new DaoException("Unable to connect to server or database", e);
