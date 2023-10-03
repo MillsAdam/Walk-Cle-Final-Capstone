@@ -147,21 +147,33 @@ export default {
 
   // Create a button to remove directions
   const removeDirectionsButton = document.createElement("button");
-  removeDirectionsButton.textContent = "X";
-  removeDirectionsButton.className = "remove-directions-button";
-    const showDirectionsButton = document.createElement("button");
-    showDirectionsButton.textContent = "Show Directions";
-    showDirectionsButton.className = "show-directions-button";
-  // Add a click event listener to remove directions when the button is clicked
-  showDirectionsButton.addEventListener("click", () => {
-  this.map.addControl(directions, "bottom-left"); // Re-add directions control
-  removeDirectionsButton.style.display = "block"; // Show the "X" button
-  showDirectionsButton.style.display = "none"; // Hide the "Show Directions" button
-});
+  removeDirectionsButton.textContent = "Hide Directions";
+  removeDirectionsButton.className = "hide-directions-button";
+  removeDirectionsButton.style.display = "none"; // Initially hide the "Hide Directions" button
 
-  // Add the "X" button to the Mapbox Directions control
-  const directionsContainer = document.querySelector(".mapboxgl-ctrl-directions"); // Find the Directions control container
+  // Create a button to show directions
+  const showDirectionsButton = document.createElement("button");
+  showDirectionsButton.textContent = "Show Directions";
+  showDirectionsButton.className = "show-directions-button";
+
+  // Add a click event listener to show directions
+  showDirectionsButton.addEventListener("click", () => {
+    this.map.addControl(directions, "bottom-left"); // Add or show directions control
+    removeDirectionsButton.style.display = "block"; // Show the "Hide Directions" button
+    showDirectionsButton.style.display = "none"; // Hide the "Show Directions" button
+  });
+
+  // Add a click event listener to hide directions
+  removeDirectionsButton.addEventListener("click", () => {
+    this.map.removeControl(directions); // Remove or hide directions control
+    showDirectionsButton.style.display = "block"; // Show the "Show Directions" button
+    removeDirectionsButton.style.display = "none"; // Hide the "Hide Directions" button
+  });
+
+  // Add the buttons to the Mapbox Directions control container
+  const directionsContainer = document.querySelector(".mapboxgl-ctrl-directions");
   directionsContainer.appendChild(showDirectionsButton);
+  directionsContainer.appendChild(removeDirectionsButton);
 },
     // search() {
     //   // Set up Mapbox Search Box
@@ -300,6 +312,7 @@ export default {
           <button id="checkInBtn${locationId}" class="check-in-button">Check-In</button>
         </div>
       `;
+      this.map.flyTo({ center: [-81.698738, 41.497257], zoom: 14 });
 const popup = new mapboxgl.Popup({ offset: 25 })
           .setHTML(popupContent);
 
@@ -428,79 +441,72 @@ filterTypeSearch() {
   let apiEndpoint = "http://localhost:9000/locations/";
 
   switch (this.Type) {
-  case "stadiums":
-    apiEndpoint += "Stadiums";
-    break;
-  case "parks":
-    apiEndpoint += "Parks";
-    break;
-  case "bars":
-    apiEndpoint += "Bars";
-    break;
-  default:
-    break;
-}
+    case "stadiums":
+      apiEndpoint += "Stadiums";
+      break;
+    case "parks":
+      apiEndpoint += "Parks";
+      break;
+    case "bars":
+      apiEndpoint += "Bars";
+      break;
+    default:
+      break;
+  }
 
   // Make an API request with the searchQuery and selected location type
   axios
     .get(apiEndpoint, {
-      params: { query: this.selectedLocationType },
+      params: { query: this.Type }, // Corrected to use this.Type
     })
     .then((response) => {
-      const location = response.data;
+      const locations = response.data; // Assuming this is an array of locations
       // Clear existing markers and popups
       this.removeMarkersAndPopups();
-console.log(apiEndpoint)
-      const {
-        locationId,
-        locationName,
-        locationLatitude,
-        locationLongitude,
-        locationDescription,
-        locationDays,
-        locationOpeningTimes,
-        locationClosingTimes,
-        locationImgUrl,
-        locationInfoUrl,
-      } = location;
-console.log(location)
-      // Format the days and opening/closing times
-      // const daysOfWeek = locationDays.join(", ");
-      // const openingTimes = locationOpeningTimes.join(", ");
-      // const closingTimes = locationClosingTimes.join(", ");
-      const marker = new mapboxgl.Marker({ color: "blue" })
-        .setLngLat([locationLongitude, locationLatitude])
-        .addTo(this.map);
+      console.log(apiEndpoint);
 
-      // Create the HTML content for the popup
-      const popupContent = `
-        <div>
-          <h2>${locationName}</h2>
-          <p>${locationDescription}</p>
-          <p><strong>Days of Operation:</strong> ${locationDays}</p>
-          <p><strong>Opening Times:</strong> ${locationOpeningTimes}</p>
-          <p><strong>Closing Times:</strong> ${locationClosingTimes}</p>
-          <img src="${locationImgUrl}" alt="${locationName}" width="200" height="200">
-          <a href="${locationInfoUrl}" target="_blank">More Info</a>
-          <button id="checkInBtn${locationId}" class="check-in-button">Check-In</button>
-        </div>
-      `;
-      const popup = new mapboxgl.Popup({ offset: 25 })
-        .setHTML(popupContent);
+      locations.forEach((location) => {
+        const {
+          locationId,
+          locationName,
+          locationLatitude,
+          locationLongitude,
+          locationDescription,
+          locationDays,
+          locationOpeningTimes,
+          locationClosingTimes,
+          locationImgUrl,
+          locationInfoUrl,
+        } = location;
 
-      // Attach the popup to the marker
-      marker.setPopup(popup);
+        // Format the days and opening/closing times
+        const daysOfWeek = locationDays.join(", ");
+        const openingTimes = locationOpeningTimes.join(", ");
+        const closingTimes = locationClosingTimes.join(", ");
+        const marker = new mapboxgl.Marker({ color: "blue" })
+          .setLngLat([locationLongitude, locationLatitude])
+          .addTo(this.map);
 
-      // Add the marker to the corresponding category array
-      if (this.selectedLocationType === "Stadiums") {
-        this.stadiums.push(marker);
-      } else if (this.selectedLocationType === "Parks") {
-        this.parks.push(marker);
-      } else if (this.selectedLocationType === "Bars") {
-        this.Bars.push(marker);
-      } else if (this.selectedLocationType === "all") {
-        this.all.push(marker);
-      }
+        // Create the HTML content for the popup
+        const popupContent = `
+          <div>
+            <h2>${locationName}</h2>
+            <p>${locationDescription}</p>
+            <p><strong>Days of Operation:</strong> ${daysOfWeek}</p>
+            <p><strong>Opening Times:</strong> ${openingTimes}</p>
+            <p><strong>Closing Times:</strong> ${closingTimes}</p>
+            <img src="${locationImgUrl}" alt="${locationName}" width="200" height="200">
+            <a href="${locationInfoUrl}" target="_blank">More Info</a>
+            <button id="checkInBtn${locationId}" class="check-in-button">Check-In</button>
+          </div>
+        `;
+        this.map.flyTo({ center: [-81.698738, 41.497257], zoom: 14 });
+        const popup = new mapboxgl.Popup({ offset: 25 })
+          .setHTML(popupContent);
+
+        // Attach the popup to the marker
+        marker.setPopup(popup);
+      });
     })
     .catch((error) => {
       console.error("Error fetching locations:", error);
