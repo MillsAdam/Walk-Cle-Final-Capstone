@@ -32,6 +32,9 @@
               <router-link :to="{ name: 'AddPoint' }" class="dropdown-option">
                 <a href="#" class="dropdown-option">Add a Point</a>
               </router-link>
+              <router-link :to="{ name: 'locations' }" class="dropdown-option">
+                <a href="#" class="dropdown-option">Locations</a>
+              </router-link>
               <router-link :to="{ name: 'logout' }" class="dropdown-option">
                 <a href="#" class="dropdown-option">Logout</a>
               </router-link>
@@ -103,7 +106,7 @@ nav ul li {
   box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
   left: 0;
   right: 0;
-  margin-top: -260px;
+  margin-top: -300px;
 }
 
 .dropdown-option {
