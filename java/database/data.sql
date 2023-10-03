@@ -20,4 +20,7 @@ INSERT INTO location (location_type_id, location_name, location_latitude, locati
 
 INSERT INTO rewards (amount_bars_visited, amount_parks_visited, amount_stadiums_visited, all_bars_visited, all_parks_visited, all_stadiums_visited, all_places_visited) VALUES (0, 0, 0, false, false, false, false);
 
+INSERT INTO locationData (location_data_name, location_data_description, location_data_days, location_data_opening_times, location_data_closing_times, location_data_img_url, location_data_info_url)
+    VALUES ('Wendy Park', 'Lakefront tree-lined park offering fishing & boating opportunities, plus volleyball courts.', ['Mon', 'Tue', 'Wed', 'Thu', 'Fri', 'Sat', 'Sun'], ['6 AM', '6 AM', '6 AM', '6 AM', '6 AM', '6 AM', '6 AM'], ['11 PM', '11 PM', '11 PM', '11 PM', '11 PM', '11 PM', '11 PM'], 'https://www.clevelandmetroparks.com/getmedia/0e6ec9e9-e7a2-4173-a853-80d1b202606f/Wendy-Park-Paddle-Access_LAN_8178.ashx?h=300&w=500&mode=crop&scale=both', 'https://www.clevelandmetroparks.com/parks/visit/parks/lakefront-reservation/wendy-park');
+
 COMMIT TRANSACTION;
