@@ -218,7 +218,7 @@ export default {
     
     popupContent() {
   // Define the API endpoint based on the selected location type
-  let apiEndpoint = "http://localhost:9000/locationdata/name/";
+  let apiEndpoint = "http://localhost:9000/locations/name/";
 
   switch (true) {
     case this.searchQuery === "wendy park":
@@ -261,39 +261,43 @@ export default {
       params: { query: this.searchQuery },
     })
     .then((response) => {
-      const locationData = response.data;
+      const location = response.data;
       // Clear existing markers and popups
       this.removeMarkersAndPopups();
 
       const {
-        locationDataName,
-        locationDataDescription,
-        locationDataDays,
-        locationDataOpeningTimes,
-        locationDataClosingTimes,
-        locationDataImgUrl,
-        locationDataInfoUrl,
-      } = locationData;
+        locationId,
+        // locationTypeName,
+        locationName,
+        locationLatitude,
+        locationLongitude,
+        locationDescription,
+        locationDays,
+        locationOpeningTimes,
+        locationClosingTimes,
+        locationImgUrl,
+        locationInfoUrl,
+      } = location;
 
       // Format the days and opening/closing times
-      const daysOfWeek = locationDataDays.join(", ");
-      const openingTimes = locationDataOpeningTimes.join(", ");
-      const closingTimes = locationDataClosingTimes.join(", ");
+      const daysOfWeek = locationDays.join(", ");
+      const openingTimes = locationOpeningTimes.join(", ");
+      const closingTimes = locationClosingTimes.join(", ");
       const marker = new mapboxgl.Marker({ color: "blue" })
-          .setLngLat([-81.698738, 41.497257 ])
+          .setLngLat([locationLongitude, locationLatitude ])
           .addTo(this.map);
 
       // Create the HTML content for the popup
       const popupContent = `
         <div>
-          <h2>${locationDataName}</h2>
-          <p>${locationDataDescription}</p>
+          <h2>${locationName}</h2>
+          <p>${locationDescription}</p>
           <p><strong>Days of Operation:</strong> ${daysOfWeek}</p>
           <p><strong>Opening Times:</strong> ${openingTimes}</p>
           <p><strong>Closing Times:</strong> ${closingTimes}</p>
-          <img src="${locationDataImgUrl}" alt="${locationDataName}" width="200" height="200">
-          <a href="${locationDataInfoUrl}" target="_blank">More Info</a>
-          <button id="checkInBtn${locationDataName}" class="check-in-button">Check-In</button>
+          <img src="${locationImgUrl}" alt="${locationName}" width="200" height="200">
+          <a href="${locationInfoUrl}" target="_blank">More Info</a>
+          <button id="checkInBtn${locationId}" class="check-in-button">Check-In</button>
         </div>
       `;
 const popup = new mapboxgl.Popup({ offset: 25 })
@@ -433,40 +437,55 @@ filterTypeSearch(){
 }
 
   // Make an API request with the searchQuery and selected location type
-  axios
+    axios
     .get(apiEndpoint, {
-      params: { query: this.selectedLocationType },
+      params: { query: this.searchQuery },
     })
     .then((response) => {
-      const locations = response.data;
-
+      const location = response.data;
       // Clear existing markers and popups
       this.removeMarkersAndPopups();
 
-      // Add markers for each location
-      locations.forEach((location) => {
-        const { locationId, locationLatitude, locationLongitude, locationName } = location;
-        const marker = new mapboxgl.Marker({ color: "blue" })
-          .setLngLat([locationLongitude, locationLatitude])
+      const {
+        locationId,
+        // locationTypeName,
+        locationName,
+        locationLatitude,
+        locationLongitude,
+        locationDescription,
+        locationDays,
+        locationOpeningTimes,
+        locationClosingTimes,
+        locationImgUrl,
+        locationInfoUrl,
+      } = location;
+
+      // Format the days and opening/closing times
+      const daysOfWeek = locationDays.join(", ");
+      const openingTimes = locationOpeningTimes.join(", ");
+      const closingTimes = locationClosingTimes.join(", ");
+      const marker = new mapboxgl.Marker({ color: "blue" })
+          .setLngLat([locationLongitude, locationLatitude ])
           .addTo(this.map);
 
-        // Create a popup with custom content
-        const popupContent = `
-          <div>
-            <p>${locationName}</p>
-            <p>${locationLongitude} " " ${locationLatitude}</p>
-            <button id="checkInBtn${locationId}" class="check-in-button">Check-In</button>
-          </div>
-        `;
-        //41.497257, -81.698738
-        this.map.flyTo({ center: [-81.698738, 41.497257], zoom: 14 });
-        const popup = new mapboxgl.Popup({ offset: 25 })
+      // Create the HTML content for the popup
+      const popupContent = `
+        <div>
+          <h2>${locationName}</h2>
+          <p>${locationDescription}</p>
+          <p><strong>Days of Operation:</strong> ${daysOfWeek}</p>
+          <p><strong>Opening Times:</strong> ${openingTimes}</p>
+          <p><strong>Closing Times:</strong> ${closingTimes}</p>
+          <img src="${locationImgUrl}" alt="${locationName}" width="200" height="200">
+          <a href="${locationInfoUrl}" target="_blank">More Info</a>
+          <button id="checkInBtn${locationId}" class="check-in-button">Check-In</button>
+        </div>
+      `;
+const popup = new mapboxgl.Popup({ offset: 25 })
           .setHTML(popupContent);
 
         // Attach the popup to the marker
         marker.setPopup(popup);
-        
-
         // Add the marker to the corresponding category array
         if (this.selectedLocationType === "stadiums") {
           this.stadiums.push(marker);
