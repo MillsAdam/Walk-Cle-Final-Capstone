@@ -8,17 +8,16 @@
       <button type="submit">Search</button>
     </form>
       <!-- Dropdown Menu -->
-    <form @submit.prevent="filterTypeSearch" class="type-search">
-      <label for="locationType">Location Type:</label>
-      <select id="locationType" v-model="selectedLocationType">
-
-        <option value="all">All</option>
-        <option value="stadiums">Stadiums</option>
-        <option value="parks">Parks</option>
-        <option value="bars">Bars</option>
-      </select>
-      <button type="submit">Search</button>
-    </form>
+   <form @submit.prevent="filterTypeSearch" class="type-search">
+    <label for="locationType">Location Type:</label>
+   <select id="locationType" v-model="Type">
+  <option value="all">All</option>
+  <option value="stadiums">Stadiums</option>
+  <option value="parks">Parks</option>
+  <option value="bars">Bars</option>
+</select>
+    <button type="submit">Search</button>
+  </form>
     </div>
 
     <div id="map"></div>
@@ -45,6 +44,7 @@ export default {
     return {
       map: null,
       query: "",
+      Type: "all",
       location: {
         type: "Point",
         coordinates: [],
@@ -324,131 +324,135 @@ const popup = new mapboxgl.Popup({ offset: 25 })
     });
     this.searchQuery = '';
 },
- filterNameSearch(){
-   // Define the API endpoint based on the selected location type
-  let apiEndpoint = "http://localhost:9000/locations/name/";
-
-  switch (true) {
-  case this.searchQuery === "wendy park":
-    apiEndpoint += "Wendy%20Park";
-    break;
-    case this.searchQuery === "steelers park":
-    apiEndpoint += "Settlers%20Park";
-    break;
-    case this.searchQuery === "collision bend brewing company":
-    apiEndpoint += "Collision%20Bend%20Brewing%20Company";
-    break;
-    case this.searchQuery === "butcher and the brewer":
-    apiEndpoint += "Butcher%20and%20the%20Brewer";
-    break;
-  case  this.searchQuery === "brewDog cleveland outpost":
-    apiEndpoint += "BrewDog%20Cleveland%20Outpost";
-    break;
-    case  this.searchQuery === "barley house":
-    apiEndpoint += "Barley%20House";
-    break;
-  case this.searchQuery === "great lakes brewing":
-    apiEndpoint += "Great%20Lakes%20Brewing%20Company";
-    break;
-    case this.searchQuery === "progressive field":
-    apiEndpoint += "Progressive%20Field";
-    break;
-    case this.searchQuery === "cleveland browns stadium":
-    apiEndpoint += "Cleveland%20Browns%20Stadium";
-    break;
-    case this.searchQuery === "rocket mortgage fieldHouse":
-    apiEndpoint += "Rocket%20Mortgage%20FieldHouse";
-    break;
-  default:
-  
-    break;
-}
-  // Make an API request with the searchQuery and selected location type
-  axios
-    .get(apiEndpoint, {
-      params: { query: this.searchQuery },
-    })
-    .then((response) => {
-      const location = response.data;
-console.log(apiEndpoint)
-      // Clear existing markers and popups
-      this.removeMarkersAndPopups();
-
-      // Add markers for each location
-      
-        const { locationId, locationLatitude, locationLongitude, locationName } = location;
-        const marker = new mapboxgl.Marker({ color: "blue" })
-          .setLngLat([locationLongitude, locationLatitude])
-          .addTo(this.map);
-
-        // Create a popup with custom content
-        const popupContent = `
-          <div>
-            <p>${locationName}</p>
-            <p>${locationLongitude} " " ${locationLatitude}</p>
-            <button id="checkInBtn${locationId}" class="check-in-button">Check-In</button>
-          </div>
-        `;
-        //41.497257, -81.698738
-        this.map.flyTo({ center: [-81.698738, 41.497257], zoom: 14 });
-        const popup = new mapboxgl.Popup({ offset: 25 })
-          .setHTML(popupContent);
-
-        // Attach the popup to the marker
-        marker.setPopup(popup);
-
-        // Add the marker to the corresponding category array
-        // add all of the names as or statments
-        if (this.searchQuery === "progressive field" || this.searchQuery ===  "cleveland browns stadium"
-        || this.searchQuery === "rocket mortgage fieldhouse" ) {
-          this.stadiums.push(marker);
-        } else if (this.searchQuery === "wendy park" || this.searchQuery === "steelers park") {
-          this.parks.push(marker);
-        } else if (this.searchQuery === "collision bend brewing company" || this.searchQuery === "butcher and the brewer"
-        || this.searchQuery === "brewDog cleveland outpost" || this.searchQuery === "barley house" || this.searchQuery === "great lakes brewing") {
-          this.Bars.push(marker);
-        }else if (this.searchQuery === "all"){
-          this.all.push(marker)}
-
-          this.searchQuery = '';
-        
-    })
-    .catch((error) => {
-      console.error("Error fetching locations:", error);
-    });
+clearMarkersAndPopups() {
+    this.stadiums.forEach((marker) => marker.remove());
+    this.stadiums = [];
+    // Clear other marker arrays in a similar way
   },
-filterTypeSearch(){
-   // Define the API endpoint based on the selected location type
+//  filterNameSearch(){
+//    // Define the API endpoint based on the selected location type
+//   let apiEndpoint = "http://localhost:9000/locations/name/";
+
+//   switch (true) {
+//   case this.searchQuery === "wendy park":
+//     apiEndpoint += "Wendy%20Park";
+//     break;
+//     case this.searchQuery === "steelers park":
+//     apiEndpoint += "Settlers%20Park";
+//     break;
+//     case this.searchQuery === "collision bend brewing company":
+//     apiEndpoint += "Collision%20Bend%20Brewing%20Company";
+//     break;
+//     case this.searchQuery === "butcher and the brewer":
+//     apiEndpoint += "Butcher%20and%20the%20Brewer";
+//     break;
+//   case  this.searchQuery === "brewDog cleveland outpost":
+//     apiEndpoint += "BrewDog%20Cleveland%20Outpost";
+//     break;
+//     case  this.searchQuery === "barley house":
+//     apiEndpoint += "Barley%20House";
+//     break;
+//   case this.searchQuery === "great lakes brewing":
+//     apiEndpoint += "Great%20Lakes%20Brewing%20Company";
+//     break;
+//     case this.searchQuery === "progressive field":
+//     apiEndpoint += "Progressive%20Field";
+//     break;
+//     case this.searchQuery === "cleveland browns stadium":
+//     apiEndpoint += "Cleveland%20Browns%20Stadium";
+//     break;
+//     case this.searchQuery === "rocket mortgage fieldHouse":
+//     apiEndpoint += "Rocket%20Mortgage%20FieldHouse";
+//     break;
+//   default:
+  
+//     break;
+// }
+//   // Make an API request with the searchQuery and selected location type
+//   axios
+//     .get(apiEndpoint, {
+//       params: { query: this.searchQuery },
+//     })
+//     .then((response) => {
+//       const location = response.data;
+// console.log(apiEndpoint)
+//       // Clear existing markers and popups
+//       this.removeMarkersAndPopups();
+
+//       // Add markers for each location
+      
+//         const { locationId, locationLatitude, locationLongitude, locationName } = location;
+//         const marker = new mapboxgl.Marker({ color: "blue" })
+//           .setLngLat([locationLongitude, locationLatitude])
+//           .addTo(this.map);
+
+//         // Create a popup with custom content
+//         const popupContent = `
+//           <div>
+//             <p>${locationName}</p>
+//             <p>${locationLongitude} " " ${locationLatitude}</p>
+//             <button id="checkInBtn${locationId}" class="check-in-button">Check-In</button>
+//           </div>
+//         `;
+//         //41.497257, -81.698738
+//         this.map.flyTo({ center: [-81.698738, 41.497257], zoom: 14 });
+//         const popup = new mapboxgl.Popup({ offset: 25 })
+//           .setHTML(popupContent);
+
+//         // Attach the popup to the marker
+//         marker.setPopup(popup);
+
+//         // Add the marker to the corresponding category array
+//         // add all of the names as or statments
+//         if (this.searchQuery === "progressive field" || this.searchQuery ===  "cleveland browns stadium"
+//         || this.searchQuery === "rocket mortgage fieldhouse" ) {
+//           this.stadiums.push(marker);
+//         } else if (this.searchQuery === "wendy park" || this.searchQuery === "steelers park") {
+//           this.parks.push(marker);
+//         } else if (this.searchQuery === "collision bend brewing company" || this.searchQuery === "butcher and the brewer"
+//         || this.searchQuery === "brewDog cleveland outpost" || this.searchQuery === "barley house" || this.searchQuery === "great lakes brewing") {
+//           this.Bars.push(marker);
+//         }else if (this.searchQuery === "all"){
+//           this.all.push(marker)}
+
+//           this.searchQuery = '';
+        
+//     })
+//     .catch((error) => {
+//       console.error("Error fetching locations:", error);
+//     });
+//   },
+filterTypeSearch() {
+  this.clearMarkersAndPopups();
+  // Define the API endpoint based on the selected location type
   let apiEndpoint = "http://localhost:9000/locations/";
 
-  switch (true) {
-  case this.selectedLocationType === "stadiums" :
+  switch (this.Type) {
+  case "stadiums":
     apiEndpoint += "Stadiums";
     break;
-  case this.selectedLocationType === "parks" :
+  case "parks":
     apiEndpoint += "Parks";
     break;
-  case this.selectedLocationType === "bars" :
+  case "bars":
     apiEndpoint += "Bars";
     break;
   default:
-
     break;
 }
 
   // Make an API request with the searchQuery and selected location type
-    axios
+  axios
     .get(apiEndpoint, {
-      params: { query: this.searchQuery },
+      params: { query: this.selectedLocationType },
     })
     .then((response) => {
       const location = response.data;
       // Clear existing markers and popups
       this.removeMarkersAndPopups();
-
+console.log(apiEndpoint)
       const {
         locationId,
-        // locationTypeName,
         locationName,
         locationLatitude,
         locationLongitude,
@@ -459,49 +463,50 @@ filterTypeSearch(){
         locationImgUrl,
         locationInfoUrl,
       } = location;
-
+console.log(location)
       // Format the days and opening/closing times
-      const daysOfWeek = locationDays.join(", ");
-      const openingTimes = locationOpeningTimes.join(", ");
-      const closingTimes = locationClosingTimes.join(", ");
+      // const daysOfWeek = locationDays.join(", ");
+      // const openingTimes = locationOpeningTimes.join(", ");
+      // const closingTimes = locationClosingTimes.join(", ");
       const marker = new mapboxgl.Marker({ color: "blue" })
-          .setLngLat([locationLongitude, locationLatitude ])
-          .addTo(this.map);
+        .setLngLat([locationLongitude, locationLatitude])
+        .addTo(this.map);
 
       // Create the HTML content for the popup
       const popupContent = `
         <div>
           <h2>${locationName}</h2>
           <p>${locationDescription}</p>
-          <p><strong>Days of Operation:</strong> ${daysOfWeek}</p>
-          <p><strong>Opening Times:</strong> ${openingTimes}</p>
-          <p><strong>Closing Times:</strong> ${closingTimes}</p>
+          <p><strong>Days of Operation:</strong> ${locationDays}</p>
+          <p><strong>Opening Times:</strong> ${locationOpeningTimes}</p>
+          <p><strong>Closing Times:</strong> ${locationClosingTimes}</p>
           <img src="${locationImgUrl}" alt="${locationName}" width="200" height="200">
           <a href="${locationInfoUrl}" target="_blank">More Info</a>
           <button id="checkInBtn${locationId}" class="check-in-button">Check-In</button>
         </div>
       `;
-const popup = new mapboxgl.Popup({ offset: 25 })
-          .setHTML(popupContent);
+      const popup = new mapboxgl.Popup({ offset: 25 })
+        .setHTML(popupContent);
 
-        // Attach the popup to the marker
-        marker.setPopup(popup);
-        // Add the marker to the corresponding category array
-        if (this.selectedLocationType === "stadiums") {
-          this.stadiums.push(marker);
-        } else if (this.selectedLocationType === "parks") {
-          this.parks.push(marker);
-        } else if (this.selectedLocationType === "bars") {
-          this.Bars.push(marker);
-        }else if (this.selectedLocationType === "all"){
-          this.all.push(marker)}
-        
-      });
+      // Attach the popup to the marker
+      marker.setPopup(popup);
+
+      // Add the marker to the corresponding category array
+      if (this.selectedLocationType === "Stadiums") {
+        this.stadiums.push(marker);
+      } else if (this.selectedLocationType === "Parks") {
+        this.parks.push(marker);
+      } else if (this.selectedLocationType === "Bars") {
+        this.Bars.push(marker);
+      } else if (this.selectedLocationType === "all") {
+        this.all.push(marker);
+      }
     })
     .catch((error) => {
       console.error("Error fetching locations:", error);
     });
-  },
+},
+
     removeMarkersAndPopups() {
   this.markers.forEach((marker) => {
     marker.remove();
