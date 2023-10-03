@@ -1,17 +1,12 @@
 <template>
-<div class="container">
-    <h1 id="title">CLE-WARDS</h1>
-    <div class="images">
-        <div class="trophy-all">
+    <div class="container">
+        <div class="trophies">
             <img src="../assets/trophies/defender.jpg" id="defender" />
-        </div>
-        <div class="trophy-types">
             <img src="../assets/trophies/bar.jpg" id="bar" />
             <img src="../assets/trophies/sport.jpg" id="sport" />
             <img src="../assets/trophies/tree.jpg" id="tree" />
         </div>
     </div>
-</div>
 </template>
 
 <script>
@@ -24,36 +19,40 @@ name: 'rewards-comp',
 
 <style scoped>
 .container {
-    display: flex;
-    flex-direction: column;
-    align-items: center;
-    justify-content: center;
-    min-height: 100vh;
-    text-align: center;
+    display: grid;
+    grid-template-columns:repeat(auto-fill, minmax(250px, 1fr));
+    grid-gap: 10px;
 }
 
-#title {
-    font-size: 24px;
-    margin-top: 20px;
-}
-
-.images {
-    display: flex;
-    flex-direction: column;
-    align-items: center;
-    margin-top: 20px;
-}
-
-.trophy-all img, .trophy-types img {
+img {
     max-width: 250px;
     height: auto;
-    margin: 10px;
+    width: 100%;
 }
 
-.trophy-types {
-    display: flex;
-    justify-content: space-around;
-    flex-wrap: wrap;
-    margin-top: 20px;
+@media screen and (max-width: 400px) {
+    .container {
+        grid-template-columns: repeat(auto-fill, minmax(100px, 1fr));
+        grid-gap: 5px;
+    }
+    img {
+        max-width: 40%;
+    }
+}
+
+#defender {
+    grid-area: defender;
+}
+
+#bar {
+    grid-area: bar;
+}
+
+#sport {
+    grid-area: sport;
+}
+
+#tree {
+    grid-area: tree;
 }
 </style>

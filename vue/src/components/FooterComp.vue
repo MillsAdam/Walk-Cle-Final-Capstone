@@ -29,6 +29,9 @@
               <router-link :to="{ name: 'google' }" class="dropdown-option">
                 <a href="#" class="dropdown-option">Google</a>
               </router-link>
+              <router-link :to="{ name: 'AddPoint' }" class="dropdown-option">
+                <a href="#" class="dropdown-option">Add a Point</a>
+              </router-link>
               <router-link :to="{ name: 'logout' }" class="dropdown-option">
                 <a href="#" class="dropdown-option">Logout</a>
               </router-link>
@@ -63,10 +66,9 @@ img {
 }
 
 .container {
-  width: 100%;
+  width: 100vw;
   background-color: #92b9c5;
   height: auto;
-  padding: 0 10px;
   display: flex;
   justify-content: center;
   align-items: center;
@@ -99,12 +101,9 @@ nav ul li {
   background-color: rgba(146, 185, 197, 0.75);
   border-radius: 5px;
   box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
-  z-index: 1;
-  top: auto;
-  bottom: auto;
   left: 0;
   right: 0;
-  margin-top: -230px;
+  margin-top: -260px;
 }
 
 .dropdown-option {

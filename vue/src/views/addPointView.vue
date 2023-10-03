@@ -1,28 +1,27 @@
 <template>
   <div class="container">
-    <h1 id="title">CLE-WARDS</h1>
-    <RewardsComp id="rewards-comp"/>
-    <FooterComp id="footer-comp"/>
-  </div>
+      <h1 id="title">Add a New Point</h1>
+      <LocationForm id="location-form"/>
+      <FooterComp id="footer-comp"/>
+    </div>
 </template>
 
 <script>
-import FooterComp from '../components/FooterComp.vue'
-import RewardsComp from '../components/RewardsComp.vue'
-
+import LocationForm from "../components/locationForm.vue"
+import FooterComp from '../components/FooterComp.vue';
 export default {
     components: {
-        FooterComp,
-        RewardsComp
+        LocationForm,
+        FooterComp
     }
 }
 </script>
-
 
 <style scoped>
 .container {
   display: flex;
   flex-direction: column;
+
   height: 100%;
   width: 100%;
 }
@@ -35,7 +34,7 @@ export default {
   width: 100%;
 }
 
-#rewards-comp {
+#location-form {
   display: flex;
   justify-content: center;
   align-items: center;
