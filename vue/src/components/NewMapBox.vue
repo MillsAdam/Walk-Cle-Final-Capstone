@@ -140,6 +140,7 @@ export default {
         accessToken: mapboxgl.accessToken,
         unit: "imperial",
         profile: "mapbox/walking",
+        steps: 2,
       });
       directions.setOrigin([this.userLocation.lng, this.userLocation.lat]);
       this.map.addControl(directions, "bottom-left");
@@ -199,17 +200,38 @@ export default {
 
  filterNameSearch(){
    // Define the API endpoint based on the selected location type
-  let apiEndpoint = "http://localhost:9000/locations/";
+  let apiEndpoint = "http://localhost:9000/locations/name/";
 
   switch (true) {
-  case this.searchQuery === "stadiums":
-    apiEndpoint += "Stadiums";
+  case this.searchQuery === "wendy park":
+    apiEndpoint += "Wendy%20Park";
     break;
-  case  this.searchQuery === "parks":
-    apiEndpoint += "Parks";
+    case this.searchQuery === "steelers park":
+    apiEndpoint += "Settlers%20Park";
     break;
-  case this.searchQuery === "bars":
-    apiEndpoint += "Bars";
+    case this.searchQuery === "collision bend brewing company":
+    apiEndpoint += "Collision%20Bend%20Brewing%20Company";
+    break;
+    case this.searchQuery === "butcher and the brewer":
+    apiEndpoint += "Butcher%20and%20the%20Brewer";
+    break;
+  case  this.searchQuery === "brewDog cleveland outpost":
+    apiEndpoint += "BrewDog%20Cleveland%20Outpost";
+    break;
+    case  this.searchQuery === "barley house":
+    apiEndpoint += "Barley%20House";
+    break;
+  case this.searchQuery === "great lakes brewing":
+    apiEndpoint += "Great%20Lakes%20Brewing%20Company";
+    break;
+    case this.searchQuery === "progressive field":
+    apiEndpoint += "Progressive%20Field";
+    break;
+    case this.searchQuery === "cleveland browns stadium":
+    apiEndpoint += "Cleveland%20Browns%20Stadium";
+    break;
+    case this.searchQuery === "rocket mortgage fieldHouse":
+    apiEndpoint += "Rocket%20Mortgage%20FieldHouse";
     break;
   default:
     // Handle the default case if needed
@@ -221,13 +243,13 @@ export default {
       params: { query: this.searchQuery },
     })
     .then((response) => {
-      const locations = response.data;
+      const location = response.data;
 
       // Clear existing markers and popups
       this.removeMarkersAndPopups();
 
       // Add markers for each location
-      locations.forEach((location) => {
+      
         const { locationId, locationLatitude, locationLongitude, locationName } = location;
         const marker = new mapboxgl.Marker({ color: "blue" })
           .setLngLat([locationLongitude, locationLatitude])
@@ -250,16 +272,16 @@ export default {
         marker.setPopup(popup);
 
         // Add the marker to the corresponding category array
-        if (this.selectedLocationType === "stadiums") {
+        // add all of the names as or statments
+        if (this.searchQuery === "stadiums") {
           this.stadiums.push(marker);
-        } else if (this.selectedLocationType === "parks") {
+        } else if (this.searchQuery === "wendy park") {
           this.parks.push(marker);
-        } else if (this.selectedLocationType === "bars") {
+        } else if (this.searchQuery === "bars") {
           this.Bars.push(marker);
-        }else if (this.selectedLocationType === "all"){
+        }else if (this.searchQuery === "all"){
           this.all.push(marker)}
         
-      });
     })
     .catch((error) => {
       console.error("Error fetching locations:", error);
