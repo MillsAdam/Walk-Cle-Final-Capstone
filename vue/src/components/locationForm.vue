@@ -23,16 +23,28 @@
 </template>
 
 <script>
+import axios from 'axios'
 export default {
   name: "AddPointView",
   data() {
     return {
-      locationType: '',
-      locationName: '',
-      latitude: '',
-      longitude: ''
+      locationType: "",
+      locationName: "",
+      latitude: "",
+      longitude: ""
     };
   },
+  methods: {
+    handleSubmit() {
+      const locationData = {
+        locationType: this.locationType,
+        locationName: this.locationName,
+        latitude: this.latitude,
+        longitude: this.longitude
+      };
+      axios.post('http://localhost:9000/createlocation', locationData)
+    }
+  }
 }
 </script>
 
