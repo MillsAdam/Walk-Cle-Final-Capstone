@@ -1,6 +1,7 @@
 package com.techelevator.dao;
 
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.List;
 
 import com.techelevator.model.Location;
@@ -90,8 +91,8 @@ public class JdbcLocationDao implements LocationDao {
     public List<Location> getAllLocationsByLocationTypeName (String locationTypeName) {
         String sql = "SELECT * " +
                 "FROM location " +
-                "JOIN locationType " +
-                "ON location.location_type_id = locationType.location_type_id " +
+                "JOIN location_type " +
+                "ON location.location_type_name = locationType.location_type_name " +
                 "WHERE location_type_name = ?;";
 
         List<Location> resultList = new ArrayList<>();
@@ -105,10 +106,16 @@ public class JdbcLocationDao implements LocationDao {
     @Override
     public Location createLocation(Location location) {
         Location newLocation = null;
-        String sql = "INSERT INTO location (location_type_id, location_name, location_latitude, location_longitude) VALUES (?, ?, ?, ?) RETURNING location_id";
+        String sql = "INSERT INTO location (location_type_name, location_name, location_latitude, location_longitude, location_description, location_days, location_opening_times, location_closing_times, location_img_url, location_info_url) " +
+                "VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?) RETURNING location_id";
 
         try {
-            int locationId = jdbcTemplate.queryForObject(sql, int.class, location.getLocationTypeId(), location.getLocationName(), location.getLocationLatitude(), location.getLocationLongitude());
+            int locationId = jdbcTemplate.queryForObject(sql, int.class,
+                    location.getLocationTypeName(), location.getLocationName(),
+                    location.getLocationLatitude(), location.getLocationLongitude(),
+                    location.getLocationDescription(), location.getLocationDays(),
+                    location.getLocationOpeningTimes(), location.getLocationClosingTimes(),
+                    location.getLocationImgUrl(), location.getLocationInfoUrl());
             newLocation = getLocationById(locationId);
         } catch (CannotGetJdbcConnectionException e) {
             throw new DaoException("Unable to connect to server or database", e);
@@ -122,10 +129,16 @@ public class JdbcLocationDao implements LocationDao {
     @Override
     public Location updateLocation(Location location) {
         Location updatedLocation = null;
-        String sql = "UPDATE location SET location_type_id = ?, location_name = ?, location_latitude = ?, location_longitude = ? WHERE location_id = ?";
+        String sql = "UPDATE location SET location_type_name = ?, location_name = ?, location_latitude = ?, location_longitude = ?, location_description = ?, location_days = ?, location_opening_times = ?, location_closing_times = ?, location_img_url = ?, location_info_url = ? WHERE location_id = ?";
 
         try {
-            int rowsAffected = jdbcTemplate.update(sql, location.getLocationTypeId(), location.getLocationName(), location.getLocationLatitude(), location.getLocationLongitude(), location.getLocationId());
+            int rowsAffected = jdbcTemplate.update(sql,
+                    location.getLocationTypeName(), location.getLocationName(),
+                    location.getLocationLatitude(), location.getLocationLongitude(),
+                    location.getLocationDescription(), location.getLocationDays(),
+                    location.getLocationOpeningTimes(), location.getLocationClosingTimes(),
+                    location.getLocationImgUrl(), location.getLocationInfoUrl(),
+                    location.getLocationId());
             if (rowsAffected == 0) {
                 throw new DaoException("Zero rows affected, expected at least one");
             }
@@ -158,10 +171,16 @@ public class JdbcLocationDao implements LocationDao {
     private Location mapRowToLocation(SqlRowSet rs) {
         Location locations = new Location();
         locations.setLocationId(rs.getInt("location_id"));
-        locations.setLocationTypeId(rs.getInt("location_type_id"));
+        locations.setLocationTypeName(rs.getString("location_type_name"));
         locations.setLocationName(rs.getString("location_name"));
         locations.setLocationLatitude(rs.getDouble("location_latitude"));
         locations.setLocationLongitude(rs.getDouble("location_longitude"));
+        locations.setLocationDescription(rs.getString("location_description"));
+        locations.setLocationDays(Arrays.asList(rs.getString("location_days")));
+        locations.setLocationOpeningTimes(Arrays.asList(rs.getString("location_opening_times")));
+        locations.setLocationClosingTimes(Arrays.asList(rs.getString("location_closing_times")));
+        locations.setLocationImgUrl(rs.getString("location_img_url"));
+        locations.setLocationInfoUrl(rs.getString("location_info_url"));
         return locations;
     }
 }
