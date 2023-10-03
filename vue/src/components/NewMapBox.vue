@@ -234,7 +234,7 @@ export default {
     apiEndpoint += "Rocket%20Mortgage%20FieldHouse";
     break;
   default:
-    // Handle the default case if needed
+  
     break;
 }
   // Make an API request with the searchQuery and selected location type
@@ -273,14 +273,18 @@ export default {
 
         // Add the marker to the corresponding category array
         // add all of the names as or statments
-        if (this.searchQuery === "stadiums") {
+        if (this.searchQuery === "progressive field" || this.searchQuery ===  "cleveland browns stadium"
+        || this.searchQuery === "rocket mortgage fieldhouse" ) {
           this.stadiums.push(marker);
-        } else if (this.searchQuery === "wendy park") {
+        } else if (this.searchQuery === "wendy park" || this.searchQuery === "steelers park") {
           this.parks.push(marker);
-        } else if (this.searchQuery === "bars") {
+        } else if (this.searchQuery === "collision bend brewing company" || this.searchQuery === "butcher and the brewer"
+        || this.searchQuery === "brewDog cleveland outpost" || this.searchQuery === "barley house" || this.searchQuery === "great lakes brewing") {
           this.Bars.push(marker);
         }else if (this.searchQuery === "all"){
           this.all.push(marker)}
+
+          this.searchQuery = '';
         
     })
     .catch((error) => {
