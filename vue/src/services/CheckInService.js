@@ -5,6 +5,14 @@ const http = axios.create({
 })
 export default{
     barCheckIn(locationId) {
-        return http.post('/barcheckin', locationId)
+        return http.post(`/barcheckin/${locationId}`)
+    },
+
+    parkCheckIn(locationId) {
+        return http.post(`/parkcheckin/${locationId}`)
+    },
+
+    stadiumCheckIn(locationId) {
+        return http.post(`/barcheckin/${locationId}`)
     }
 }

@@ -63,7 +63,7 @@ CREATE TABLE rewards (
 CREATE TABLE checkins (
     checkin_id SERIAL,
     username varchar(50) NOT NULL,
-    location_id SERIAL UNIQUE,
+    location_id SERIAL,
     checked_in boolean DEFAULT false,
     checkin_timestamp TIMESTAMP,
     CONSTRAINT PK_checkin_id PRIMARY KEY (checkin_id),
