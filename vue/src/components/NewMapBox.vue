@@ -552,6 +552,7 @@ filterTypeSearch() {
         }else if (this.Type === "all"){
           this.all.push(marker)} 
           
+
       });
     })
     .catch((error) => {

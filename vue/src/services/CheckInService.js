@@ -13,6 +13,6 @@ export default{
     },
 
     stadiumCheckIn(locationId) {
-        return http.post(`/barcheckin/${locationId}`)
+        return http.post(`/stadiumcheckin/${locationId}`)
     }
 }
