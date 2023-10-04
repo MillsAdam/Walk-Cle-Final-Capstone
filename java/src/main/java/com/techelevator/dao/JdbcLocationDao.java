@@ -104,15 +104,21 @@ public class JdbcLocationDao implements LocationDao {
     @Override
     public Location createLocation(Location location) {
         Location newLocation = null;
-        String sql = "INSERT INTO location (location_type_name, location_name, location_latitude, location_longitude, location_description, location_days, location_opening_times, location_closing_times, location_img_url, location_info_url) " +
-                "VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?) RETURNING location_id";
+        String sql = "INSERT INTO location (location_type_name, location_name, location_latitude, location_longitude, location_description, location_sun_open, location_sun_close, location_mon_open, location_mon_close, location_tue_open, location_tue_close, location_wed_open, location_wed_close, location_thu_open, location_thu_close, location_fri_open, location_fri_close, location_sat_open, location_sat_close, location_img_url, location_info_url) " +
+                "VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?) RETURNING location_id";
 
         try {
             int locationId = jdbcTemplate.queryForObject(sql, int.class,
                     location.getLocationTypeName(), location.getLocationName(),
                     location.getLocationLatitude(), location.getLocationLongitude(),
-                    location.getLocationDescription(), location.getLocationDays(),
-                    location.getLocationOpeningTimes(), location.getLocationClosingTimes(),
+                    location.getLocationDescription(),
+                    location.getLocationSunOpen(), location.getLocationSunClose(),
+                    location.getLocationMonOpen(), location.getLocationMonClose(),
+                    location.getLocationTueOpen(), location.getLocationTueClose(),
+                    location.getLocationWedOpen(), location.getLocationWedClose(),
+                    location.getLocationThuOpen(), location.getLocationThuClose(),
+                    location.getLocationFriOpen(), location.getLocationFriClose(),
+                    location.getLocationSatOpen(), location.getLocationSatClose(),
                     location.getLocationImgUrl(), location.getLocationInfoUrl());
             newLocation = getLocationById(locationId);
         } catch (CannotGetJdbcConnectionException e) {
@@ -127,14 +133,20 @@ public class JdbcLocationDao implements LocationDao {
     @Override
     public Location updateLocation(Location location) {
         Location updatedLocation = null;
-        String sql = "UPDATE location SET location_type_name = ?, location_name = ?, location_latitude = ?, location_longitude = ?, location_description = ?, location_days = ?, location_opening_times = ?, location_closing_times = ?, location_img_url = ?, location_info_url = ? WHERE location_id = ?";
+        String sql = "UPDATE location SET location_type_name = ?, location_name = ?, location_latitude = ?, location_longitude = ?, location_description = ?, location_sun_open = ?, location_sun_close = ?, location_mon_open = ?, location_mon_close = ?, location_tue_open = ?, location_tue_close = ?, location_wed_open = ?, location_wed_close = ?, location_thu_open = ?, location_thu_close = ?, location_fri_open = ?, location_fri_close = ?, location_sat_open = ?, location_sat_close = ?, location_img_url = ?, location_info_url = ? WHERE location_id = ?";
 
         try {
             int rowsAffected = jdbcTemplate.update(sql,
                     location.getLocationTypeName(), location.getLocationName(),
                     location.getLocationLatitude(), location.getLocationLongitude(),
-                    location.getLocationDescription(), location.getLocationDays(),
-                    location.getLocationOpeningTimes(), location.getLocationClosingTimes(),
+                    location.getLocationDescription(),
+                    location.getLocationSunOpen(), location.getLocationSunClose(),
+                    location.getLocationMonOpen(), location.getLocationMonClose(),
+                    location.getLocationTueOpen(), location.getLocationTueClose(),
+                    location.getLocationWedOpen(), location.getLocationWedClose(),
+                    location.getLocationThuOpen(), location.getLocationThuClose(),
+                    location.getLocationFriOpen(), location.getLocationFriClose(),
+                    location.getLocationSatOpen(), location.getLocationSatClose(),
                     location.getLocationImgUrl(), location.getLocationInfoUrl(),
                     location.getLocationId());
             if (rowsAffected == 0) {
@@ -174,9 +186,20 @@ public class JdbcLocationDao implements LocationDao {
         locations.setLocationLatitude(rs.getDouble("location_latitude"));
         locations.setLocationLongitude(rs.getDouble("location_longitude"));
         locations.setLocationDescription(rs.getString("location_description"));
-        locations.setLocationDays(Arrays.asList(rs.getString("location_days")));
-        locations.setLocationOpeningTimes(Arrays.asList(rs.getString("location_opening_times")));
-        locations.setLocationClosingTimes(Arrays.asList(rs.getString("location_closing_times")));
+        locations.setLocationSunOpen(rs.getString("location_sun_open"));
+        locations.setLocationSunClose(rs.getString("location_sun_close"));
+        locations.setLocationMonOpen(rs.getString("location_mon_open"));
+        locations.setLocationMonClose(rs.getString("location_mon_close"));
+        locations.setLocationTueClose(rs.getString("location_tue_open"));
+        locations.setLocationTueClose(rs.getString("location_tue_close"));
+        locations.setLocationWedOpen(rs.getString("location_wed_open"));
+        locations.setLocationWedClose(rs.getString("location_wed_close"));
+        locations.setLocationThuOpen(rs.getString("location_thu_open"));
+        locations.setLocationThuClose(rs.getString("location_thu_close"));
+        locations.setLocationFriOpen(rs.getString("location_fri_open"));
+        locations.setLocationFriClose(rs.getString("location_fri_close"));
+        locations.setLocationSatOpen(rs.getString("location_sat_open"));
+        locations.setLocationSatClose(rs.getString("location_sat_close"));
         locations.setLocationImgUrl(rs.getString("location_img_url"));
         locations.setLocationInfoUrl(rs.getString("location_info_url"));
         return locations;
