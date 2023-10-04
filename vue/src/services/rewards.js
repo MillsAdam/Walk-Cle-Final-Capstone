@@ -4,43 +4,51 @@ const http = axios.create({
     baseURL: 'http://localhost:9000/rewards'
 })
 export default{
+    trophyStatus: {
+        defender: false,
+        bar: false,
+        sport: false,
+        tree: false,
+    },
     checkTrophyStatus() {
-        this.checkDefenderTrophyStatus();
-        this.checkBarTrophyStatus();
-        this.checkParkTrophyStatus();
-        this.checkStadiumTrophyStatus();
+        return Promise.all([
+        this.checkDefenderTrophyStatus(),
+        this.checkBarTrophyStatus(),
+        this.checkParkTrophyStatus(),
+        this.checkStadiumTrophyStatus()
+        ]);
     },
     checkDefenderTrophyStatus() {
-        http.get('http://localhost:9000/rewards/allPlacesVisited')
+        http.get('places')
             .then(response => {
-                this.$set(this.trophyStatus, 'defender', response.data);
+                this.trophyStatus.defender = response.data;
             })
             .catch(error => {
                 console.error(error);
             });
     },
     checkBarTrophyStatus() {
-        http.get('http://localhost:9000/rewards/allBarsVisited')
+        http.get('bars')
             .then(response => {
-                this.$set(this.trophyStatus, 'bar', response.data);
+                this.trophyStatus.bar = response.data;
             })
             .catch(error => {
                 console.error(error);
             });
     },
     checkParkTrophyStatus() {
-        http.get('http://localhost:9000/rewards/allParksVisited')
+        http.get('parks')
             .then(response => {
-                this.$set(this.trophyStatus, 'sport', response.data);
+                this.trophyStatus.tree = response.data;
             })
             .catch(error => {
                 console.error(error);
             });
     },
     checkStadiumTrophyStatus() {
-        http.get('http://localhost:9000/rewards/allStadiumsVisited')
+        http.get('stadiums')
             .then(response => {
-                this.$set(this.trophyStatus, 'tree', response.data);
+                this.trophyStatus.sport = response.data;
             })
             .catch(error => {
                 console.error(error);
