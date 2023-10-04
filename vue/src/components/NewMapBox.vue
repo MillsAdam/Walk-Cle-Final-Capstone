@@ -19,6 +19,7 @@
     <button type="submit">Search</button>
   </form>
     </div>
+    <button @click="clearMarkersAndPopups">clear</button>
 
     <div id="map"></div>
     <!-- <button class="btn" @click="requestLocation">Get Current Location</button>-->
@@ -245,7 +246,7 @@ export default {
     .then((response) => {
       const location = response.data;
       // Clear existing markers and popups
-      this.removeMarkersAndPopups();
+      this.clearMarkersAndPopups();
 
       const {
         locationId,
@@ -288,17 +289,15 @@ const popup = new mapboxgl.Popup({ offset: 25 })
 
         // Attach the popup to the marker
         marker.setPopup(popup);
-        if (this.searchQuery === "progressive field" || this.searchQuery ===  "cleveland browns stadium"
-        || this.searchQuery === "rocket mortgage fieldhouse" ) {
+        if (this.Type === "stadiums") {
           this.stadiums.push(marker);
-        } else if (this.searchQuery === "wendy park" || this.searchQuery === "steelers park") {
+        } else if (this.Type === "parks") {
           this.parks.push(marker);
-        } else if (this.searchQuery === "collision bend brewing company" || this.searchQuery === "butcher and the brewer"
-        || this.searchQuery === "brewDog cleveland outpost" || this.searchQuery === "barley house" || this.searchQuery === "great lakes brewing") {
+        } else if (this.Type === "bars") {
           this.Bars.push(marker);
-        }else if (this.searchQuery === "all"){
-          this.all.push(marker)}
-
+        }else if (this.Type === "all"){
+          this.all.push(marker)} 
+      marker.remove
           
     })
     .catch((error) => {
@@ -307,11 +306,27 @@ const popup = new mapboxgl.Popup({ offset: 25 })
     });
     this.searchQuery = '';
 },
-clearMarkersAndPopups() {
-    this.stadiums.forEach((marker) => marker.remove());
-    this.stadiums = [];
-    // Clear other marker arrays in a similar way
-  },
+    clearMarkersAndPopups() {
+  // Remove existing markers and popups from the map
+  for (const marker of this.stadiums) {
+    marker.remove();
+  }
+  for (const marker of this.parks) {
+    marker.remove();
+  }
+  for (const marker of this.Bars) {
+    marker.remove();
+  }
+  for (const marker of this.all) {
+    marker.remove();
+  }
+
+  // Clear marker arrays
+  this.stadiums = [];
+  this.parks = [];
+  this.Bars = [];
+  this.all = [];
+},
 //  filterNameSearch(){
 //    // Define the API endpoint based on the selected location type
 //   let apiEndpoint = "http://localhost:9000/locations/name/";
@@ -495,45 +510,36 @@ filterTypeSearch() {
 },
 
   removeMarkersAndPopups() {
-  // Remove markers from the "stadiums" category
-  this.stadiums.forEach((marker) => {
+  this.markers.forEach((marker) => {
     marker.remove();
+   
   });
-  this.stadiums = [];
-
-  // Remove markers from the "parks" category
-  this.parks.forEach((marker) => {
-    marker.remove();
-  });
+  this.all.forEach((poi) =>
+  poi.remove())
+  this.stadiums.forEach((poi) =>{
+    poi.remove();
+  })
+  this.Bars.forEach((poi) =>{
+    poi.remove();
+  })
+  this.parks.forEach((poi) =>{
+    poi.remove();
+  })
+  this.poi.forEach((poi) =>{
+    poi.remove();
+  })
+  this.coffee.forEach((poi) =>{
+    poi.remove();
+  })
   this.parks = [];
-
-  // Remove markers from the "bars" category
-  this.Bars.forEach((marker) => {
-    marker.remove();
-  });
   this.Bars = [];
-
-  // Remove markers from the "all" category
-  this.all.forEach((marker) => {
-    marker.remove();
-  });
-  this.all = [];
-
-  // Remove markers from the "poi" category (if you have a "poi" array)
-  this.poi.forEach((marker) => {
-    marker.remove();
-  });
   this.poi = [];
-
-  // Remove markers from the "coffee" category (if you have a "coffee" array)
-  this.coffee.forEach((marker) => {
-    marker.remove();
-  });
-  this.coffee = [];
-
-  // Clear the main markers array
   this.markers = [];
-},
+  this.coffee = [];
+  this.all =[];
+ 
+    },
+
   },
   mounted() {
     navigator.geolocation.getCurrentPosition((position) => {
@@ -543,7 +549,7 @@ filterTypeSearch() {
       this.initMap();
       this.map.flyTo({ center: [lng, lat], zoom: 15 });
       this.addMapMarker({ lng, lat });
-
+this.clearMarkersAndPopups() 
       this.getDirections();
       this.search();
       this.navigation();
