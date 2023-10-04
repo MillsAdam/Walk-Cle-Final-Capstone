@@ -3,18 +3,11 @@
         <ul>
             <li v-for="location in locations" :key="location.id">
                 <!-- {{ location.locationId }} |  -->
-                {{ location.locationTypeName }} | 
+                <!-- {{ location.locationTypeName }} |  -->
                 {{ location.locationName }} | 
-                {{ location.locationLatitude }} | 
-                {{ location.locationLongitude }} | 
-                <button @click="viewLocation(location.locationId)">View Location</button>
-            </li>
-        </ul>
-        <ul>
-            <li v-for="locationType in locationTypes" :key="locationType.id">
-                <!-- {{ locationType.locationTypeId }} |  -->
-                {{ locationType.locationTypeName }} | 
-                <button @click="viewLocations(locationType.locationTypeId)">View Location Type</button>
+                <!-- {{ location.locationLatitude }} |  -->
+                <!-- {{ location.locationLongitude }} |  -->
+                <button @click="viewLocation(location.locationId)">Checkin</button>
             </li>
         </ul>
     </div>
@@ -23,6 +16,7 @@
 <script>
 import locationService from '../services/locationService.js';
 import locationTypeService from '../services/locationTypeService.js';
+import CheckInService from '../services/CheckInService.js';
 
 export default {
     name: 'locations-list',
@@ -30,14 +24,12 @@ export default {
         return {
             locations: [],
             locationTypes: [],
+            checkins: [],
         };
     },
     methods: {
-        viewLocation(locationId) {
-            this.$router.push(`locations/id/${locationId}`);
-        },
-        viewLocationType(locationTypeId) {
-            this.$router.push(`locationtypes/id/${locationTypeId}`);
+        addCheckin(amount) {
+            this.$store.commit("INCREASE_CHECKINS", amount);
         },
     },
     created() {
@@ -46,6 +38,9 @@ export default {
         });
         locationTypeService.getAllLocationTypes().then (response => {
             this.locationTypes = response.data;
+        });
+        CheckInService.barCheckIn(this.$route.params.locationId).then (response => {
+            this.checkins = response;
         });
     },
 }
