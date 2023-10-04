@@ -105,7 +105,7 @@ nav ul li {
   box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
   left: 0;
   right: 0;
-  margin-top: -300px;
+  margin-top: -195px;
 }
 
 .dropdown-option {
