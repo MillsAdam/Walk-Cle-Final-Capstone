@@ -1,8 +1,9 @@
 <template>
     <div>
         <ul>
-            <li v-for="checkin in checkins" :key="checkin.locationId">
-                {{ checkin.locationId }}
+            <li v-for="checkin in checkins" :key="checkin.checkinId">
+                {{ checkin.locationName }} |
+                {{ checkin.timestamp }}
             </li>
         </ul>
     </div>
@@ -19,8 +20,8 @@ export default {
         }
     },
     created() {
-        checkInService.barCheckIn(this.$route.params.locationId).then (response => {
-            this.checkins = response;
+        checkInService.checkInRecords().then (response => {
+            this.checkins = response.data;
         });
     },
 }
