@@ -6,21 +6,16 @@
       <label for="location">Location:</label>
       <input type="text" id="location" v-model="searchQuery" />
       <button type="submit">Search</button>
-    </form>
-      <!-- Dropdown Menu -->
-   <form @submit.prevent="filterTypeSearch" class="type-search">
+    </form><form @submit.prevent="filterTypeSearch" class="type-search">
     <label for="locationType">Location Type:</label>
    <select id="locationType" v-model="Type">
   <option value="all">All</option>
   <option value="stadiums">Stadiums</option>
   <option value="parks">Parks</option>
   <option value="bars">Bars</option>
-</select>
-    <button type="submit">Search</button>
+</select><button type="submit">Search</button>
   </form>
     </div>
-    <button @click="clearMarkersAndPopups">clear</button>
-
     <div id="map"></div>
     <!-- <button class="btn" @click="requestLocation">Get Current Location</button>-->
     
@@ -135,7 +130,7 @@ export default {
         this.addMapMarker({ lng, lat });
       });
     },
-    getDirections() {
+getDirections() {
   // Set up Mapbox Directions control
   const directions = new MapboxDirections({
     accessToken: mapboxgl.accessToken,
@@ -143,8 +138,33 @@ export default {
     profile: "mapbox/walking",
     steps: 3,
   });
+  
   directions.setOrigin([this.userLocation.lng, this.userLocation.lat]);
   this.map.addControl(directions, "bottom-left");
+
+  // Create a button to toggle directions
+  const toggleDirectionsButton = document.createElement("button");
+  toggleDirectionsButton.innerText = " Directions";
+  toggleDirectionsButton.style.position = "absolute";
+  toggleDirectionsButton.style.top = "10px";
+  toggleDirectionsButton.style.left = "10px";
+  
+  toggleDirectionsButton.addEventListener("click", () => {
+    const directionsContainer = document.querySelector(".mapboxgl-ctrl-bottom-left");
+    if (directionsContainer) {
+      if (directionsContainer.style.display === "none" || !directionsContainer.style.display) {
+        directionsContainer.style.display = "block"; // Show directions
+      } else {
+        directionsContainer.style.display = "none"; // Hide directions
+      }
+    } else {
+      console.error("Directions control element not found in the DOM.");
+    }
+  });
+
+  // Append the button to the map container
+  const mapContainer = this.map.getContainer();
+  mapContainer.appendChild(toggleDirectionsButton);
 },
     // search() {
     //   // Set up Mapbox Search Box
@@ -255,17 +275,28 @@ export default {
         locationLatitude,
         locationLongitude,
         locationDescription,
-        locationDays,
-        locationOpeningTimes,
-        locationClosingTimes,
+        locationSunOpen,
+        locationSunClose,
+        locationMonOpen,
+        locationMonClose,
+        locationTueOpen,
+        locationTueClose,
+        locationWedOpen,
+        locationWedClose,
+        locationThuOpen,
+        locationThuClose,
+        locationFriOpen,
+        locationFriClose,
+        locationSatOpen,
+        locationSatClose,
         locationImgUrl,
         locationInfoUrl,
       } = location;
 
       // Format the days and opening/closing times
-      const daysOfWeek = locationDays.join(", ");
-      const openingTimes = locationOpeningTimes.join(", ");
-      const closingTimes = locationClosingTimes.join(", ");
+      // const daysOfWeek = locationDays.join(", ");
+      // const openingTimes = locationOpeningTimes.join(", ");
+      // const closingTimes = locationClosingTimes.join(", ");
       const marker = new mapboxgl.Marker({ color: "blue" })
           .setLngLat([locationLongitude, locationLatitude ])
           .addTo(this.map);
@@ -275,10 +306,14 @@ export default {
         <div>
           <h2>${locationName}</h2>
           <p>${locationDescription}</p>
-          <p><strong>Days of Operation:</strong> ${daysOfWeek}</p>
-          <p><strong>Opening Times:</strong> ${openingTimes}</p>
-          <p><strong>Closing Times:</strong> ${closingTimes}</p>
-          <img src="${locationImgUrl}" alt="${locationName}" width="200" height="200">
+          <p><strong>Sunday:</strong> ${locationSunOpen} - ${locationSunClose}</p>
+          <p><strong>Monday:</strong> ${locationMonOpen} - ${locationMonClose}</p>
+          <p><strong>Tuesday:</strong> ${locationTueOpen} - ${locationTueClose}</p>
+          <p><strong>Wednesday:</strong> ${locationWedOpen} - ${locationWedClose}</p>
+          <p><strong>Thursday:</strong> ${locationThuOpen} - ${locationThuClose}</p>
+          <p><strong>Friday:</strong> ${locationFriOpen} - ${locationFriClose}</p>
+          <p><strong>Saturday:</strong> ${locationSatOpen} - ${locationSatClose}</p>
+          <img src="${locationImgUrl}" alt="${locationName}" width="200" height=auto>
           <a href="${locationInfoUrl}" target="_blank">More Info</a>
           <button id="checkInBtn${locationId}" class="check-in-button">Check-In</button>
         </div>
@@ -453,39 +488,55 @@ filterTypeSearch() {
 
       locations.forEach((location) => {
         const {
-          locationId,
-          locationName,
-          locationLatitude,
-          locationLongitude,
-          locationDescription,
-          locationDays,
-          locationOpeningTimes,
-          locationClosingTimes,
-          locationImgUrl,
-          locationInfoUrl,
-        } = location;
+        locationId,
+        // locationTypeName,
+        locationName,
+        locationLatitude,
+        locationLongitude,
+        locationDescription,
+        locationSunOpen,
+        locationSunClose,
+        locationMonOpen,
+        locationMonClose,
+        locationTueOpen,
+        locationTueClose,
+        locationWedOpen,
+        locationWedClose,
+        locationThuOpen,
+        locationThuClose,
+        locationFriOpen,
+        locationFriClose,
+        locationSatOpen,
+        locationSatClose,
+        locationImgUrl,
+        locationInfoUrl,
+      } = location;
 
         // Format the days and opening/closing times
-        const daysOfWeek = locationDays.join(", ");
-        const openingTimes = locationOpeningTimes.join(", ");
-        const closingTimes = locationClosingTimes.join(", ");
+        // const daysOfWeek = locationDays.join(", ");
+        // const openingTimes = locationOpeningTimes.join(", ");
+        // const closingTimes = locationClosingTimes.join(", ");
         const marker = new mapboxgl.Marker({ color: "blue" })
           .setLngLat([locationLongitude, locationLatitude])
           .addTo(this.map);
 
         // Create the HTML content for the popup
         const popupContent = `
-          <div>
-            <h2>${locationName}</h2>
-            <p>${locationDescription}</p>
-            <p><strong>Days of Operation:</strong> ${daysOfWeek}</p>
-            <p><strong>Opening Times:</strong> ${openingTimes}</p>
-            <p><strong>Closing Times:</strong> ${closingTimes}</p>
-            <img src="${locationImgUrl}" alt="${locationName}" width="200" height="200">
-            <a href="${locationInfoUrl}" target="_blank">More Info</a>
-            <button id="checkInBtn${locationId}" class="check-in-button">Check-In</button>
-          </div>
-        `;
+        <div>
+          <h2>${locationName}</h2>
+          <p>${locationDescription}</p>
+          <p><strong>Sunday:</strong> ${locationSunOpen} - ${locationSunClose}</p>
+          <p><strong>Monday:</strong> ${locationMonOpen} - ${locationMonClose}</p>
+          <p><strong>Tuesday:</strong> ${locationTueOpen} - ${locationTueClose}</p>
+          <p><strong>Wednesday:</strong> ${locationWedOpen} - ${locationWedClose}</p>
+          <p><strong>Thursday:</strong> ${locationThuOpen} - ${locationThuClose}</p>
+          <p><strong>Friday:</strong> ${locationFriOpen} - ${locationFriClose}</p>
+          <p><strong>Saturday:</strong> ${locationSatOpen} - ${locationSatClose}</p>
+          <img src="${locationImgUrl}" alt="${locationName}" width="200" height=auto>
+          <a href="${locationInfoUrl}" target="_blank">More Info</a>
+          <button id="checkInBtn${locationId}" class="check-in-button">Check-In</button>
+        </div>
+      `;
         this.map.flyTo({ center: [-81.698738, 41.497257], zoom: 14 });
         const popup = new mapboxgl.Popup({ offset: 25 })
           .setHTML(popupContent);
@@ -567,22 +618,40 @@ this.clearMarkersAndPopups()
   width: 100vw;
   height: 100%;
 }
+label{
+  display: inline-flex;
+}
 
 .name-search {
-  grid-area: name
+  display: inline-block;
+  grid-area: name;
+  padding-right: 5px;
+  font-family: "Urbanist", sans-serif;
+  background: #407F7F;
+  color: #fff;
+  
+  cursor: pointer;
+  text-decoration: none;
+  font-size: 15px;
+  width: 40%;
 }
 
 .type-search {
-  grid-area: type
+  display: inline-block;
+  grid-area: name;
+  padding-right: 5px;
+  font-family: "Urbanist", sans-serif;
+  background: #407F7F;
+  color: #fff;
+  padding-top: 20px;
+  text-align: center;
+  cursor: pointer;
+  text-decoration: none;
+  font-size: 15px;
+  width: 40%;
 }
 
-.container {
-  display: flex;
-  grid-template-columns: 1fr 1fr;
-  grid-template-areas:
-    "name search"
-    "map map";
-}
+
 
 .mapbox-directions-instructions {
   

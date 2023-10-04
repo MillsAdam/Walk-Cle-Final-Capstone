@@ -67,6 +67,10 @@ img {
   width: 30px;
   height: auto;
 }
+#logo{
+  width: 70px;
+  height: auto;
+}
 
 .container {
   width: 100vw;

@@ -190,7 +190,7 @@ public class JdbcLocationDao implements LocationDao {
         locations.setLocationSunClose(rs.getString("location_sun_close"));
         locations.setLocationMonOpen(rs.getString("location_mon_open"));
         locations.setLocationMonClose(rs.getString("location_mon_close"));
-        locations.setLocationTueClose(rs.getString("location_tue_open"));
+        locations.setLocationTueOpen(rs.getString("location_tue_open"));
         locations.setLocationTueClose(rs.getString("location_tue_close"));
         locations.setLocationWedOpen(rs.getString("location_wed_open"));
         locations.setLocationWedClose(rs.getString("location_wed_close"));
