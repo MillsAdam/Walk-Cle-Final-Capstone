@@ -5,6 +5,6 @@ const http = axios.create({
 })
 export default{
     barCheckIn(locationId) {
-        return http.get(`/barcheckin/${locationId}`)
+        return http.post('/barcheckin', locationId)
     }
 }
