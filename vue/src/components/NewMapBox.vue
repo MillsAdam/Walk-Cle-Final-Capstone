@@ -144,36 +144,6 @@ export default {
   });
   directions.setOrigin([this.userLocation.lng, this.userLocation.lat]);
   this.map.addControl(directions, "bottom-left");
-
-  // Create a button to remove directions
-  const removeDirectionsButton = document.createElement("button");
-  removeDirectionsButton.textContent = "Hide Directions";
-  removeDirectionsButton.className = "hide-directions-button";
-  removeDirectionsButton.style.display = "none"; // Initially hide the "Hide Directions" button
-
-  // Create a button to show directions
-  const showDirectionsButton = document.createElement("button");
-  showDirectionsButton.textContent = "Show Directions";
-  showDirectionsButton.className = "show-directions-button";
-
-  // Add a click event listener to show directions
-  showDirectionsButton.addEventListener("click", () => {
-    this.map.addControl(directions, "bottom-left"); // Add or show directions control
-    removeDirectionsButton.style.display = "block"; // Show the "Hide Directions" button
-    showDirectionsButton.style.display = "none"; // Hide the "Show Directions" button
-  });
-
-  // Add a click event listener to hide directions
-  removeDirectionsButton.addEventListener("click", () => {
-    this.map.removeControl(directions); // Remove or hide directions control
-    showDirectionsButton.style.display = "block"; // Show the "Show Directions" button
-    removeDirectionsButton.style.display = "none"; // Hide the "Hide Directions" button
-  });
-
-  // Add the buttons to the Mapbox Directions control container
-  const directionsContainer = document.querySelector(".mapboxgl-ctrl-directions");
-  directionsContainer.appendChild(showDirectionsButton);
-  directionsContainer.appendChild(removeDirectionsButton);
 },
     // search() {
     //   // Set up Mapbox Search Box
@@ -462,7 +432,8 @@ filterTypeSearch() {
     .then((response) => {
       const locations = response.data; // Assuming this is an array of locations
       // Clear existing markers and popups
-      this.removeMarkersAndPopups();
+        this.removeMarkersAndPopups();
+     
       console.log(apiEndpoint);
 
       locations.forEach((location) => {
@@ -506,43 +477,63 @@ filterTypeSearch() {
 
         // Attach the popup to the marker
         marker.setPopup(popup);
+        if (this.Type === "stadiums") {
+          this.stadiums.push(marker);
+        } else if (this.Type === "parks") {
+          this.parks.push(marker);
+        } else if (this.Type === "bars") {
+          this.Bars.push(marker);
+        }else if (this.Type === "all"){
+          this.all.push(marker)} 
+          
       });
     })
     .catch((error) => {
       console.error("Error fetching locations:", error);
     });
+    
 },
 
-    removeMarkersAndPopups() {
-  this.markers.forEach((marker) => {
+  removeMarkersAndPopups() {
+  // Remove markers from the "stadiums" category
+  this.stadiums.forEach((marker) => {
     marker.remove();
-    
   });
-  this.all.forEach((poi) =>
-  poi.remove())
-  this.stadiums.forEach((poi) =>{
-    poi.remove();
-  })
-  this.Bars.forEach((poi) =>{
-    poi.remove();
-  })
-  this.parks.forEach((poi) =>{
-    poi.remove();
-  })
-  this.poi.forEach((poi) =>{
-    poi.remove();
-  })
-  this.coffee.forEach((poi) =>{
-    poi.remove();
-  })
+  this.stadiums = [];
+
+  // Remove markers from the "parks" category
+  this.parks.forEach((marker) => {
+    marker.remove();
+  });
   this.parks = [];
+
+  // Remove markers from the "bars" category
+  this.Bars.forEach((marker) => {
+    marker.remove();
+  });
   this.Bars = [];
+
+  // Remove markers from the "all" category
+  this.all.forEach((marker) => {
+    marker.remove();
+  });
+  this.all = [];
+
+  // Remove markers from the "poi" category (if you have a "poi" array)
+  this.poi.forEach((marker) => {
+    marker.remove();
+  });
   this.poi = [];
-  this.markers = [];
+
+  // Remove markers from the "coffee" category (if you have a "coffee" array)
+  this.coffee.forEach((marker) => {
+    marker.remove();
+  });
   this.coffee = [];
-  this.all =[];
-  
-    },
+
+  // Clear the main markers array
+  this.markers = [];
+},
   },
   mounted() {
     navigator.geolocation.getCurrentPosition((position) => {
