@@ -20,14 +20,19 @@ public class JdbcCheckInRecordDao implements CheckInRecordDao {
 
     @Override
     public List<CheckInRecord> getCheckInRecords(String username) {
-
         List<CheckInRecord> records = new ArrayList<>();
-        String sql = "SELECT location.location_name, checkins.checkin_timestamp FROM checkins JOIN location ON checkins.location_id = location.location_id WHERE username = ?;";
+        String sql = "SELECT checkins.checkin_id, checkins.username, checkins.location_id, location.location_name, checkins.checked_in, checkins.checkin_timestamp FROM checkins JOIN location ON checkins.location_id = location.location_id WHERE checkins.username = ?;";
 
         try {
             SqlRowSet results = jdbcTemplate.queryForRowSet(sql, username);
             while (results.next()) {
-                CheckInRecord checkInRecord = mapRowToCheckInRecord(results);
+                CheckInRecord checkInRecord = new CheckInRecord();
+                checkInRecord.setCheckInId(results.getInt("checkin_id"));
+                checkInRecord.setUsername(results.getString("username"));
+                checkInRecord.setLocationId(results.getInt("location_id"));
+                checkInRecord.setLocationName(results.getString("location_name"));
+                checkInRecord.setCheckedIn(results.getBoolean("checked_in"));
+                checkInRecord.setTimestamp(results.getTimestamp("checkin_timestamp"));
                 records.add(checkInRecord);
             }
         } catch (CannotGetJdbcConnectionException e) {
@@ -35,16 +40,5 @@ public class JdbcCheckInRecordDao implements CheckInRecordDao {
         }
 
         return records;
-    }
-
-    private CheckInRecord mapRowToCheckInRecord(SqlRowSet rs) {
-        CheckInRecord checkInRecord = new CheckInRecord();
-        checkInRecord.setCheckInId(rs.getInt("checkin_id"));
-        checkInRecord.setUsername(rs.getString("username"));
-        checkInRecord.setLocationId(rs.getInt("location_id"));
-        checkInRecord.setCheckedIn(rs.getBoolean("checked_in"));
-        checkInRecord.setTimestamp(rs.getTimestamp("checkin_timestamp"));
-
-        return checkInRecord;
     }
 }

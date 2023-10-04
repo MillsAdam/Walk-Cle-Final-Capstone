@@ -8,16 +8,26 @@ public class CheckInRecord {
     private int checkInId;
     private String username;
     private int locationId;
+    private String locationName;
     private boolean checkedIn;
     private Timestamp timestamp;
 
     public CheckInRecord() {
     }
 
-    public CheckInRecord(int checkin_id, String username, int location_id, boolean checkedIn, Timestamp timestamp) {
+    public String getLocationName() {
+        return locationName;
+    }
+
+    public void setLocationName(String locationName) {
+        this.locationName = locationName;
+    }
+
+    public CheckInRecord(int checkin_id, String username, int location_id, String locationName, boolean checkedIn, Timestamp timestamp) {
         this.checkInId = checkin_id;
         this.username = username;
         this.locationId = locationId;
+        this.locationName = locationName;
         this.checkedIn = checkedIn;
         this.timestamp = timestamp;
     }
