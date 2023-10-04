@@ -18,24 +18,6 @@
     <label for="longitude">Longitude:</label>
     <input v-model="longitude" id="longitude" />
     <br />
-    <label for="locationDescription">Location Description:</label>
-      <textarea v-model="locationDescription" id="locationDescription"></textarea>
-      <br />
-      <label for="openDates">Open Dates:</label>
-      <input v-model="openDates" id="openDates" />
-      <br />
-      <label for="openTime">Open Time:</label>
-      <input type="time" v-model="openTime" id="openTime" />
-      <br />
-      <label for="closingTime">Closing Time:</label>
-      <input type="time" v-model="closingTime" id="closingTime" />
-      <br />
-      <label for="imgUrl">Image URL:</label>
-      <input v-model="imgUrl" id="imgUrl" />
-      <br />
-      <label for="locationUrl">Location URL:</label>
-      <input v-model="locationUrl" id="locationUrl" />
-      <br />
       <button class="btn" @click="handleSubmit">Submit</button>
     </div>
   </div>
