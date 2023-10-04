@@ -3,9 +3,10 @@
     <div class="form-container">
     <label for="locationType">Location Type:</label>
     <select v-model="locationType" id="locationType">
-      <option value="stadiums">Stadiums</option>
-      <option value="parks">Parks</option>
-      <option value="bars">Bars</option>
+      <option value="Stadiums">Stadiums</option>
+      <option value="Parks">Parks</option>
+      <option value="Bars">Bars</option>
+      <option value="Other">Other</option>
     </select>
     <br />
     <label for="locationName">Location Name:</label>
@@ -17,7 +18,25 @@
     <label for="longitude">Longitude:</label>
     <input v-model="longitude" id="longitude" />
     <br />
-    <button class="btn" @click="handleSubmit">Submit</button>
+    <label for="locationDescription">Location Description:</label>
+      <textarea v-model="locationDescription" id="locationDescription"></textarea>
+      <br />
+      <label for="openDates">Open Dates:</label>
+      <input v-model="openDates" id="openDates" />
+      <br />
+      <label for="openTime">Open Time:</label>
+      <input type="time" v-model="openTime" id="openTime" />
+      <br />
+      <label for="closingTime">Closing Time:</label>
+      <input type="time" v-model="closingTime" id="closingTime" />
+      <br />
+      <label for="imgUrl">Image URL:</label>
+      <input v-model="imgUrl" id="imgUrl" />
+      <br />
+      <label for="locationUrl">Location URL:</label>
+      <input v-model="locationUrl" id="locationUrl" />
+      <br />
+      <button class="btn" @click="handleSubmit">Submit</button>
     </div>
   </div>
 </template>
@@ -37,12 +56,12 @@ export default {
   methods: {
     handleSubmit() {
       const locationData = {
-        locationType: this.locationType,
+        locationType: parseInt(this.locationType),
         locationName: this.locationName,
         latitude: this.latitude,
         longitude: this.longitude
       };
-      axios.post('http://localhost:9000/createlocation', locationData)
+      axios.post('http://localhost:9000/locations/createlocation', locationData)
     }
   }
 }
@@ -86,5 +105,26 @@ select {
   background-color: #92b9c5;
   text-align: center;
   width: 100%;
+}
+
+#container {
+  min-height: 100vh;
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
+}
+
+.form-container {
+  flex-grow: 1;
+  max-height: 80vh;
+  overflow-y: auto;
+}
+
+/* Adjustments for input sizes */
+input[type="time"],
+textarea {
+  width: 10%; /* Make the input elements fill their container */
+  padding: 8px; /* Add some padding for better appearance */
+  font-size: 14px; /* Adjust font size for readability */
 }
 </style>
