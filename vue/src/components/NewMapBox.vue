@@ -315,7 +315,7 @@ getDirections() {
           <p><strong>Saturday:</strong> ${locationSatOpen} - ${locationSatClose}</p>
           <img src="${locationImgUrl}" alt="${locationName}" width="200" height=auto>
           <a href="${locationInfoUrl}" target="_blank">More Info</a>
-          <button id="checkInBtn${locationId}" class="check-in-button">Check-In</button>
+          <button v-on:click="addCheckin(1)" id="checkInBtn${locationId}" class="check-in-button">Check-In</button>
         </div>
       `;
       this.map.flyTo({ center: [-81.698738, 41.497257], zoom: 14 });
@@ -534,7 +534,7 @@ filterTypeSearch() {
           <p><strong>Saturday:</strong> ${locationSatOpen} - ${locationSatClose}</p>
           <img src="${locationImgUrl}" alt="${locationName}" width="200" height=auto>
           <a href="${locationInfoUrl}" target="_blank">More Info</a>
-          <button id="checkInBtn${locationId}" class="check-in-button">Check-In</button>
+          <button v-on:click="addCheckin(1)" id="checkInBtn${locationId}" class="check-in-button">Check-In</button>
         </div>
       `;
         this.map.flyTo({ center: [-81.698738, 41.497257], zoom: 14 });
@@ -590,6 +590,9 @@ filterTypeSearch() {
   this.all =[];
  
     },
+    addCheckin(amount) {
+      this.$store.commit("INCREASE_CHECKINS", amount);
+    }
 
   },
   mounted() {

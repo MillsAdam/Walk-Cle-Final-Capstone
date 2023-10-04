@@ -12,6 +12,7 @@ import PlacesList from '../components/PlacesList.vue'
 import addlayers from '../views/addlayers.vue'
 import AddPointView from '../views/addPointView.vue'
 import Locations from '../views/Locations.vue'
+import CheckinHistory from '../views/CheckinHistory.vue'
 
 Vue.use(Router)
 
@@ -115,7 +116,15 @@ const router = new Router({
       meta: {
         requiresAuth: false
       }
-    }
+    },
+    {
+      path: "/checkinhistory",
+      name: "checkin-history",
+      component: CheckinHistory,
+      meta: {
+        requiresAuth: false
+      }
+    },
     
     
   ]

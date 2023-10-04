@@ -24,13 +24,11 @@
           <a id="menu-link" @click.prevent="toggleDropdown">
             <img src="../assets/Footer-Images/menu-burger.png" id="menu" />
             <ul v-if="isDropdownOpen" class="dropdown-menu">
-              <a href="#" class="dropdown-option">Profile</a>
-              <a href="#" class="dropdown-option">Settings</a>
-              <router-link :to="{ name: 'google' }" class="dropdown-option">
-                <a href="#" class="dropdown-option">Google</a>
+              <router-link :to="{ name: 'checkin-history' }" class="dropdown-option">
+                <a href="#" class="dropdown-option">Checkin History</a>
               </router-link>
               <router-link :to="{ name: 'AddPoint' }" class="dropdown-option">
-                <a href="#" class="dropdown-option">Add a Point</a>
+                <a href="#" class="dropdown-option">Add a Location</a>
               </router-link>
               <router-link :to="{ name: 'locations' }" class="dropdown-option">
                 <a href="#" class="dropdown-option">Locations</a>
