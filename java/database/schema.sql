@@ -25,12 +25,12 @@ CREATE TABLE location (
     location_name varchar (50) NOT NULL UNIQUE,
     location_latitude double precision NOT NULL,
     location_longitude double precision NOT NULL,
-    location_description varchar (200),
+    location_description varchar (300),
     location_days varchar (200),
     location_opening_times varchar (200),
     location_closing_times varchar (200),
-    location_img_url varchar (200),
-    location_info_url varchar (200),
+    location_img_url varchar (300),
+    location_info_url varchar (300),
     CONSTRAINT PK_location PRIMARY KEY (location_id),
     CONSTRAINT FK_location_type_name FOREIGN KEY (location_type_name) REFERENCES location_type (location_type_name)
 );
