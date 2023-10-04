@@ -24,6 +24,6 @@ public class CheckInController {
     @RequestMapping(method = RequestMethod.GET)
     public List<CheckInRecord> getCheckInRecords(Principal principal) {
         String username = principal.getName();
-        return checkInRecordDao.getCheckInRecords();
+        return checkInRecordDao.getCheckInRecords(username);
     }
 }

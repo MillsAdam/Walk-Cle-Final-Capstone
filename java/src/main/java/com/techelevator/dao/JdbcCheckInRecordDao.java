@@ -19,13 +19,13 @@ public class JdbcCheckInRecordDao implements CheckInRecordDao {
     }
 
     @Override
-    public List<CheckInRecord> getCheckInRecords() {
+    public List<CheckInRecord> getCheckInRecords(String username) {
 
         List<CheckInRecord> records = new ArrayList<>();
-        String sql = "SELECT * FROM checkins";
+        String sql = "SELECT location.location_name, checkins.checkin_timestamp FROM checkins JOIN location ON checkins.location_id = location.location_id WHERE username = ?;";
 
         try {
-            SqlRowSet results = jdbcTemplate.queryForRowSet(sql);
+            SqlRowSet results = jdbcTemplate.queryForRowSet(sql, username);
             while (results.next()) {
                 CheckInRecord checkInRecord = mapRowToCheckInRecord(results);
                 records.add(checkInRecord);
@@ -43,9 +43,8 @@ public class JdbcCheckInRecordDao implements CheckInRecordDao {
         checkInRecord.setUsername(rs.getString("username"));
         checkInRecord.setLocationId(rs.getInt("location_id"));
         checkInRecord.setCheckedIn(rs.getBoolean("checked_in"));
-        checkInRecord.setTimestamp(rs.getTimestamp("timestamp"));
+        checkInRecord.setTimestamp(rs.getTimestamp("checkin_timestamp"));
 
         return checkInRecord;
     }
-
 }
