@@ -60,8 +60,15 @@ CREATE TABLE rewards (
     CONSTRAINT FK_username FOREIGN KEY (username) REFERENCES users (username)
 );
 
-
-
-
+CREATE TABLE checkins (
+    checkin_id SERIAL,
+    username varchar(50) NOT NULL,
+    location_id SERIAL UNIQUE,
+    checked_in boolean DEFAULT false,
+    checkin_timestamp TIMESTAMP,
+    CONSTRAINT PK_checkin_id PRIMARY KEY (checkin_id),
+    CONSTRAINT FK_username FOREIGN KEY (username) REFERENCES users (username),
+    CONSTRAINT FK_location_id FOREIGN KEY (location_id) REFERENCES location (location_id)
+);
 
 COMMIT TRANSACTION;

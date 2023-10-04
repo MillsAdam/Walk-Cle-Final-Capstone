@@ -1,10 +1,7 @@
 package com.techelevator.controller;
 
 import com.techelevator.dao.RewardsDao;
-import org.springframework.web.bind.annotation.CrossOrigin;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RequestMethod;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 
 import java.security.Principal;
 import java.util.List;
@@ -68,21 +65,21 @@ public class RewardsController {
         return rewardsDao.allPlacesVisited(username);
     }
 
-    @RequestMapping(path = "/barcheckin", method = RequestMethod.PUT)
-    public Integer updateBarCheckIn(Principal principal) {
+    @RequestMapping(path = "/barcheckin/{locationId}", method = RequestMethod.POST)
+    public void updateBarCheckIn(@PathVariable int locationId, Principal principal) {
         String username = principal.getName();
-        return rewardsDao.updateBarCheckIn(username);
+        rewardsDao.updateBarCheckIn(username, locationId);
     }
 
-    @RequestMapping(path = "/parkcheckin", method = RequestMethod.PUT)
-    public Integer updateParkCheckIn(Principal principal) {
+    @RequestMapping(path = "/parkcheckin/{locationId}", method = RequestMethod.POST)
+    public void updateParkCheckIn(@PathVariable int locationId, Principal principal) {
         String username = principal.getName();
-        return rewardsDao.updateParkCheckIn(username);
+        rewardsDao.updateParkCheckIn(username, locationId);
     }
 
-    @RequestMapping(path = "/stadiumcheckin", method = RequestMethod.PUT)
-    public Integer updateStadiumCheckIn(Principal principal) {
+    @RequestMapping(path = "/stadiumcheckin/{locationId}", method = RequestMethod.POST)
+    public void updateStadiumCheckIn(@PathVariable int locationId, Principal principal) {
         String username = principal.getName();
-        return rewardsDao.updateStadiumCheckIn(username);
+        rewardsDao.updateStadiumCheckIn(username, locationId);
     }
 }

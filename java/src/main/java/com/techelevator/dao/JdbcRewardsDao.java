@@ -163,39 +163,48 @@ public class JdbcRewardsDao implements RewardsDao {
     }
 
     @Override
-    public Integer updateBarCheckIn(String username) {
-        String sql = "UPDATE rewards SET amount_bars_visited = amount_bars_visited + 1 WHERE username = ?;";
+    public void updateBarCheckIn(String username, int locationId) {
+        String updateRewardsSql = "UPDATE rewards SET amount_bars_visited = amount_bars_visited + 1 WHERE username = ?;";
+        String insertCheckinSql = "INSERT INTO checkins (username, location_id, checked_in, checkin_timestamp) VALUES (?, ?, true, ?);";
+
+        java.sql.Timestamp currentTimestamp = new java.sql.Timestamp(System.currentTimeMillis());
 
         try {
-            jdbcTemplate.update(sql, username);
+            jdbcTemplate.update(updateRewardsSql, username);
+            jdbcTemplate.update(insertCheckinSql, username, locationId, currentTimestamp);
         } catch (CannotGetJdbcConnectionException e) {
             throw new DaoException("Unable to connect to server or database", e);
         }
-        return null;
     }
 
     @Override
-    public Integer updateParkCheckIn(String username) {
-        String sql = "UPDATE rewards SET amount_parks_visited = amount_parks_visited + 1 WHERE username = ?;";
+    public void updateParkCheckIn(String username, int locationId) {
+        String updateRewardsSql = "UPDATE rewards SET amount_parks_visited = amount_parks_visited + 1 WHERE username = ?;";
+        String insertCheckinSql = "INSERT INTO checkins (username, location_id, checked_in, checkin_timestamp) VALUES (?, ?, true, ?);";
+
+        java.sql.Timestamp currentTimestamp = new java.sql.Timestamp(System.currentTimeMillis());
 
         try {
-            jdbcTemplate.update(sql, username);
+            jdbcTemplate.update(updateRewardsSql, username);
+            jdbcTemplate.update(insertCheckinSql, username, locationId, currentTimestamp);
         } catch (CannotGetJdbcConnectionException e) {
             throw new DaoException("Unable to connect to server or database", e);
         }
-        return null;
     }
 
     @Override
-    public Integer updateStadiumCheckIn(String username) {
+    public void updateStadiumCheckIn(String username, int locationId) {
         String sql = "UPDATE rewards SET amount_stadiums_visited = amount_stadiums_visited + 1 WHERE username = ?;";
+        String insertCheckinSql = "INSERT INTO checkins (username, location_id, checked_in, checkin_timestamp) VALUES (?, ?, true, ?);";
+
+        java.sql.Timestamp currentTimestamp = new java.sql.Timestamp(System.currentTimeMillis());
 
         try {
             jdbcTemplate.update(sql, username);
+            jdbcTemplate.update(insertCheckinSql, username, locationId, currentTimestamp);
         } catch (CannotGetJdbcConnectionException e) {
             throw new DaoException("Unable to connect to server or database", e);
         }
-        return null;
     }
 
     private void updateAllBarsVisited(boolean value) {
