@@ -8,7 +8,7 @@
           </router-link>
         </li>
         <li>
-          <router-link v-bind:to="{name: 'places'}">
+          <router-link v-bind:to="{name: 'locations'}">
             <img src="../assets/Footer-Images/marker.png" id="marker" />
           </router-link>
         </li>
@@ -29,9 +29,6 @@
               </router-link>
               <router-link :to="{ name: 'AddPoint' }" class="dropdown-option">
                 <a href="#" class="dropdown-option">Add a Location</a>
-              </router-link>
-              <router-link :to="{ name: 'locations' }" class="dropdown-option">
-                <a href="#" class="dropdown-option">Locations</a>
               </router-link>
               <router-link :to="{ name: 'logout' }" class="dropdown-option">
                 <a href="#" class="dropdown-option">Logout</a>
