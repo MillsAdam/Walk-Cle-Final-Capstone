@@ -469,22 +469,22 @@ filterTypeSearch() {
 .form-search {
   display: grid;
   grid-template-columns: 1fr 1fr;
-  gap: 200px;
+  gap: 30%;
   grid-template-areas:
     "name-search type-search";
-  justify-content: center;
+  justify-content: space-evenly;
   align-items: center;
 }
 
-@media screen and (max-width: 500px) {
+@media screen and (max-width: 550px) {
     .form-search {
       display: grid;
       grid-template-columns: 1fr;
-      gap: 5px;
+      gap: 0;
       grid-template-areas:
         "name-search"
         "type-search";
-      justify-content: center;
+      justify-content: space-between;
       align-items: center;
     }
 }
@@ -493,22 +493,24 @@ filterTypeSearch() {
   grid-area: name-search;
   display: grid;
   grid-template-columns: 1fr 1fr 1fr;
-  gap: 20px;
+  /* gap: 20px; */
   grid-template-areas:
     "location-label location-input location-button";
   justify-content: space-evenly;
   align-items: center;
+  text-align: center;
 }
 
 .type-search {
   grid-area: type-search;
   display: grid;
   grid-template-columns: 1fr 1fr 1fr;
-  gap: 20px;
+  /* gap: 20px; */
   grid-template-areas:
     "locationType-label locationType-select locationType-button";
   justify-content: space-evenly;
   align-items: center;
+  text-align: center;
 }
 
 .name-search, .type-search {
@@ -550,6 +552,9 @@ button[type="submit"] {
   border: none;
   cursor: pointer;
   margin-left: 10px;
+  display: flex;
+  justify-content: center;
+  align-items: center;
 }
 
 button[type="submit"]:hover {
