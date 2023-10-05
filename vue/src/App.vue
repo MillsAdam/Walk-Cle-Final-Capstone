@@ -74,7 +74,7 @@ div.mapboxgl-control-container {
 .mapboxgl-ctrl-directions {
   border-radius: 5px; /* Add rounded corners */
   /* Add other custom styles as needed */
-  min-width: 59.7% !important; 
+  min-width: 81% !important; 
   min-height: 50px !important; 
   margin: 0;
 }

@@ -33,6 +33,7 @@ export default {
   align-items: center;
   height: 10%;
   width: 100%;
+  margin: 0;
 }
 
 #rewards-comp {
@@ -41,6 +42,7 @@ export default {
   align-items: center;
   height: 80%;
   width: 100%;
+  overflow: auto;
 }
 
 #footer-comp {

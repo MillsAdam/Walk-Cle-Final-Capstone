@@ -49,9 +49,14 @@ export default {
 }
 
 img {
-    max-width: 250px;
+    max-width: 180px;
     height: auto;
     width: 100%;
+}
+
+.trophies {
+    display: flex;
+    flex-direction: column;
 }
 
 @media screen and (max-width: 400px) {
