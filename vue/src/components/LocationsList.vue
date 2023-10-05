@@ -4,10 +4,12 @@
       <li v-for="location in locations" :key="location.id">
         <!-- {{ location.locationId }} |  -->
         <!-- {{ location.locationTypeName }} |  -->
-        {{ location.locationName }} |
+        <div class="location-info">
+          {{ location.locationName }}
+        </div>
         <!-- {{ location.locationLatitude }} |  -->
         <!-- {{ location.locationLongitude }} |  -->
-        <button @click="handleCheckIn(location.locationId)">Checkin</button>
+        <button class="list-btn" @click="handleCheckIn(location.locationId)">Check In</button>
       </li>
     </ul>
   </div>
@@ -72,4 +74,33 @@ export default {
 </script>
 
 <style scoped>
+
+.list-btn {
+  font-family: "Urbanist", sans-serif;
+  display: inline-block;
+  background: #407F7F;
+  color: #fff;
+  border: none;
+  padding: 12px 100px; /* Increase padding to make the button wider */
+  border-radius: 5px;
+  cursor: pointer;
+  text-decoration: none;
+  font-size: 15px;
+  width: auto; /* Let the button width be determined by its content */
+  margin-top: 1px; /* Reduce the space above the button */
+}
+
+ul {
+  padding: 0;
+  list-style: none;
+}
+
+li{
+  margin-bottom: 3px;
+}
+
+.location-info {
+  font-weight: bold;
+  margin-bottom: 1px;
+}
 </style>

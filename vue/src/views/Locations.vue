@@ -33,6 +33,10 @@
     align-items: center;
     height: 10%;
     width: 100%;
+    margin-bottom: 0;
+    margin-top: 30px;
+    text-decoration: underline;
+   
   }
   
   #locations-list {
@@ -41,6 +45,7 @@
     align-items: center;
     height: 80%;
     width: 100%;
+    margin-bottom: 10%;
   }
   
   #footer-comp {

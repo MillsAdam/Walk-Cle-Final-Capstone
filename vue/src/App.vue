@@ -30,6 +30,7 @@ export default {
   /* DELETED MAX-WIDTH, WAS MESSING WITH FOOTER */
   width: 100vw;
   height: 100vh;
+  overflow: hidden;
 }
 
 .btn {
