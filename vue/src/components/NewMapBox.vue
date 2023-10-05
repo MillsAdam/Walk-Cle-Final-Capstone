@@ -323,7 +323,7 @@ toggleDirectionsButton.style.bottom = "132px"
           <a href="${locationInfoUrl}" target="_blank">More Info</a>
         </div>
       `;
-      this.map.flyTo({ center: [-81.698738, 41.497257], zoom: 14 });
+      this.map.flyTo({ center: [-81.698738, 41.497257], zoom: 12 });
 const popup = new mapboxgl.Popup({ offset: 25 })
           .setHTML(popupContent);
 
@@ -540,7 +540,7 @@ filterTypeSearch() {
           <a href="${locationInfoUrl}" target="_blank">More Info</a>
         </div>
       `;
-        this.map.flyTo({ center: [-81.698738, 41.497257], zoom: 14 });
+        this.map.flyTo({ center: [-81.698738, 41.497257], zoom: 13 });
         const popup = new mapboxgl.Popup({ offset: 25 })
           .setHTML(popupContent);
 
