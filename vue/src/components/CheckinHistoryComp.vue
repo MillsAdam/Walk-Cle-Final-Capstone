@@ -29,5 +29,17 @@ export default {
 </script>
 
 <style scoped>
+ul {
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-content: center;
+    padding: 0;
+    margin-bottom: 100px;
+}
 
+li {
+    list-style: none;
+    margin-bottom: 10px;
+}
 </style>

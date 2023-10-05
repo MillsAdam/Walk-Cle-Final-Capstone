@@ -41,6 +41,8 @@
     align-items: center;
     height: 80%;
     width: 100%;
+    overflow: auto;
+    margin-bottom: 65px;
   }
   
   #footer-comp {
