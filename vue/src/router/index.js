@@ -5,11 +5,7 @@ import Login from '../views/Login.vue'
 import Logout from '../views/Logout.vue'
 import Register from '../views/Register.vue'
 import store from '../store/index'
-import Google from '../views/Google.vue'
-import NewMapBoxView from '../views/NewMapBoxView.vue'
 import Rewards from '../views/Rewards.vue'
-import PlacesList from '../components/PlacesList.vue'
-import addlayers from '../views/addlayers.vue'
 import AddPointView from '../views/addPointView.vue'
 import Locations from '../views/Locations.vue'
 import CheckinHistory from '../views/CheckinHistory.vue'
@@ -62,41 +58,9 @@ const router = new Router({
       }
     },
     {
-      path: "/google",
-      name:"google",
-      component: Google,
-      meta: {
-        requiresAuth: false
-      }
-    },
-    {
-      path: "/newmapbox",
-      name: "new-mapbox",
-      component: NewMapBoxView,
-      meta: {
-        requiresAuth: false
-      }
-    },
-    {
       path: "/rewards",
       name: "rewards",
       component: Rewards,
-      meta: {
-        requiresAuth: false
-      }
-    },
-    {
-      path: "/places",
-      name: "places",
-      component: PlacesList,
-      meta: {
-        requiresAuth: false
-      }
-    },
-    {
-      path: "/add",
-      name: "layers",
-      component: addlayers,
       meta: {
         requiresAuth: false
       }
