@@ -607,13 +607,15 @@ filterTypeSearch() {
       this.initMap();
       this.map.flyTo({ center: [lng, lat], zoom: 15 });
       this.addMapMarker({ lng, lat });
-this.clearMarkersAndPopups() 
+      this.clearMarkersAndPopups() 
       this.getDirections();
       this.search();
       this.navigation();
       this.geoLocate();
       this.fetchDataFromAPI(); 
       this.fetchDataFroStadiums()
+      this.popupContent()
+      this.form
     });
   },
 };
