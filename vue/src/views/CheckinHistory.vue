@@ -1,6 +1,6 @@
 <template>
     <div class="container">
-      <h1 id="title">Checkin History</h1>
+      <h1 id="title">Check-In History</h1>
       <CheckinHistoryComp id="checkin-history-comp"/>
       <FooterComp id="footer-comp"/>
     </div>
@@ -33,6 +33,9 @@
     align-items: center;
     height: 10%;
     width: 100%;
+    margin-bottom: 0;
+    margin-top: 30px;
+    text-decoration: underline;
   }
   
   #checkin-history-comp {
@@ -42,7 +45,7 @@
     height: 80%;
     width: 100%;
     overflow: auto;
-    margin-bottom: 65px;
+    margin-bottom: 35px;
   }
   
   #footer-comp {
