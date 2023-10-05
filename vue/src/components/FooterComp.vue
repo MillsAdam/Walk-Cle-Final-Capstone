@@ -24,11 +24,17 @@
           <a id="menu-link" @click.prevent="toggleDropdown">
             <img src="../assets/Footer-Images/menu-burger.png" id="menu" />
             <ul v-if="isDropdownOpen" class="dropdown-menu">
-              <router-link :to="{ name: 'checkin-history' }" class="dropdown-option">
-                <a href="#" class="dropdown-option">Checkin History</a>
+              <router-link :to="{ name: 'home' }" class="dropdown-option">
+                <a href="#" class="dropdown-option">Home</a>
               </router-link>
-              <router-link :to="{ name: 'AddPoint' }" class="dropdown-option">
-                <a href="#" class="dropdown-option">Add a Location</a>
+              <router-link :to="{ name: 'locations' }" class="dropdown-option">
+                <a href="#" class="dropdown-option">Locations</a>
+              </router-link>
+              <router-link :to="{ name: 'rewards' }" class="dropdown-option">
+                <a href="#" class="dropdown-option">Rewards</a>
+              </router-link>
+              <router-link :to="{ name: 'checkin-history' }" class="dropdown-option">
+                <a href="#" class="dropdown-option">History</a>
               </router-link>
               <router-link :to="{ name: 'logout' }" class="dropdown-option">
                 <a href="#" class="dropdown-option">Logout</a>
@@ -105,7 +111,7 @@ nav ul li {
   box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
   left: 0;
   right: 0;
-  margin-top: -195px;
+  margin-top: -260px;
 }
 
 .dropdown-option {
