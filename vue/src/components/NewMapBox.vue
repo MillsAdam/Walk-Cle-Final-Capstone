@@ -148,10 +148,14 @@ getDirections() {
   // Create a button to toggle directions
   const toggleDirectionsButton = document.createElement("button");
   toggleDirectionsButton.innerText = " Directions";
-  toggleDirectionsButton.style.position = "absolute";
-  toggleDirectionsButton.style.top = "10px";
-  toggleDirectionsButton.style.left = "10px";
-  
+  toggleDirectionsButton.style.background = "#407F7F"
+  toggleDirectionsButton.style.fontFamily = "Urbanist"
+  toggleDirectionsButton.style.color = "#fff"
+  toggleDirectionsButton.style.borderRadius = "5px";
+  toggleDirectionsButton.style.padding = "10px 20px"
+toggleDirectionsButton.style.bottom = "132px"
+ toggleDirectionsButton.style.position = "fixed";
+  toggleDirectionsButton.style.right = "20px"
   toggleDirectionsButton.addEventListener("click", () => {
     const directionsContainer = document.querySelector(".mapboxgl-ctrl-bottom-left");
     if (directionsContainer) {
