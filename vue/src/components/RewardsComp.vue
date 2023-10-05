@@ -1,16 +1,16 @@
 <template>
     <div class="container">
         <div class="trophies">
-            <p>Defender of the Land (for visiting every location)</p>
+            <p>Defender of the Land (visit every location)</p>
             <img v-if="trophyStatus.defender" src="../assets/trophies/defender.jpg" id="defender" />
             <img v-else src="../assets/trophies/defenderbw.jpg" id="defender" />
-            <p>Bar Hopper (for visiting 5 bars within a small location)</p>
+            <p>Bar Hopper (visit all 5 Bars)</p>
             <img v-if="trophyStatus.bar" src="../assets/trophies/bar.jpg" id="bar" />
             <img v-else src="../assets/trophies/barbw.jpg" id="bar" />
-            <p>Sports Enthusiast (for visiting all of the sports stadiums)</p>
+            <p>Sports Enthusiast (visit all 3 Stadiums)</p>
             <img v-if="trophyStatus.sport" src="../assets/trophies/sport.jpg" id="sport" />
             <img v-else src="../assets/trophies/sportbw.jpg" id="sport" />
-            <p>Tree Hugger (for visiting the CLE parks)</p>
+            <p>Tree Hugger (visit all 2 Parks)</p>
             <img v-if="trophyStatus.tree" src="../assets/trophies/tree.jpg" id="tree" />
             <img v-else src="../assets/trophies/treebw.jpg" id="tree" />
         </div>

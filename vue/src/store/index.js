@@ -52,9 +52,6 @@ export default new Vuex.Store({
         console.error('Error fetching data from API:', error);
       }
     },
-    INCREASE_CHECKIN(state, amt) {
-      state.checkins = state.checkins + amt;
-    }
     
   }
 })
