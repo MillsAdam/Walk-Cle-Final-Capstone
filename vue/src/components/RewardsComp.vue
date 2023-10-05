@@ -62,6 +62,7 @@ img {
     display: flex;
     flex-direction: column;
     align-items: center;
+    height: 99%
 }
 
 @media screen and (max-width: 400px) {
