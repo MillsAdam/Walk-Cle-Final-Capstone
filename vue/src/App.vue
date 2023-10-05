@@ -76,7 +76,9 @@ div.mapboxgl-control-container {
   /* Add other custom styles as needed */
   min-width: 81% !important; 
   min-height: 50px !important; 
-  margin: 0;
+  margin-bottom: 0 !important;
+  margin-left: 5px !important;
+  margin-top: 5px !important;
 }
 
 #mapbox-directions-origin-input > div:nth-child(1) > input:nth-child(2) {
@@ -85,5 +87,13 @@ div.mapboxgl-control-container {
 
 #mapbox-directions-destination-input > div:nth-child(1) > input:nth-child(2) {
   font-family: "Urbanist", sans-serif;
+}
+
+.mapboxgl-ctrl-logo {
+  width: 1px !important;
+}
+
+.mapbox-directions-component {
+  min-height: 1px !important;
 }
 </style>
