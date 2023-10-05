@@ -139,7 +139,7 @@ getDirections() {
     accessToken: mapboxgl.accessToken,
     unit: "imperial",
     profile: "mapbox/walking",
-    steps: 3,
+    steps: 2,
   });
   
   directions.setOrigin([this.userLocation.lng, this.userLocation.lat]);
