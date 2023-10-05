@@ -1,39 +1,33 @@
 <template>
   <div class="container">
     <div class="form-search">
-          <!-- <input type="text" name="location" :value="location.coordinates" disabled /> -->
       <form @submit.prevent="popupContent" class="name-search">
-        <label for="location">Location:</label>
-        <input type="text" id="location" v-model="searchQuery" />
-        <button type="submit">Search</button>
+        <label for="location" id="location-label">Location:</label>
+        <input type="text" id="location-input" v-model="searchQuery" />
+        <button type="submit" id="location-button">Search</button>
       </form>
       <form @submit.prevent="filterTypeSearch" class="type-search">
-        <label for="locationType">Location Type:</label>
-        <select id="locationType" v-model="Type">
+        <label for="locationType" id="locationType-label">Category:</label>
+        <select id="locationType-select" v-model="Type">
           <option value="all">All</option>
           <option value="stadiums">Stadiums</option>
           <option value="parks">Parks</option>
           <option value="bars">Bars</option>
-        </select><button type="submit">Search</button>
+        </select>
+        <button type="submit" id="locationType-button">Search</button>
       </form>
     </div>
-    <div id="map">
-      
-    </div>
-    <!-- <button class="btn" @click="requestLocation">Get Current Location</button>-->
-    
+    <div id="map"></div>    
   </div>
 </template>
   
 <script>
 import mapboxgl from "mapbox-gl";
-// import { MapboxSearchBox } from "@mapbox/search-js-web";
-// import * as turf from "@turf/turf";
 import MapboxDirections from "@mapbox/mapbox-gl-directions/dist/mapbox-gl-directions";
 import "@mapbox/mapbox-gl-directions/dist/mapbox-gl-directions.css";
 import service from '../services/locationService.js'
 import axios from 'axios';
-// const mapboxgl = require("mapbox-gl/dist/mapbox-gl.js");
+
 // Retrieve API key from environment variables
 mapboxgl.accessToken = process.env.VUE_APP_MAPBOX_KEY;
 
@@ -54,24 +48,11 @@ export default {
       all: [],
       parks: [],
       poi: [],
-      coffee: [],
-       popupTexts: [
-        "This is the first marker's www.google.com",
-        "This is the second marker's custom text.",
-        // Add more custom texts here, one for each marker
-      ],
       searchBox: null,
       userLocation: {
         lat: 0,
         lng: 0,
       },
-      // created(){
-      //   this.stadiums = service.getAllStadiums().then(
-      //     (rep) =>{ 
-      //       this.stadiums = rep.data;
-      //     }
-      //   )
-      // }
     };
   },
   methods: {
@@ -112,28 +93,7 @@ export default {
       this.addMapMarker(lngLat);
       this.setLocationCoordinates(lngLat);
     },
-    requestLocation() {
-      // Request to get the user's current location
-      navigator.geolocation.getCurrentPosition((position) => {
-        // get the latitude and longitude returned
-        const lat = position.coords.latitude;
-        const lng = position.coords.longitude;
-
-        // set location data
-        this.setLocation({ lng, lat });
-
-        // move the ap to show the location
-        this.map.flyTo({ center: [lng, lat], zoom: 15 });
-
-        // Store user location
-        this.userLocation.lat = lat;
-        this.userLocation.lng = lng;
-
-        // Add a marker for the current location
-        this.addMapMarker({ lng, lat });
-      });
-    },
-getDirections() {
+    getDirections() {
   // Set up Mapbox Directions control
   const directions = new MapboxDirections({
     accessToken: mapboxgl.accessToken,
@@ -141,7 +101,7 @@ getDirections() {
     profile: "mapbox/walking",
     steps: 2,
   });
-  
+
   directions.setOrigin([this.userLocation.lng, this.userLocation.lat]);
   this.map.addControl(directions, "bottom-left");
 
@@ -173,29 +133,6 @@ toggleDirectionsButton.style.bottom = "132px"
   const mapContainer = this.map.getContainer();
   mapContainer.appendChild(toggleDirectionsButton);
 },
-    // search() {
-    //   // Set up Mapbox Search Box
-    //   const point = turf.point([this.userLocation.lng, this.userLocation.lat]);
-    //   const options = { units: "miles" };
-    //   const radius = 5; // 1 mile
-    //   const bbox = turf.bbox(turf.buffer(point, radius, options));
-
-    //   const searchBox = new MapboxSearchBox();
-    //   searchBox.accessToken = mapboxgl.accessToken;
-    //   searchBox.options = {
-    //     language: "en",
-    //     country: "us",
-    //     bbox: bbox,
-    //   };
-
-    //   // searchBox.on('result', (result) => {
-    //   //     const { lng, lat } = result.result.geometry.coordinates;
-    //   //     this.addMapMarker({ lng, lat });
-    //   //     this.getDirections({ lng, lat });
-    //   // });
-
-    //   this.map.addControl(searchBox);
-    // },
     
     geoLocate() {
       // Adds Location control
@@ -213,6 +150,10 @@ toggleDirectionsButton.style.bottom = "132px"
       });
       this.map.addControl(geolocateControl);
     },
+    navigation() {
+            // Adds basic zoom and rotation control
+            this.map.addControl(new mapboxgl.NavigationControl());
+        },
      
     fetchDataFromAPI() {
       // Assuming 'service.getAllLocations()' is an asynchronous function that returns a promise
@@ -323,7 +264,7 @@ toggleDirectionsButton.style.bottom = "132px"
           <a href="${locationInfoUrl}" target="_blank">More Info</a>
         </div>
       `;
-      this.map.flyTo({ center: [-81.698738, 41.497257], zoom: 12 });
+      this.map.flyTo({ center: [-81.698738, 41.497257], zoom: 14 });
 const popup = new mapboxgl.Popup({ offset: 25 })
           .setHTML(popupContent);
 
@@ -367,99 +308,6 @@ const popup = new mapboxgl.Popup({ offset: 25 })
   this.Bars = [];
   this.all = [];
 },
-//  filterNameSearch(){
-//    // Define the API endpoint based on the selected location type
-//   let apiEndpoint = "http://localhost:9000/locations/name/";
-
-//   switch (true) {
-//   case this.searchQuery === "wendy park":
-//     apiEndpoint += "Wendy%20Park";
-//     break;
-//     case this.searchQuery === "steelers park":
-//     apiEndpoint += "Settlers%20Park";
-//     break;
-//     case this.searchQuery === "collision bend brewing company":
-//     apiEndpoint += "Collision%20Bend%20Brewing%20Company";
-//     break;
-//     case this.searchQuery === "butcher and the brewer":
-//     apiEndpoint += "Butcher%20and%20the%20Brewer";
-//     break;
-//   case  this.searchQuery === "brewDog cleveland outpost":
-//     apiEndpoint += "BrewDog%20Cleveland%20Outpost";
-//     break;
-//     case  this.searchQuery === "barley house":
-//     apiEndpoint += "Barley%20House";
-//     break;
-//   case this.searchQuery === "great lakes brewing":
-//     apiEndpoint += "Great%20Lakes%20Brewing%20Company";
-//     break;
-//     case this.searchQuery === "progressive field":
-//     apiEndpoint += "Progressive%20Field";
-//     break;
-//     case this.searchQuery === "cleveland browns stadium":
-//     apiEndpoint += "Cleveland%20Browns%20Stadium";
-//     break;
-//     case this.searchQuery === "rocket mortgage fieldHouse":
-//     apiEndpoint += "Rocket%20Mortgage%20FieldHouse";
-//     break;
-//   default:
-  
-//     break;
-// }
-//   // Make an API request with the searchQuery and selected location type
-//   axios
-//     .get(apiEndpoint, {
-//       params: { query: this.searchQuery },
-//     })
-//     .then((response) => {
-//       const location = response.data;
-// console.log(apiEndpoint)
-//       // Clear existing markers and popups
-//       this.removeMarkersAndPopups();
-
-//       // Add markers for each location
-      
-//         const { locationId, locationLatitude, locationLongitude, locationName } = location;
-//         const marker = new mapboxgl.Marker({ color: "blue" })
-//           .setLngLat([locationLongitude, locationLatitude])
-//           .addTo(this.map);
-
-//         // Create a popup with custom content
-//         const popupContent = `
-//           <div>
-//             <p>${locationName}</p>
-//             <p>${locationLongitude} " " ${locationLatitude}</p>
-//             <button id="checkInBtn${locationId}" class="check-in-button">Check-In</button>
-//           </div>
-//         `;
-//         //41.497257, -81.698738
-//         this.map.flyTo({ center: [-81.698738, 41.497257], zoom: 14 });
-//         const popup = new mapboxgl.Popup({ offset: 25 })
-//           .setHTML(popupContent);
-
-//         // Attach the popup to the marker
-//         marker.setPopup(popup);
-
-//         // Add the marker to the corresponding category array
-//         // add all of the names as or statments
-//         if (this.searchQuery === "progressive field" || this.searchQuery ===  "cleveland browns stadium"
-//         || this.searchQuery === "rocket mortgage fieldhouse" ) {
-//           this.stadiums.push(marker);
-//         } else if (this.searchQuery === "wendy park" || this.searchQuery === "steelers park") {
-//           this.parks.push(marker);
-//         } else if (this.searchQuery === "collision bend brewing company" || this.searchQuery === "butcher and the brewer"
-//         || this.searchQuery === "brewDog cleveland outpost" || this.searchQuery === "barley house" || this.searchQuery === "great lakes brewing") {
-//           this.Bars.push(marker);
-//         }else if (this.searchQuery === "all"){
-//           this.all.push(marker)}
-
-//           this.searchQuery = '';
-        
-//     })
-//     .catch((error) => {
-//       console.error("Error fetching locations:", error);
-//     });
-//   },
 filterTypeSearch() {
   this.clearMarkersAndPopups();
   // Define the API endpoint based on the selected location type
@@ -540,7 +388,7 @@ filterTypeSearch() {
           <a href="${locationInfoUrl}" target="_blank">More Info</a>
         </div>
       `;
-        this.map.flyTo({ center: [-81.698738, 41.497257], zoom: 13 });
+        this.map.flyTo({ center: [-81.698738, 41.497257], zoom: 14 });
         const popup = new mapboxgl.Popup({ offset: 25 })
           .setHTML(popupContent);
 
@@ -583,20 +431,13 @@ filterTypeSearch() {
   this.poi.forEach((poi) =>{
     poi.remove();
   })
-  this.coffee.forEach((poi) =>{
-    poi.remove();
-  })
   this.parks = [];
   this.Bars = [];
   this.poi = [];
   this.markers = [];
-  this.coffee = [];
   this.all =[];
  
     },
-    addCheckin(amount) {
-      this.$store.commit("INCREASE_CHECKINS", amount);
-    }
 
   },
   mounted() {
@@ -605,17 +446,14 @@ filterTypeSearch() {
       const lng = position.coords.longitude;
       this.userLocation = { lat, lng };
       this.initMap();
+            
       this.map.flyTo({ center: [lng, lat], zoom: 15 });
       this.addMapMarker({ lng, lat });
-      this.clearMarkersAndPopups() 
+      this.clearMarkersAndPopups(); 
+
       this.getDirections();
-      this.search();
       this.navigation();
       this.geoLocate();
-      this.fetchDataFromAPI(); 
-      this.fetchDataFroStadiums()
-      this.popupContent()
-      this.form
     });
   },
 };
@@ -631,58 +469,92 @@ filterTypeSearch() {
 .form-search {
   display: grid;
   grid-template-columns: 1fr 1fr;
+  gap: 200px;
+  grid-template-areas:
+    "name-search type-search";
+  justify-content: center;
+  align-items: center;
+}
+
+@media screen and (max-width: 400px) {
+    .form-search {
+      display: grid;
+      grid-template-columns: 1fr;
+      gap: 5px;
+      grid-template-areas:
+        "name-search"
+        "type-search";
+      justify-content: center;
+      align-items: center;
+    }
+}
+
+.name-search {
+  grid-area: name-search;
+  display: grid;
+  grid-template-columns: 1fr 1fr 1fr;
   gap: 20px;
-  /* padding: 20px; */
-  background-color: #f0f0f0;
+  grid-template-areas:
+    "location-label location-input location-button";
+  justify-content: space-evenly;
+  align-items: center;
+}
+
+.type-search {
+  grid-area: type-search;
+  display: grid;
+  grid-template-columns: 1fr 1fr 1fr;
+  gap: 20px;
+  grid-template-areas:
+    "locationType-label locationType-select locationType-button";
+  justify-content: space-evenly;
+  align-items: center;
 }
 
 .name-search, .type-search {
   padding: 10px;
-  border: 1px solid #ccc;
-  border-radius: 5px;
+}
+
+#location-label {
+  display: flex;
+  grid-area: location-label;
+}
+#location-input {
+  display: flex;
+  grid-area: location-input;
+  width: 150px;
+}
+#location-button {
+  display: flex;
+  grid-area: location-button;
+}
+#locationType-label {
+  display: flex;
+  grid-area: locationType-label;
+}
+#locationType-select {
+  display: flex;
+  grid-area: locationType-select;
+  width: 150px;
+}
+#locationType-button {
+  display: flex;
+  grid-area: locationType-button;
 }
 
 button[type="submit"] {
-  background-color: #92b9c5;
+  background-color: #407F7F;
   color: white;
-  padding: 10px 20px;
-  border: none;
+  padding: 5px 20px;
   border-radius: 5px;
+  border: none;
   cursor: pointer;
+  margin-left: 10px;
 }
 
 button[type="submit"]:hover {
-  background-color: #407F7F
+  background-color: white;
+  color: black;
 }
-
-/* .name-search {
-  display: inline-block;
-  grid-area: name;
-  padding-right: 5px;
-  font-family: "Urbanist", sans-serif;
-  background: #407F7F;
-  color: #fff;
-  
-  cursor: pointer;
-  text-decoration: none;
-  font-size: 15px;
-  width: 40%;
-}
-
-.type-search {
-  display: inline-block;
-  grid-area: name;
-  padding-right: 5px;
-  font-family: "Urbanist", sans-serif;
-  background: #407F7F;
-  color: #fff;
-  padding-top: 20px;
-  text-align: center;
-  cursor: pointer;
-  text-decoration: none;
-  font-size: 15px;
-  width: 40%;
-} */
-
 
 </style>
