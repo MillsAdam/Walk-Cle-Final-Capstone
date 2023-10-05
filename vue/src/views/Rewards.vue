@@ -52,4 +52,12 @@ export default {
   height: 10%;
   width: 100%;
 }
+
+@media screen and (max-width: 767px) {
+  #rewards-comp {
+    justify-content: center;
+    align-items: center;
+  }
+  
+}
 </style>
