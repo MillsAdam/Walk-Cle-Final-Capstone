@@ -683,36 +683,4 @@ button[type="submit"]:hover {
 } */
 
 
-
-.mapbox-directions-instructions {
-  
-  font-family: "Urbanist", sans-serif;
-  font-size: 14px;
-  color: #333;
-}
-
-.mapbox-directions-route-summary {
-  height: 1vh;
-  width: 1vw;
-  font-family: "Urbanist", sans-serif;
-}
-
-.mapbox-directions-step {
-  height: 1vh;
-  width: 1vw;
-  margin-bottom: 5px;
-}
-
-.mapbox-directions-step-number {
-  height: 1vh;
-  width: 1vw;
-  font-weight: bold;
-  color: #0078d4;
-}
-
-.mapbox-directions-step-text {
-  height: 1vh;
-  width: 1vw;
-  color: #000000;
-}
 </style>

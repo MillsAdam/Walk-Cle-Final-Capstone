@@ -21,10 +21,8 @@ export default {
     },
     methods: {
         formatTimestamp(timestamp) {
-            // Create a JavaScript Date object from the timestamp
             const date = new Date(timestamp);
             
-            // Format the date as per your preference (e.g., "YYYY-MM-DD HH:MM:SS")
             const formattedDate = `${date.getFullYear()}-${(date.getMonth() + 1).toString().padStart(2, '0')}-${date.getDate().toString().padStart(2, '0')} ${date.getHours().toString().padStart(2, '0')}:${date.getMinutes().toString().padStart(2, '0')}:${date.getSeconds().toString().padStart(2, '0')}`;
             
             return formattedDate;

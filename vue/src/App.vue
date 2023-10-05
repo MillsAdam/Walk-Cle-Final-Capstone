@@ -54,4 +54,36 @@ body {
   margin: 0;
   padding: 0;
 }
+
+.mapbox-directions-route-summary {
+  font-family: "Urbanist", sans-serif;
+}
+
+li.mapbox-directions-step {
+  font-family: "Urbanist", sans-serif;
+}
+
+.mapbox-directions-profile {
+  font-family: "Urbanist", sans-serif;
+}
+
+div.mapboxgl-control-container {
+  font-family: "Urbanist", sans-serif;
+}
+
+.mapboxgl-ctrl-directions {
+  border-radius: 5px; /* Add rounded corners */
+  /* Add other custom styles as needed */
+  min-width: 214px !important; 
+  min-height: 50px !important; 
+  margin: 0;
+}
+
+#mapbox-directions-origin-input > div:nth-child(1) > input:nth-child(2) {
+  font-family: "Urbanist", sans-serif;
+}
+
+#mapbox-directions-destination-input > div:nth-child(1) > input:nth-child(2) {
+  font-family: "Urbanist", sans-serif;
+}
 </style>
