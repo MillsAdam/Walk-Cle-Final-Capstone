@@ -93,6 +93,7 @@ export default {
 ul {
   padding: 0;
   list-style: none;
+  height: 100%;
 }
 
 li{
