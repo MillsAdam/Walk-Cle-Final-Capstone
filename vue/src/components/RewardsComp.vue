@@ -1,16 +1,16 @@
 <template>
     <div class="container">
         <div class="trophies">
-            <p>Defender of the Land (visit every location)</p>
+            <p>Defender of the Land (visit every location) {{ total }} / 10</p>
             <img v-if="trophyStatus.defender" src="../assets/trophies/defender.jpg" id="defender" />
             <img v-else src="../assets/trophies/defenderbw.jpg" id="defender" />
-            <p>Bar Hopper (visit all 5 Bars)</p>
+            <p>Bar Hopper (visit all 5 Bars) {{ bars }} / 5</p>
             <img v-if="trophyStatus.bar" src="../assets/trophies/bar.jpg" id="bar" />
             <img v-else src="../assets/trophies/barbw.jpg" id="bar" />
-            <p>Sports Enthusiast (visit all 3 Stadiums)</p>
+            <p>Sports Enthusiast (visit all 3 Stadiums) {{ stadiums }} / 3</p>
             <img v-if="trophyStatus.sport" src="../assets/trophies/sport.jpg" id="sport" />
             <img v-else src="../assets/trophies/sportbw.jpg" id="sport" />
-            <p>Tree Hugger (visit all 2 Parks)</p>
+            <p>Tree Hugger (visit all 2 Parks) {{ parks }} / 2</p>
             <img v-if="trophyStatus.tree" src="../assets/trophies/tree.jpg" id="tree" />
             <img v-else src="../assets/trophies/treebw.jpg" id="tree" />
         </div>
@@ -29,7 +29,12 @@ export default {
                 bar: false,
                 sport: false,
                 tree: false,
-            }
+            },
+            total: [],
+            bars: [],
+            parks: [],
+            stadiums: [],
+
         };
     },
     created() {
@@ -40,6 +45,18 @@ export default {
             .catch(error => {
                 console.error(error);
             });
+        trophyService.getPlacesCount().then( response => {
+            this.total = response.data;
+        });
+        trophyService.getBarCount().then( response => {
+            this.bars = response.data;
+        });
+        trophyService.getParkCount().then( response => {
+            this.parks = response.data;
+        });
+        trophyService.getStadiumCount().then( response => {
+            this.stadiums = response.data;
+        })
     }
 }
 </script>

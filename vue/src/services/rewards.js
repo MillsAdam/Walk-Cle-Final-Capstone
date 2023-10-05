@@ -53,5 +53,17 @@ export default{
             .catch(error => {
                 console.error(error);
             });
+    },
+    getPlacesCount() {
+        return http.get('/placesvisited')
+    },
+    getStadiumCount() {
+        return http.get('/stadiumsvisited')
+    },
+    getParkCount() {
+        return http.get('parksvisited')
+    },
+    getBarCount() {
+        return http.get('/barsvisited')
     }
 }
