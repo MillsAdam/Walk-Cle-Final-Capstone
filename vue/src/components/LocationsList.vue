@@ -90,6 +90,10 @@ export default {
   margin-top: 1px; /* Reduce the space above the button */
 }
 
+.list-btn:hover {
+  background-color: #92b9c5;
+}
+
 ul {
   padding: 0;
   list-style: none;
