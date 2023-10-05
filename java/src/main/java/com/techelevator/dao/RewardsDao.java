@@ -17,7 +17,7 @@ public interface RewardsDao {
 
     boolean allPlacesVisited(String username);
 
-    void updateBarCheckIn(String username, int locationDataId);
+    void updateBarCheckIn(String username, int locationId);
 
     void updateParkCheckIn(String username, int locationId);
 
