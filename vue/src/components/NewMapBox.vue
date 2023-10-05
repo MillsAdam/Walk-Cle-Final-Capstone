@@ -476,7 +476,7 @@ filterTypeSearch() {
   align-items: center;
 }
 
-@media screen and (max-width: 400px) {
+@media screen and (max-width: 500px) {
     .form-search {
       display: grid;
       grid-template-columns: 1fr;
