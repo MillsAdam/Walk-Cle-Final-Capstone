@@ -30,6 +30,7 @@ export default {
   },
   methods: {
     handleCheckIn(locationId) {
+      window.location.reload();
       // Call the barCheckIn function from the imported service
       if (locationId === 1 || locationId === 2) {
         CheckInService.parkCheckIn(locationId)
